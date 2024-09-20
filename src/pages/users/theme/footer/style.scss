@@ -1,0 +1,66 @@
+@use "sass:map";
+@import "../../../../styles/pages/theme.scss";
+
+.footer { 
+    background-color: #F3F6FA;
+    padding-top: 24px;
+    padding-bottom: 0px;
+    border-top: 1px solid #000;
+    .footer-about {
+        margin-bottom: 30px;
+        ul li {
+            font-size: 16px;
+            color: map.get($theme-color, "text");
+            list-style: none;
+            line-height: 32px;
+        }
+        ::selection {
+            background-color: map.get($theme-color, "main-color");
+            line-height: 32px;
+            color: white;
+        }
+    }
+    .footer-info{
+        // overflow: hidden;
+        margin-bottom: 30px;
+        position: relative;
+        ul  {
+            float: left;
+            li {
+                padding-left: 30px;
+                list-style: none;
+                line-height: 32px;
+                a {
+                    color: map.get($theme-color, "text");
+                    font-size: 16px;
+                    text-decoration: none;
+                    cursor: pointer;
+                    line-height: 32px;
+                }
+                a:hover {
+                    color: map.get($theme-color, "main-color");
+                    font-weight: 500;
+                }
+                ::selection {
+                    background-color: map.get($theme-color, "main-color");
+                    line-height: 32px;
+                    color: white;
+                }
+            }
+        }
+        .footer-qr {
+            position: relative;
+            left: -400px;
+            bottom: -190px;
+            padding-left: 20px;
+            display: flex;
+            .qr {
+                padding-top: 6px;
+            }
+            .operating-system img{
+                padding-top: 13px;
+            }
+        }
+    }
+   
+}
