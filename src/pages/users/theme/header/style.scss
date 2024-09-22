@@ -13,7 +13,7 @@
     li {
       list-style: none;
       column-gap: 10px;
-      font-size: 20px;
+      font-size: 14px;
       color: map.get($theme-color, "main-color");
       cursor: pointer;
       font-weight: 600;
@@ -24,19 +24,17 @@
 
 .header-main {
   width: 100%;
-  padding-left: 200px;
+  padding-left: 15vw;
   position: fixed;
   border-bottom: #ccc solid 2px;
   background-color: map.get($theme-color, "main-color");
   z-index: 1000;
-  .container-fixed{
+  .container-fixed {
     max-width: 1170px;
-    width: 100%; 
+    width: 100%;
     padding: 0 20px 0 20px;
-
   }
 }
-
 
 .header-logo {
   padding-top: 10px;
@@ -46,10 +44,10 @@
   place-items: center;
   height: 100%;
   padding: 12px 0;
+  justify-content: space-between;
   ul {
     display: flex;
-    column-gap: 50px;
-
+    column-gap: 30px;
     li {
       list-style: none;
       position: relative;
@@ -168,8 +166,6 @@
 }
 .header-content {
   padding-top: 80px;
-
-  
 }
 .categories-container .categories-list {
   display: grid;

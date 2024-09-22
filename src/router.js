@@ -14,11 +14,11 @@ const renderUserRouter = () => {
     },
     {
       path: ROUTERS.USER.PRODUCTS,
-      component: <ProfilePage />
+      component: <ProductPage />
     },
     {
-      path: ROUTERS.USER.PRODUCTS,
-      component: <ProductPage />
+      path: ROUTERS.USER.PROFILE,
+      component: <ProfilePage />
     }
   ];
 

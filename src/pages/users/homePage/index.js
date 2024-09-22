@@ -76,13 +76,13 @@ const HomePage = () => {
   ]);
   const images = [
     {
-      urlImage: require("../../../assets/users/slider.webp")
+      urlImage: require("../../../assets/users/slider/slider.webp")
     },
     {
-      urlImage: require("../../../assets/users/slider2.jpg")
+      urlImage: require("../../../assets/users/slider/slider2.jpg")
     },
     {
-      urlImage: require("../../../assets/users/slider3.png")
+      urlImage: require("../../../assets/users/slider/slider3.png")
     }
   ];
   const [counter, setCounter] = useState(0);

@@ -20,8 +20,7 @@ const Header = () => {
     },
     {
       name: "Sản phẩm",
-      path: ROUTERS.USER.PRODUCTS,
-      isShowSubmenu: false
+      path: ROUTERS.USER.PRODUCTS
     },
     {
       name: "Liên hệ",
@@ -55,7 +54,7 @@ const Header = () => {
                 <Link to={ROUTERS.USER.HOME}>
                   <img
                     style={{ width: "200px", height: "auto" }}
-                    src={require("../../../../assets/users/1.png")}
+                    src={require("../../../../assets/users/header/1.png")}
                   />
                 </Link>
               </div>

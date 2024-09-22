@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="row">
           <div className="col-lg-3 .col-sm-6 col-xs-12">
             <div className="footer-about">
-              <img src={require("../../../../assets/users/icon7.png")} />
+              <img src={require("../../../../assets/users/footer/icon7.png")} />
               <ul>
                 <li>Địa chỉ: 18A/1 Cộng Hòa, Phường 4</li>
                 <li>
@@ -82,7 +82,7 @@ const Footer = () => {
                 <div className="qr">
                   <img
                     style={{ width: "90px" }}
-                    src={require("../../../../assets/users/qrtest.png")}
+                    src={require("../../../../assets/users/footer/qrtest.png")}
                   />
                 </div>
                 <div className="operating-system">
@@ -92,11 +92,11 @@ const Footer = () => {
                       display: "flex",
                       cursor: "pointer"
                     }}
-                    src={require("../../../../assets/users/android.webp")}
+                    src={require("../../../../assets/users/footer/android.webp")}
                   />
                   <img
                     style={{ width: "100px", cursor: "pointer" }}
-                    src={require("../../../../assets/users/ios.webp")}
+                    src={require("../../../../assets/users/footer/ios.webp")}
                   />
                 </div>
               </div>
