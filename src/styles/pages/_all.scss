@@ -1,6 +1,7 @@
 @use "sass:map";
 @import "./theme";
 @import "./responsive";
+
 html,
 body {
   margin: 0;
@@ -8,7 +9,7 @@ body {
 
 * {
   box-sizing: border-box;
-  font-family: Roboto;
+  font-family: Montserrat;
   padding: 0;
   margin: 0;
 }
@@ -20,26 +21,32 @@ body {
   // background-color: map.get($theme-color, "main-color");
   margin: auto;
 }
+
 .row {
   display: flex;
   flex-wrap: wrap;
 }
+
 .col-6 {
   flex: 0 0 50%;
   max-width: 50%;
 }
+
 .col-lg-3 {
   flex: 0 0 25%;
   max-width: 25%;
 }
+
 .col-lg-9 {
   flex: 0 0 75%;
   max-width: 75%;
 }
+
 .col-lg-6 {
   flex: 0 0 50%;
   max-width: 50%;
 }
+
 input,
 textarea {
   width: 100%;
@@ -49,10 +56,12 @@ textarea {
   font-size: 16px;
   color: #b2b2b2;
   border-radius: 3px;
+
   &:focus {
     outline: none;
   }
 }
+
 textarea {
   padding-top: 10px;
 }
@@ -62,54 +71,65 @@ textarea {
     flex: 0 0 25%;
     max-width: 25%;
   }
+
   .col-xl-6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
 }
+
 @include Responsive($TABLE_DEVICE) {
   .col-md-6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
+
   .col-xl-12 {
     flex: 0 0 100%;
     max-width: 100%;
   }
+
   .footer .footer-info .footer-qr {
     overflow: hidden;
     opacity: 0;
   }
 }
+
 @include Responsive($MEDIUM_DEVICE) {
   .col-lg-3 {
     flex: 0 0 25%;
     max-width: 25%;
   }
+
   .footer .footer-info .footer-qr {
     overflow: hidden;
     opacity: 0;
   }
 }
+
 @include Responsive($WIDE_MOBILE) {
   .col-sm-6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
+
   .col-sm-12 {
     flex: 0 0 100%;
     max-width: 100%;
   }
+
   .footer .footer-info .footer-qr {
     overflow: hidden;
     opacity: 0;
   }
 }
+
 @include Responsive($SMALL_DEVICE) {
   .col-xs-12 {
     flex: 0 0 100%;
     max-width: 100%;
   }
+
   .footer .footer-info .footer-qr {
     overflow: hidden;
     opacity: 0;

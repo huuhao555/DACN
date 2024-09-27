@@ -5,6 +5,8 @@ import MasterLayout from "./pages/users/theme/masterLayout";
 import ProfilePage from "./pages/users/profilePage";
 import LoginPage from "./pages/users/auth/login/Login";
 import ProductPage from "./pages/users/productPage";
+import SignUpPage from "./pages/users/auth/signup/Signup"
+
 
 const renderUserRouter = () => {
   const userRouter = [
@@ -19,6 +21,14 @@ const renderUserRouter = () => {
     {
       path: ROUTERS.USER.PROFILE,
       component: <ProfilePage />
+    },
+    {
+      path: ROUTERS.USER.LOGIN,
+      component: <LoginPage />
+    },
+    {
+      path: ROUTERS.USER.SIGNUP,
+      component: <SignUpPage />
     }
   ];
 

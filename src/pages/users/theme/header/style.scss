@@ -4,6 +4,7 @@
 .header-top {
   background-color: #e7e7e7;
 }
+
 .header-pr {
   ul {
     display: flex;
@@ -29,6 +30,7 @@
   border-bottom: #ccc solid 2px;
   background-color: map.get($theme-color, "main-color");
   z-index: 1000;
+
   .container-fixed {
     max-width: 1170px;
     width: 100%;
@@ -39,18 +41,22 @@
 .header-logo {
   padding-top: 10px;
 }
+
 .header-menu {
   display: grid;
   place-items: center;
   height: 100%;
   padding: 12px 0;
   justify-content: space-between;
+
   ul {
     display: flex;
     column-gap: 30px;
+
     li {
       list-style: none;
       position: relative;
+
       a {
         text-decoration: none;
         font-size: 16px;
@@ -63,15 +69,18 @@
         display: block;
       }
     }
+
     li:hover {
       .header-menu-dropdown {
         opacity: 1;
         visibility: visible;
       }
     }
+
     .active a {
       color: white;
     }
+
     .header-menu-dropdown {
       position: absolute;
       width: 180px;
@@ -89,6 +98,7 @@
           font-weight: lighter;
           padding: 5px 10px;
         }
+
         :hover {
           cursor: pointer;
           color: map.get($theme-color, "main-color");
@@ -97,29 +107,35 @@
     }
   }
 }
+
 .header-cart {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 12px 0;
+
   ul {
     display: flex;
     margin-left: 20px;
+
     li {
       margin-top: 10px;
       list-style: none;
       position: relative;
       margin-left: 20px;
       cursor: pointer;
+
       a {
         text-decoration: none;
         display: flex;
         justify-content: center;
         align-items: center;
+
         svg {
           font-size: 25px;
           color: white;
         }
+
         span {
           font-size: 16px;
           color: white;
@@ -129,14 +145,16 @@
       }
     }
   }
+
   .profile-user {
     position: relative;
+
     // :hover {
     //     opacity: 1;
     // }
     ul {
       opacity: 1;
-      width: 150px;
+      width: 130px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
       border-radius: 5%;
       background-color: white;
@@ -148,30 +166,41 @@
       height: 100%;
       border: 1px solid #ccc;
       height: auto;
+
       li {
         display: inline;
         font-size: 16px;
         font-weight: 500;
         line-height: 28px;
+        align-items: center;
         text-decoration: none;
         color: map.get($theme-color, "text");
-        display: inline;
+        display: inline-block;
         width: 100%;
         font-weight: bold;
         cursor: pointer;
         padding: 5px;
+
+        a {
+          color: map.get($theme-color, "text");
+          float: left;
+          align-items: center;
+        }
       }
     }
   }
 }
+
 .header-content {
   padding-top: 80px;
 }
+
 .categories-container .categories-list {
   display: grid;
   place-items: center;
   height: 100%;
   padding: 8px 0;
+
   .categories-menu {
     border: #ccc solid 1px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
@@ -193,12 +222,14 @@
         width: 100%;
         font-weight: bold;
         cursor: pointer;
+
         svg {
           position: absolute;
           right: 5px;
           top: 12px;
         }
       }
+
       a:hover {
         background-color: map.get($theme-color, "main-color");
         color: white;
@@ -206,13 +237,16 @@
     }
   }
 }
+
 .categories-container .search-container .search {
   padding: 8px 0 0 15px;
+
   .search-form {
     display: flex;
     width: 600px;
     height: 50px;
     float: left;
+
     form {
       width: 100%;
       display: flex;
@@ -220,6 +254,7 @@
       align-items: center;
     }
   }
+
   input {
     border: none;
     height: 48px;
@@ -228,11 +263,13 @@
     padding-left: 20px;
     border: 1px solid #ebebeb;
     width: 70%;
+
     :focus {
       outline: none;
       border: none;
     }
   }
+
   button {
     font-size: 14px;
     color: white;
@@ -246,6 +283,7 @@
     border-radius: 0;
     cursor: pointer;
   }
+
   .search-phone {
     display: flex;
     align-items: center;
@@ -264,13 +302,16 @@
       justify-content: center;
       align-items: center;
     }
+
     .search-phone-number {
       display: inline-block;
+
       p {
         color: map.get($theme-color, "main");
         font-weight: bold;
         margin-bottom: 5px;
       }
+
       span {
         color: #565656;
         font-size: 16px;
