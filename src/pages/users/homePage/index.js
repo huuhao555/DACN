@@ -14,22 +14,7 @@ import { ROUTERS } from "../../../utils/router";
 const HomePage = () => {
   const [menuCategories, setMenuCategories] = useState([
     {
-      name: "Điện thoại, Tablet",
-      icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS,
-      child: [
-        {
-          name: "Iphone",
-          path: ROUTERS.USER.PRODUCTS
-        },
-        {
-          name: "Samsung",
-          path: ROUTERS.USER.PRODUCTS
-        }
-      ]
-    },
-    {
-      name: "Laptop",
+      name: "Laptop Gaming",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS,
       child: [
@@ -44,32 +29,48 @@ const HomePage = () => {
       ]
     },
     {
-      name: "Âm thanh",
+      name: "Laptop AI",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS
     },
     {
-      name: "Đồ gia dụng",
+      name: "Laptop đồ họa ",
+      icon: <AiOutlineRight />,
+      path: ROUTERS.USER.PRODUCTS,
+      child: [
+        {
+          name: "Macbook Pro",
+          path: ROUTERS.USER.PRODUCTS
+        },
+        {
+          name: "Macbook Air",
+          path: ROUTERS.USER.PRODUCTS
+        }
+      ]
+    },
+    {
+      name: "Laptop Văn phòng",
+      icon: <AiOutlineRight />,
+      path: ROUTERS.USER.PRODUCTS
+    },
+
+    {
+      name: "Laptop Sinh viên",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS
     },
     {
-      name: "Phụ kiện",
+      name: "Laptop cảm ứng",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS
     },
     {
-      name: "Máy tính để bàn",
+      name: "Laptop mỏng nhẹ",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS
     },
     {
-      name: "Màn hình",
-      icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Tivi",
+      name: "Laptop cũ",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCTS
     }

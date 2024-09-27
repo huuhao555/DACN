@@ -1,15 +1,16 @@
 import { memo, useState } from "react";
 import "./style.scss";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { IMAGES } from "../../../assets/image";
-import {
-  AiOutlineHeart,
-  AiOutlineShoppingCart,
-  AiFillHeart
-} from "react-icons/ai";
-import ProductsComponent from "../../../component/product";
+// import {
+//   AiOutlineHeart,
+//   AiOutlineShoppingCart,
+//   AiFillHeart
+// } from "react-icons/ai";
+import ProductsComponent from "../../../component/product/index";
+import { AiOutlineSearch } from "react-icons/ai";
 const ProductPage = () => {
   const sorts = [
     "Mới nhất",
@@ -55,7 +56,7 @@ const ProductPage = () => {
   const [products, setProducts] = useState([
     {
       laptop_ID: 1,
-      Type_name: "Macbook",
+      Type_name: "Macbook ",
       Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
       Price: 20000000,
       Description: "This is product 1",
@@ -107,7 +108,7 @@ const ProductPage = () => {
       laptop_ID: 4,
       Type_name: "ThinkPad X1 Carbon",
       Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
-      Price: 30000000,
+      Price: 50000000,
       Description:
         "Business-class laptop with superior durability and performance",
       Company: "Lenovo",
@@ -124,7 +125,7 @@ const ProductPage = () => {
       laptop_ID: 5,
       Type_name: "ROG Strix G15",
       Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
-      Price: 35000000,
+      Price: 5000000,
       Description:
         "High-performance gaming laptop with powerful GPU and RGB lighting",
       Company: "ASUS",
@@ -141,7 +142,7 @@ const ProductPage = () => {
       laptop_ID: 6,
       Type_name: "XPS 13",
       Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
-      Price: 25000000,
+      Price: 15000000,
       Description:
         "Dell's premium ultraportable laptop with high-end build quality",
       Company: "Dell ",
@@ -157,7 +158,7 @@ const ProductPage = () => {
   ]);
   const dataProductsNew = [];
   dataProductsNew.push(products);
-  const [dataProducts, setDataProducts] = useState([products] || []);
+  // const [dataProducts, setDataProducts] = useState([products] || []);
   const dataSearch = [];
   const Search = (event) => {
     const valueInputSearch = event.target.value;
@@ -166,9 +167,36 @@ const ProductPage = () => {
       if (data.Type_name === valueInputSearch) {
         dataSearch.push(data);
         return setProducts(dataSearch);
-      } else {
-        return dataProductsNew;
       }
+    });
+  };
+  const Sort = (event) => {
+    const dataNewSort = [...products];
+    const valueSort = event.target.className;
+    console.log(valueSort);
+    if (valueSort.toString() === "tag 1")
+      dataNewSort.sort((a, b) => parseFloat(a.Price) - parseFloat(b.Price));
+    else if (valueSort.toString() === "tag 2")
+      dataNewSort.sort((a, b) => parseFloat(b.Price) - parseFloat(a.Price));
+    return setProducts(dataNewSort);
+  };
+  const [isActive, setIsActive] = useState(false);
+  const checkActive = () => {
+    setIsActive(!isActive);
+  };
+
+  const [priceMin, setPriceMin] = useState(null);
+  const [priceMax, setPriceMax] = useState(null);
+
+  const handlePriceRange = (event) => {
+    const dataSearchPrice = [...products];
+    const dataNewSearchPrice = [];
+    dataSearchPrice.forEach((item, key) => {
+      if (item.Price >= priceMin && item.Price <= priceMax) {
+        dataNewSearchPrice.push(item);
+        setProducts(dataNewSearchPrice);
+      } else setProducts(products);
+      return;
     });
   };
   return (
@@ -186,12 +214,29 @@ const ProductPage = () => {
                 <h3> Mức Giá</h3>
                 <div className="price-range-wrap">
                   <div>
-                    <p>Từ</p>
-                    <input type="number" min={0} />
+                    <p>Từ </p>
+                    <input
+                      type="number"
+                      value={priceMin}
+                      min={0}
+                      onChange={(e) => {
+                        setPriceMin(e.target.value);
+                      }}
+                    />
                   </div>
                   <div>
                     <p>Đến</p>
-                    <input type="number" min={0} />
+                    <input
+                      type="number"
+                      value={priceMax}
+                      min={0}
+                      onChange={(e) => {
+                        setPriceMax(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <AiOutlineSearch onClick={handlePriceRange} />
                   </div>
                 </div>
               </div>
@@ -199,17 +244,14 @@ const ProductPage = () => {
                 <h3>Sắp xếp</h3>
                 <div className="tags">
                   {sorts.map((item, key) => (
-                    <div
-                      className={`tag ${key === 0 ? "active" : ""}`}
-                      key={key}
-                    >
+                    <div className={`tag ${key}`} key={key} onClick={Sort}>
                       {item}
                     </div>
                   ))}
                 </div>
               </div>
               <div className="sidebar-item">
-                <h2>Thể loại khác</h2>
+                <h3>Thể loại khác</h3>
                 <ul>
                   {categories.map((category, key) => (
                     <li key={key}>
