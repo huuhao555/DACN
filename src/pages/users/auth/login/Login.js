@@ -1,10 +1,19 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import "./style.scss"
 // import logo from "../../../../assets/users/footer/mmt.jpg"
-import { Link } from "react-router-dom";
+import { Link, useActionData } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
+import Signup from "../signup/Signup";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa6";
 
 const LoginPage = () => {
+  const [show, setShow] = useState(false)
+  const handleClick = () => {
+    setShow(!show)
+  }
 
   // handleLogin = async () => {
   //   this.setState({
@@ -48,9 +57,15 @@ const LoginPage = () => {
           {/* <div>Email</div> */}
           <input className="input_email" type="text" placeholder="Email của bạn" ></input>
         </div>
-        <div className="form_group">
-          <input className="input_pass" type="password" placeholder="Mật khẩu"></input>
+
+
+        <div className="form_group_bottom">
+          <input className="input_pass" type={show ? "text" : "password"} placeholder="Mật khẩu"></input>
+          <i onClick={handleClick} >{show ? <FaRegEyeSlash></FaRegEyeSlash> : <IoEyeOutline> </IoEyeOutline>}</i>
+
         </div>
+
+
         <div className="miss_text">
           <Link to={ROUTERS.USER.PRODUCTS}><span>Quên mật khẩu?</span></Link>
 
@@ -60,7 +75,13 @@ const LoginPage = () => {
           <button>Đăng nhập</button>
         </div>
         <p class="logup-text">Bạn chưa có tài khoản?
-          <Link to={ROUTERS.USER.SIGNUP}><span>Đăng kí ngay</span></Link></p>
+          <span><Link to="/dang-ky">Đăng kí</Link></span>
+        </p>
+        <div className="btn_icon">
+          <p className="gg"><FcGoogle /></p>
+          <p className="fb"><FaFacebook /></p>
+        </div>
+
       </form>
 
 
