@@ -115,10 +115,10 @@ const Header = () => {
                     {isShowProfile && (
                       <ul className="sub-profile">
                         <li><Link to={ROUTERS.USER.LOGIN}>Đăng nhập</Link></li>
-                        <li><Link to={ROUTERS.USER.PRODUCTS}>Đổi mật khẩu</Link></li>
-                        <li>
+                        <li><Link to={ROUTERS.USER.SIGNUP}>Đăng kí</Link></li>
+                        {/* <li>
                           <Link to={ROUTERS.USER.PRODUCTS}>Đăng xuất</Link>
-                        </li>
+                        </li> */}
                       </ul>
                     )}
                   </li>
