@@ -1,262 +1,117 @@
-.login {
-    padding-top: 100px;
-    padding-bottom: 100px;
-    width: 100%;
-    padding-left: 500px;
-    padding-right: 500px;
-    padding: 100px 450px 100px 450px;
+@use "sass:map";
+@import "../../../../styles/pages/theme.scss";
+
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .login-form {
+    position: relative;
+    width: 30%;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
     text-align: center;
-
-
-    .login_form {
-        background-color: rgb(255, 255, 255);
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-        box-sizing: border-box;
-        text-align: center;
-        width: 100%;
-        height: 500px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: rgba(0, 0, 0, 0.05);
-        border-image: initial;
-        border-radius: 24px;
-        overflow: hidden;
-        padding: 4px 48px 0px;
-        // margin-bottom: 50px;
-        margin-top: 40px;
-
-        .text_login {
-            padding: 20px 0 20px 0;
-            font-size: 22px;
-            font-weight: 300;
-            line-height: 42px;
-            text-align: center;
+    .icon-close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 18px;
+      cursor: pointer;
+      &:hover {
+        fill: map.get($theme-color, "main-color");
+      }
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    h2 {
+      font-size: 20px;
+    }
+    .forget-pass {
+      float: left;
+      a {
+        color: map.get($theme-color, "main-color");
+        text-decoration: none;
+        font-size: 14px;
+      }
+    }
+    .signup {
+      padding-top: 10px;
+      display: inline-block;
+      font-size: 14px;
+      a {
+        color: map.get($theme-color, "main-color");
+        text-decoration: none;
+        font-size: 14px;
+      }
+    }
+    .other-login {
+      margin-top: 10px;
+      justify-content: space-around;
+      display: flex;
+      padding: 10px;
+      .facebook-login {
+        cursor: pointer;
+        align-content: center;
+        width: 35%;
+        height: 35px;
+        border: 1px solid #ccc;
+      }
+      .google-login {
+        cursor: pointer;
+        align-content: center;
+        width: 35%;
+        height: 35px;
+        border: 1px solid #ccc;
+        span {
+          margin-right: 15px;
         }
-
-        .form_group {
-            // display: block;
-            // margin-top: 10px;
-            // font-size: 16px;
-            // font-weight: 500;
-            // text-decoration: none;
-            padding: 8px 0;
-            border: unset;
-            width: 100%;
-            border-bottom: 1px solid #dcdcdc;
-            margin-bottom: 20px;
-            color: #333;
-
-
-
-            .input_email {
-                border: unset;
-                color: #000000
-            }
-
-
-            // position: relative;
-        }
-
-        .form_group_bottom {
-
-            position: relative;
-            padding: 8px 0;
-            border: unset;
-            width: 100%;
-            border-bottom: 1px solid #dcdcdc;
-            margin-bottom: 20px;
-            color: #333;
-
-            .input_pass {
-                color: #000000;
-                border: unset;
-
-
-            }
-
-            i {
-                width: fit-content;
-                font-size: 20px;
-
-                &:hover {
-                    color: #d00018;
-                }
-
-                svg {
-                    position: absolute;
-                    top: 25px;
-                    right: 20px;
-
-                }
-            }
-
-        }
-
-
-
-
-        .miss_text {
-            width: fit-content;
-
-            a {
-                font-size: 16px;
-                text-decoration: none;
-                color: #d00018;
-            }
-        }
-
-
-        .btn_login {
-            padding-top: 30px;
-
-            button {
-
-                background-color: #d00018;
-                color: #fff;
-                border: 1px solid #d00018;
-                padding: 8px 18px;
-                border-radius: 4px;
-                appearance: none;
-                box-sizing: border-box;
-                cursor: pointer;
-                // display: inline-block;
-                // // font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-                font-size: 16px;
-                outline: none;
-                text-align: center;
-                // text-decoration: none;
-                transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-                touch-action: manipulation;
-                will-change: transform;
-
-                &:hover {
-                    color: #d00018;
-                    background-color: #fff;
-                    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-                    transform: translateY(-2px);
-                }
-
-                &:disabled {
-                    pointer-events: none;
-                }
-
-                &:active {
-                    box-shadow: none;
-                    transform: translateY(0);
-                }
-
-            }
-
-
-
-        }
-
-        .logup-text {
-            margin-top: 15px;
-
-            a {
-                text-decoration: none;
-                color: #d00018;
-            }
-        }
-
-        .btn_icon {
-            box-sizing: border-box;
-            border-radius: 2px;
-            display: flex;
-            margin-top: 40px;
-            column-gap: 10px;
-            cursor: pointer;
-
-
-
-
-
-            .gg {
-                font-size: 30px;
-                background-color: rgb(255, 255, 255);
-                box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
-                box-sizing: border-box;
-                text-align: center;
-                width: 50%;
-                height: 40px;
-                border-width: 1px;
-                border-style: solid;
-                border-color: rgba(0, 0, 0, 0.2);
-                border-image: initial;
-                border-radius: 24px;
-                overflow: hidden;
-                padding: 4px 48px 0px;
-
-                transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-                touch-action: manipulation;
-                will-change: transform;
-
-                &:hover {
-                    background-color: #f3f6fa;
-                    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-                    touch-action: manipulation;
-                    will-change: transform;
-                    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-                    transform: translateY(-2px);
-                }
-            }
-
-            .fb {
-                font-size: 28px;
-                color: rgb(8, 102, 255);
-                background-color: rgb(255, 255, 255);
-                box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
-                box-sizing: border-box;
-                text-align: center;
-                width: 50%;
-                height: 40px;
-                border-width: 1px;
-                border-style: solid;
-                border-color: rgba(0, 0, 0, 0.2);
-                border-image: initial;
-                border-radius: 24px;
-                overflow: hidden;
-                padding: 4px 48px 0px;
-
-                transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-                touch-action: manipulation;
-                will-change: transform;
-
-                &:hover {
-                    background-color: #f3f6fa;
-                    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-                    touch-action: manipulation;
-                    will-change: transform;
-                    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-                    transform: translateY(-2px);
-                }
-            }
-        }
-
-
+      }
+      svg {
+        font-size: 28px;
+        fill: #1877f2;
+      }
+      span {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 8px 5px;
+        float: right;
+      }
     }
 
+    button {
+      margin-right: 25%;
+      background-color: map.get($theme-color, "main-color");
+      color: #fff;
+      width: 30%;
+      padding: 8px 5px;
+      margin-top: 20px;
+      // border-radius: 14px solid;
+      border: 2px solid map.get($theme-color, "main-color");
+      cursor: pointer;
+      &:hover {
+        color: white;
+        border: 2px solid map.get($theme-color, "main-color");
 
+        background-color: #be091f;
+      }
+    }
+
+    .close-btn {
+      background-color: map.get($theme-color, "main-color");
+      color: white;
+    }
+  }
 }
-
-
-
-/* CSS */
-
-
-// .button-28:disabled {
-//   pointer-events: none;
-// }
-
-// .button-28:hover {
-//   color: #fff;
-//   background-color: #1A1A1A;
-//   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-//   transform: translateY(-2px);
-
-
-// .button-28:active {
-//   box-shadow: none;
-//   transform: translateY(0);
-// }
