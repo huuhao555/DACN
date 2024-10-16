@@ -154,12 +154,12 @@
     // }
     ul {
       opacity: 1;
-      width: 110px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+      width: 150px;
+      // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
       border-radius: 5%;
       background-color: white;
       position: absolute;
-      left: -15px;
+      left: -25px;
       top: 30px;
       display: grid;
       place-items: center;
@@ -168,18 +168,21 @@
       height: auto;
 
       li {
-        display: inline;
+        display: inline-block;
         font-size: 16px;
         font-weight: 500;
         line-height: 28px;
         align-items: center;
         text-decoration: none;
         color: map.get($theme-color, "text");
-        display: inline-block;
         width: 100%;
         font-weight: bold;
         cursor: pointer;
         padding: 5px;
+
+        &:hover {
+          color: map.get($theme-color, "main-color");
+        }
 
         a {
           color: map.get($theme-color, "text");

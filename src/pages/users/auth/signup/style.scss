@@ -54,11 +54,17 @@
       }
     }
     button {
-      margin-right: 25%;
+      margin-left: 25%;
       width: 30%;
       padding: 8px 5px;
       margin-top: 20px;
       cursor: pointer;
+
+      a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+      }
     }
 
     .close-btn {

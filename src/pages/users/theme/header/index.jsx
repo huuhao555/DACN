@@ -33,9 +33,12 @@ const Header = () => {
   };
 
   const closeSignUpForm = () => {
+    console.log(123);
     setShowSignUpForm(false);
   };
-
+  const handleProfileClick = () => {
+    alert("Vui lòng đăng nhập");
+  };
   return (
     <>
       <div className="header-main">
@@ -85,6 +88,7 @@ const Header = () => {
                     </Link>
                     {isShowProfile && (
                       <ul className="sub-profile">
+                        <li onClick={handleProfileClick}>Thông tin cá nhân</li>
                         <li onClick={handleLoginClick}>Đăng nhập</li>
                         <li onClick={handleSignUpClick}>Đăng kí</li>
                       </ul>
