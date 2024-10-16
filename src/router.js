@@ -6,6 +6,7 @@ import ProfilePage from "./pages/users/profilePage";
 import LoginPage from "./pages/users/auth/login/Login";
 import ProductPage from "./pages/users/productPage";
 import SignUpPage from "./pages/users/auth/signup/Signup"
+import ProductDetailsPage from "./pages/users/productDetailsPage";
 
 
 const renderUserRouter = () => {
@@ -21,6 +22,10 @@ const renderUserRouter = () => {
     {
       path: ROUTERS.USER.PROFILE,
       component: <ProfilePage />
+    },
+    {
+      path: ROUTERS.USER.DETAILS,
+      component: <ProductDetailsPage />
     },
     {
       path: ROUTERS.USER.LOGIN,
