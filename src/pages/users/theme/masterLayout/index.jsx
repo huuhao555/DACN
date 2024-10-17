@@ -1,14 +1,19 @@
+// src/pages/users/theme/masterLayout.js
 import { memo } from "react";
 import Footer from "../footer";
 import Header from "../header";
-const masterLayout = ({ children, ...props }) => {
+import { UserProvider } from "../../../../middleware/UserContext";
+
+const MasterLayout = ({ children, ...props }) => {
   return (
-    <div {...props}>
-      <Header />
-      {children}
-      <Footer />
-    </div>
+    <UserProvider>
+      <div {...props}>
+        <Header />
+        {children}
+        <Footer />
+      </div>
+    </UserProvider>
   );
 };
 
-export default memo(masterLayout);
+export default memo(MasterLayout);

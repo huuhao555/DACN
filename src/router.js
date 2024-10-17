@@ -1,3 +1,4 @@
+// src/router.js
 import { Route, Routes } from "react-router-dom";
 import { ROUTERS } from "./utils/router";
 import HomePage from "./pages/users/homePage";
@@ -5,9 +6,8 @@ import MasterLayout from "./pages/users/theme/masterLayout";
 import ProfilePage from "./pages/users/profilePage";
 import LoginPage from "./pages/users/auth/login/Login";
 import ProductPage from "./pages/users/productPage";
-import SignUpPage from "./pages/users/auth/signup/Signup"
+import SignUpPage from "./pages/users/auth/signup/Signup";
 import ProductDetailsPage from "./pages/users/productDetailsPage";
-
 
 const renderUserRouter = () => {
   const userRouter = [
@@ -47,6 +47,7 @@ const renderUserRouter = () => {
     </MasterLayout>
   );
 };
+
 const RouterCustom = () => {
   return renderUserRouter();
 };

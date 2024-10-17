@@ -111,13 +111,19 @@
 .header-cart {
   display: flex;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   padding: 12px 0;
 
   ul {
     display: flex;
     margin-left: 20px;
-
+    .text-user {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 5px;
+    }
     li {
       margin-top: 10px;
       list-style: none;
@@ -148,14 +154,9 @@
 
   .profile-user {
     position: relative;
-
-    // :hover {
-    //     opacity: 1;
-    // }
     ul {
       opacity: 1;
       width: 150px;
-      // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
       border-radius: 5%;
       background-color: white;
       position: absolute;
@@ -171,7 +172,7 @@
         display: inline-block;
         font-size: 16px;
         font-weight: 500;
-        line-height: 28px;
+        line-height: 20px;
         align-items: center;
         text-decoration: none;
         color: map.get($theme-color, "text");

@@ -40,13 +40,11 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
       });
 
       if (!response.ok) {
-        console.log(
-          "Đăng ký không thành công! Vui lòng kiểm tra lại thông tin."
-        );
+        alert("Đăng ký không thành công! Vui lòng kiểm tra lại thông tin.");
         return;
       }
+      alert("Đăng ký thành công!");
       const data = await response.json();
-      console.log("Register successful:", data);
     } catch (error) {
       console.log(error);
     }
