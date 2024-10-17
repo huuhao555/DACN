@@ -49,7 +49,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       updateUser(dataUser.data); // Update user state in context
       closeLoginForm();
     } catch (error) {
-      console.log(error);
+      alert({ message: error.message });
     }
   };
 

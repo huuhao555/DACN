@@ -46,7 +46,7 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
       alert("Đăng ký thành công!");
       const data = await response.json();
     } catch (error) {
-      console.log(error);
+      alert({ message: error.message });
     }
   };
   if (!isShowSignUpForm) return null;
