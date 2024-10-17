@@ -3,7 +3,9 @@
 
 $product-item-width: 200px;
 $gap: 20px;
-
+.product-body {
+  padding-top: 100px;
+}
 .product-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -29,7 +31,9 @@ $gap: 20px;
 
     .add-to-img {
       width: 100%;
-      height: auto;
+      height: 150px;
+      display: block;
+      object-fit: contain;
     }
 
     .add-to-cart {

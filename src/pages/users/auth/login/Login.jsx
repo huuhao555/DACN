@@ -19,7 +19,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
   };
   const onHandlLogIn = async () => {
     try {
-      const response = await fetch("http://localhost:3009/api/user/log-in", {
+      const response = await fetch("http://10.50.2.129:3009/api/user/log-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

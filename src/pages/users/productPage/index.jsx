@@ -73,7 +73,7 @@ const ProductPage = () => {
     {
       laptop_ID: 2,
       Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
+      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
       Price: 25000000,
       Description:
         "Dell's premium ultraportable laptop with high-end build quality",
@@ -90,7 +90,7 @@ const ProductPage = () => {
     {
       laptop_ID: 3,
       Type_name: "Spectre x360",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
+      Image: IMAGES.USER.PRODUCTS.HP.SPECTRE_16,
       Price: 27000000,
       Description:
         "HP's premium convertible laptop with touch screen and stylus support",
@@ -107,7 +107,7 @@ const ProductPage = () => {
     {
       laptop_ID: 4,
       Type_name: "ThinkPad X1 Carbon",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
+      Image: IMAGES.USER.PRODUCTS.LENOVO.THINKPAD,
       Price: 50000000,
       Description:
         "Business-class laptop with superior durability and performance",
@@ -124,7 +124,7 @@ const ProductPage = () => {
     {
       laptop_ID: 5,
       Type_name: "ROG Strix G15",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
+      Image: IMAGES.USER.PRODUCTS.ASUS.ROR_G16,
       Price: 5000000,
       Description:
         "High-performance gaming laptop with powerful GPU and RGB lighting",
@@ -141,7 +141,7 @@ const ProductPage = () => {
     {
       laptop_ID: 6,
       Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
+      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
       Price: 15000000,
       Description:
         "Dell's premium ultraportable laptop with high-end build quality",

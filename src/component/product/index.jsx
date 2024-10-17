@@ -1,13 +1,14 @@
 import "./style.scss";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart, AiFillStar } from "react-icons/ai";
+import { ROUTERS } from "../../utils/router";
 
 const ProductsComponent = ({ products }) => {
   return (
     <div className="product-list">
       {products.map((product, key) => (
         <div className="product-item" key={product.laptop_ID}>
-          <Link to='/chi-tiet-san-pham'>
+          <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
             <img
               className="add-to-img"
               src={product.Image}
@@ -19,20 +20,10 @@ const ProductsComponent = ({ products }) => {
             <AiOutlineShoppingCart />
           </button>
 
-          <Link to='/chi-tiet-san-pham'>
+          <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
             <div className="item-product-bottom">
               <h3>{product.Company + " " + product.Type_name}</h3>
               <p>{product.Price.toLocaleString()}đ</p>
-              <div className="product-rating">
-                {[...Array(5)].map((_, index) => (
-                  <span
-                    key={index}
-                    className={index < 0 ? "star filled" : "star"}
-                  >
-                    <AiFillStar />
-                  </span>
-                ))}
-              </div>
             </div>
           </Link>
         </div>

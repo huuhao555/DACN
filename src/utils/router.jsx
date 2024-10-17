@@ -3,7 +3,7 @@ export const ROUTERS = {
     HOME: "",
     PROFILE: "thong-tin-ca-nhan",
     PRODUCTS: "san-pham",
-    DETAILS: "chi-tiet-san-pham",
+    DETAILS: "/chi-tiet-san-pham",
     CONTACTS: "lien-he",
     ABOUT: "khac",
     ORDERLOOKUP: "tra-cuu-don-hang",
