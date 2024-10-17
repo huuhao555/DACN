@@ -106,7 +106,7 @@ const Footer = () => {
             <div className="footer-map">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d979.7868440737476!2d106.65377246960023!3d10.800022416684648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175292976c117ad%3A0x5b3f38b21051f84!2zSOG7jWMgVmnhu4duIEjDoG5nIEtow7RuZyBWaeG7h3QgTmFtIENTMg!5e0!3m2!1svi!2s!4v1726836515085!5m2!1svi!2s"
-                width="400"
+                width="320"
                 height="250"
                 style={{ border: 0 }}
                 allowFullScreen

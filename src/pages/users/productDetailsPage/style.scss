@@ -32,11 +32,11 @@
 
             .icon {
               margin: 4px 16px 0 2px;
-              color: #FF8A00;
+              color: #ff8a00;
             }
 
             .number {
-              color: #FF8A00;
+              color: #ff8a00;
               font-weight: 600;
             }
           }
@@ -46,8 +46,6 @@
           margin-top: 10px;
           margin-bottom: 20px;
         }
-
-
       }
     }
 
@@ -140,27 +138,48 @@
           overflow: hidden;
 
           .desc-content {
-            max-height: calc(var(--pr-decs1-height) + var(--pr-decs2-height) + var(--pr-decs3-height) - 120px);
-            overflow: hidden;
+            max-height: calc(
+              var(--pr-decs1-height) + var(--pr-decs2-height) +
+                var(--pr-decs3-height) - 120px
+            );
 
             .table-info {
+              max-width: 800px;
+              padding: 10px;
+              border-radius: 8px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+              background-color: #fff;
 
-              .table-border {
-                background-color: #ffffff;
-                border-collapse: collapse;
-                border-spacing: 0px;
-                border: 1px solid #ffffff;
-                box-sizing: border-box;
-                color: #333333;
-                font-family: Roboto, sans-serif;
-                font-size: 13px;
-                line-height: 20px;
-                margin-bottom: 20px;
-                margin-left: auto;
-                margin-right: auto;
-                max-width: 100%;
-                min-width: 500px;
+              table {
                 width: 100%;
+                border-collapse: collapse;
+
+                thead {
+                  font-size: 18px;
+                  font-weight: bold;
+                }
+                th,
+                td {
+                  padding: 12px 15px;
+                  text-align: left;
+                  border-bottom: 1px solid #ddd;
+                }
+
+                th {
+                  font-weight: 600;
+                  background-color: #f4f4f4;
+                  width: 50%;
+                }
+
+                td {
+                  width: 50%;
+                  color: #333;
+                }
+
+                tr:last-child th,
+                tr:last-child td {
+                  border-bottom: none;
+                }
               }
             }
           }

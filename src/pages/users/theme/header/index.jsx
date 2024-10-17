@@ -19,7 +19,6 @@ const Header = () => {
   const [isShowProfile, setShowProfile] = useState(false);
   const [isShowLoginForm, setShowLoginForm] = useState(false);
   const [isShowSignUpForm, setShowSignUpForm] = useState(false);
-  // console.log(user.user);
   const menusHeader = [
     { name: "Trang chủ", path: ROUTERS.USER.HOME },
     { name: "Sản phẩm", path: ROUTERS.USER.PRODUCTS },
