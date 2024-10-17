@@ -1,8 +1,10 @@
 .product-body {
-  margin-bottom: 8px;
+  // margin-bottom: 8px;
+  border-bottom: 1px solid #caced4;
+  background-color: #f3f4f6;
 
   .product-inner {
-    background: #f3f6fa;
+    background: #ffffff;
     border-radius: 4px;
 
     .product-main {
@@ -14,7 +16,7 @@
 
       .product-info {
         padding: 24px;
-        border-left: 1px solid #ececec;
+        border-left: 1px solid #f3f4f6;
         // margin: 0 0 16px 0;
 
         .info-top {
@@ -30,26 +32,135 @@
 
             .icon {
               margin: 4px 16px 0 2px;
-              color: #ff8a00;
+              color: #FF8A00;
             }
 
             .number {
-              color: #ff8a00;
+              color: #FF8A00;
               font-weight: 600;
             }
           }
         }
 
-        .info-bottom {
-          .action-buy {
-            .btn-buyonl {
-              padding: 7px 10px;
-              float: left;
+        .product-description {
+          margin-top: 10px;
+          margin-bottom: 20px;
+        }
 
-              .icon-addtocart {
-                width: 18px;
-                height: 16px;
-                background-position: -200px -164px;
+
+      }
+    }
+
+    .product-block {
+      margin-bottom: 16px;
+
+      .product-heading {
+        padding: 16px 24px;
+
+        h2 {
+          font-size: 24px;
+          font-weight: 600;
+          margin: 0;
+          line-height: 1.2;
+        }
+      }
+
+      .product-wrap {
+        padding: 0 24px 24px;
+
+        .list-proloop {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .proloop {
+            padding: 0;
+            margin-bottom: 8px;
+            outline: none;
+
+            @media (min-width: 768px) {
+              .proloop-block {
+                box-shadow: none;
+                gap: 32px;
+                flex-direction: row;
+                display: flex;
+                position: relative;
+                height: 100%;
+                overflow: hidden;
+                background: #fff;
+                border-radius: 4px;
+
+                .proloop-img {
+                  flex: 0 0 calc(33% - 32px);
+                  max-width: calc(33% - 32px);
+                  padding: 5px;
+                  height: 100%;
+
+                  picture {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transform: translateX(0%);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    -webkit-transform: translate(0%, 0%);
+                    transform: translate(0%, 0%);
+                    width: 100%;
+                    height: 100%;
+                    -o-object-fit: contain;
+                    object-fit: contain;
+                    -webkit-transition: all 0.5s ease 0s;
+                    transition: all 0.5s ease 0s;
+
+                    img {
+                      width: 100%;
+                      border-radius: 4px;
+                      vertical-align: middle;
+                      border-style: none;
+                      max-width: 100%;
+                      overflow-clip-margin: content-box;
+                      overflow: clip;
+                    }
+                  }
+                }
+              }
+
+              .product-detail {
+                -ms-flex: 0 0 67%;
+                flex: 0 0 67%;
+                max-width: 67%;
+              }
+            }
+          }
+        }
+
+        .product-desc--content {
+          font-size: 16px;
+          overflow: hidden;
+
+          .desc-content {
+            max-height: calc(var(--pr-decs1-height) + var(--pr-decs2-height) + var(--pr-decs3-height) - 120px);
+            overflow: hidden;
+
+            .table-info {
+
+              .table-border {
+                background-color: #ffffff;
+                border-collapse: collapse;
+                border-spacing: 0px;
+                border: 1px solid #ffffff;
+                box-sizing: border-box;
+                color: #333333;
+                font-family: Roboto, sans-serif;
+                font-size: 13px;
+                line-height: 20px;
+                margin-bottom: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 100%;
+                min-width: 500px;
+                width: 100%;
               }
             }
           }

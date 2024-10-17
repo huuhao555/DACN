@@ -76,7 +76,7 @@ const ProductPage = () => {
       Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
       Price: 25000000,
       Description:
-        "Dell's premium ultraportable laptop with high-end build quality",
+        "Dell's hello  premium ultraportable laptop with high-end build quality",
       Company: "Dell ",
       Inches: "13.3",
       ScreenResolution: "4k",

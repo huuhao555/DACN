@@ -43,6 +43,36 @@ body {
   margin-left: -8px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  // color: var(--titlecolor);
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  unicode-bidi: isolate;
+  border-color: inherit;
+}
+
+a {
+  color: #111111;
+  text-decoration: none;
+  outline: none;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent
+}
+
 button {
   position: relative;
   display: inline-block;
@@ -62,7 +92,8 @@ button {
   z-index: 1;
   overflow: hidden;
   outline: none !important;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 @media (min-width: 1200px) {
   .col-xl-12 {
@@ -94,6 +125,15 @@ button {
   max-width: 100%;
 }
 
+.col-sm-12 {
+  position: relative;
+  width: 100%;
+}
+
+.col-12 {
+  padding-right: 8px;
+  padding-left: 8px;
+}
 
 
 .col-6 {
