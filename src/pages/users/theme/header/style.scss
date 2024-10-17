@@ -118,11 +118,13 @@
     display: flex;
     margin-left: 20px;
     .text-user {
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: 5px;
+      a {
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
+      }
     }
     li {
       margin-top: 10px;

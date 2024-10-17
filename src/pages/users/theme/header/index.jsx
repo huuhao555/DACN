@@ -93,15 +93,23 @@ const Header = () => {
                     <Link to="">
                       <AiOutlineUser />
                     </Link>
-                    {isShowProfile && (
-                      <ul className="sub-profile">
-                        <li onClick={handleProfileClick}>Thông tin cá nhân</li>
-                        <li onClick={handleLoginClick}>Đăng nhập</li>
-                        <li onClick={handleSignUpClick}>Đăng kí</li>
-                      </ul>
-                    )}
+                    {user
+                      ? ""
+                      : isShowProfile && (
+                          <ul className="sub-profile">
+                            <li onClick={handleProfileClick}>
+                              Thông tin cá nhân
+                            </li>
+                            <li onClick={handleLoginClick}>Đăng nhập</li>
+                            <li onClick={handleSignUpClick}>Đăng kí</li>
+                          </ul>
+                        )}
                   </li>
-                  <li className="text-user">{user ? user.name : " "}</li>
+                  <li className="text-user">
+                    <Link to={ROUTERS.USER.PROFILE}>
+                      {user ? user.name : " "}
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
