@@ -1,4 +1,5 @@
-import { memo, useState, useContext } from "react";
+import { memo, useState, useContext, } from "react";
+import { useLocation } from "react-router-dom";
 import "./style.scss";
 import {
   AiOutlineHeart,
@@ -25,6 +26,9 @@ const Header = () => {
     { name: "Liên hệ", path: ROUTERS.USER.CONTACTS },
     { name: "Tra cứu", path: ROUTERS.USER.ORDERLOOKUP }
   ];
+
+  const location = useLocation();
+  const { product } = location.state || {};
 
   const handleLoginClick = () => {
     setShowLoginForm(true);
@@ -81,7 +85,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="">
+                    <Link to={ROUTERS.USER.CART} state={{ product }}>
                       <AiOutlineShoppingCart />
                     </Link>
                   </li>
@@ -95,14 +99,14 @@ const Header = () => {
                     {user
                       ? ""
                       : isShowProfile && (
-                          <ul className="sub-profile">
-                            <li onClick={handleProfileClick}>
-                              Thông tin cá nhân
-                            </li>
-                            <li onClick={handleLoginClick}>Đăng nhập</li>
-                            <li onClick={handleSignUpClick}>Đăng kí</li>
-                          </ul>
-                        )}
+                        <ul className="sub-profile">
+                          <li onClick={handleProfileClick}>
+                            Thông tin cá nhân
+                          </li>
+                          <li onClick={handleLoginClick}>Đăng nhập</li>
+                          <li onClick={handleSignUpClick}>Đăng kí</li>
+                        </ul>
+                      )}
                   </li>
                   <li className="text-user">
                     <Link to={ROUTERS.USER.PROFILE}>

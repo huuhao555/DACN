@@ -3,11 +3,24 @@ import "./style.scss";
 import { AiOutlineShoppingCart, AiFillStar } from "react-icons/ai";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import ProductsSlideComponent from "../../../component/productSlide/";
+import React, { useContext } from "react";
+import { CartContext } from "../../../middleware/CartContext";
+
 const ProductDetailsPage = () => {
   const location = useLocation();
   const { product } = location.state || {};
+  const { addToCart } = useContext(CartContext);
+
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product); // Thêm sản phẩm vào giỏ hàng
+      alert ( `${product.Company} ${product.Type_name} đã được thêm vào giỏ hàng!`);
+      console.log("success");
+    }
+  };
   return (
     <div className="product-body">
       <div className="container">
@@ -53,6 +66,7 @@ const ProductDetailsPage = () => {
                             className="button btn-buyonl"
                             name="buy-onl"
                             id="buy-onl"
+                            onClick={()=>handleAddToCart(product)}
                           >
                             <span className="icon-addtocart">
                               <AiOutlineShoppingCart />
@@ -130,9 +144,10 @@ const ProductDetailsPage = () => {
               <div className="product-block">
                 <div className="product-heading">
                   <h2>Sản phẩm khác</h2>
+                </div>
+                <div className="product-wrap">
                   <ProductsSlideComponent />
                 </div>
-                <div className="product-wrap"></div>
               </div>
             </div>
           </div>

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { IMAGES } from "../../../assets/image";
+// import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 // import {
 //   AiOutlineHeart,
 //   AiOutlineShoppingCart,
@@ -24,7 +26,7 @@ const ProductPage = () => {
       ScreenResolution: "2k",
       Cpu: "Intel Core i5 2.3GHz",
       Ram: "8GB",
-      Memory: "128GB SSD",
+      Memory: "128GB",
       Gpu: "Intel Iris Plus Graphics 640",
       OpSys: "macOS",
       Weight: "1.37kg"
@@ -41,7 +43,7 @@ const ProductPage = () => {
       ScreenResolution: "4k",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "512GB SSD",
+      Memory: "512GB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 10",
       Weight: "1.2kg"
@@ -58,7 +60,7 @@ const ProductPage = () => {
       ScreenResolution: "Full HD",
       Cpu: "Intel Core i7-10510U",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "Intel UHD Graphics",
       OpSys: "Windows 10",
       Weight: "1.3kg"
@@ -75,7 +77,7 @@ const ProductPage = () => {
       ScreenResolution: "Quad HD",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 11",
       Weight: "1.09kg"
@@ -92,7 +94,7 @@ const ProductPage = () => {
       ScreenResolution: "Full HD 144Hz",
       Cpu: "AMD Ryzen 9 5900HX",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "NVIDIA GeForce RTX 3060",
       OpSys: "Windows 11",
       Weight: "2.3kg"
@@ -109,7 +111,7 @@ const ProductPage = () => {
       ScreenResolution: "4k",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "512GB SSD",
+      Memory: "512GB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 10",
       Weight: "1.2kg"
@@ -193,6 +195,10 @@ const ProductPage = () => {
       return;
     });
   };
+
+  
+
+
   return (
     <>
       <Breadcrumb />
