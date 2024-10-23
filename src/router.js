@@ -9,6 +9,7 @@ import ProductPage from "./pages/users/productPage";
 import SignUpPage from "./pages/users/auth/signup/Signup";
 import ProductDetailsPage from "./pages/users/productDetailsPage";
 import CartPage from "./pages/users/cartPage";
+import { CartProvider } from "./middleware/CartContext";
 
 const renderUserRouter = () => {
   const userRouter = [
@@ -30,7 +31,7 @@ const renderUserRouter = () => {
     },
     {
       path: ROUTERS.USER.CART,
-      component: <CartPage/>
+      component: <CartPage />
     },
     {
       path: ROUTERS.USER.LOGIN,
@@ -43,13 +44,17 @@ const renderUserRouter = () => {
   ];
 
   return (
-    <MasterLayout>
-      <Routes>
-        {userRouter.map((item, key) => (
-          <Route key={key} path={item.path} element={item.component} />
-        ))}
-      </Routes>
-    </MasterLayout>
+    <CartProvider>
+      <MasterLayout>
+
+        <Routes>
+          {userRouter.map((item, key) => (
+            <Route key={key} path={item.path} element={item.component} />
+          ))}
+        </Routes>
+
+      </MasterLayout>
+    </CartProvider>
   );
 };
 

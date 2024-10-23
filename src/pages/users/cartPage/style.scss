@@ -1,6 +1,7 @@
 @use "sass:map";
 @import "../../../styles/pages/theme";
-$cart-bg-color: #f9f9f9;
+
+$cart-bg-color: #f3f4f6;
 $cart-item-bg-color: #fff;
 $cart-border-color: #e0e0e0;
 $cart-button-color: #28a745;
@@ -12,7 +13,65 @@ $cart-price-color: #ff0000;
   background-color: $cart-bg-color;
   padding: 100px 0 20px 0;
 
+  .cart-header {
+    background-color: $cart-item-bg-color;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid $cart-border-color;
+
+    .checkbox {
+      padding-left: 1rem;
+      display: flex !important;
+      column-gap: 0.75rem !important;
+
+      input {
+        align-items: center;
+        display: flex;
+        font-size: 15px;
+        height: 15px;
+      }
+    }
+
+    button {
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 0.365rem 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-color: transparent;
+      border-color: transparent;
+      color: $cart-font-color;
+      border-width: 1px;
+      border-style: solid;
+      user-select: none;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+      position: relative;
+
+      &:hover {
+        background-color: $cart-button-hover-color;
+        color: white;
+      }
+    }
+  }
+
+  .cart-body {
+    background-color: $cart-item-bg-color;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid $cart-border-color;
+  }
+
   .container {
+    max-width: 1220px;
     margin: 0 auto;
     padding: 0 15px;
 

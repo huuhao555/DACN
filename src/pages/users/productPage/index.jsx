@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { IMAGES } from "../../../assets/image";
+// import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 // import {
 //   AiOutlineHeart,
 //   AiOutlineShoppingCart,
@@ -24,7 +26,7 @@ const ProductPage = () => {
       ScreenResolution: "2k",
       Cpu: "Intel Core i5 2.3GHz",
       Ram: "8GB",
-      Memory: "128GB SSD",
+      Memory: "128GB",
       Gpu: "Intel Iris Plus Graphics 640",
       OpSys: "macOS",
       Weight: "1.37kg"
@@ -41,7 +43,7 @@ const ProductPage = () => {
       ScreenResolution: "4k",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "512GB SSD",
+      Memory: "512GB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 10",
       Weight: "1.2kg"
@@ -58,7 +60,7 @@ const ProductPage = () => {
       ScreenResolution: "Full HD",
       Cpu: "Intel Core i7-10510U",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "Intel UHD Graphics",
       OpSys: "Windows 10",
       Weight: "1.3kg"
@@ -75,7 +77,7 @@ const ProductPage = () => {
       ScreenResolution: "Quad HD",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 11",
       Weight: "1.09kg"
@@ -92,7 +94,7 @@ const ProductPage = () => {
       ScreenResolution: "Full HD 144Hz",
       Cpu: "AMD Ryzen 9 5900HX",
       Ram: "16GB",
-      Memory: "1TB SSD",
+      Memory: "1TB",
       Gpu: "NVIDIA GeForce RTX 3060",
       OpSys: "Windows 11",
       Weight: "2.3kg"
@@ -109,7 +111,7 @@ const ProductPage = () => {
       ScreenResolution: "4k",
       Cpu: "Intel Core i7-1165G7",
       Ram: "16GB",
-      Memory: "512GB SSD",
+      Memory: "512GB",
       Gpu: "Intel Iris Xe Graphics",
       OpSys: "Windows 10",
       Weight: "1.2kg"
@@ -176,23 +178,31 @@ const ProductPage = () => {
       dataNewSort.sort((a, b) => b.Price - a.Price);
     }
     setProducts(dataNewSort);
-    console.log(dataNewSort);
   };
 
   const [priceMin, setPriceMin] = useState(null);
   const [priceMax, setPriceMax] = useState(null);
 
-  const handlePriceRange = (event) => {
-    const dataSearchPrice = [...products];
-    const dataNewSearchPrice = [];
-    dataSearchPrice.forEach((item, key) => {
-      if (item.Price >= priceMin && item.Price <= priceMax) {
-        dataNewSearchPrice.push(item);
-        setProducts(dataNewSearchPrice);
-      } else setProducts(products);
-      return;
-    });
+  const handleOptionMin = (e) => {
+    setPriceMin(e.target.value);
   };
+  const handleOptionMax = (e) => {
+    setPriceMax(e.target.value);
+  };
+
+  const handlePriceRange = () => {
+    const dataNewSearchPrice = products.filter((item) => {
+      console.log(item.Price);
+      return item.Price >= priceMin && item.Price <= priceMax;
+    });
+    console.log(dataNewSearchPrice);
+    if (dataNewSearchPrice.length > 0) {
+      setProducts(dataNewSearchPrice);
+    } else {
+      alert("Không tìm thấy sản phẩm trong khoảng giá này");
+    }
+  };
+
   return (
     <>
       <Breadcrumb />
@@ -209,6 +219,13 @@ const ProductPage = () => {
                 <div className="price-range-wrap">
                   <div>
                     <p>Từ </p>
+                    <select onChange={handleOptionMin} className="optionPrice">
+                      <option value="#">---Chọn---</option>
+                      <option value="10000000">10.000.000</option>
+                      <option value="20000000">20.000.000</option>
+                      <option value="30000000">30.000.000</option>
+                      <option value="40000000">40.000.000</option>
+                    </select>
                     <input
                       type="number"
                       value={priceMin || ""}
@@ -220,6 +237,13 @@ const ProductPage = () => {
                   </div>
                   <div>
                     <p>Đến</p>
+                    <select onChange={handleOptionMax} className="optionPrice">
+                      <option value="#">---Chọn---</option>
+                      <option value="50000000">50.000.000</option>
+                      <option value="60000000">60.000.000</option>
+                      <option value="70000000">70.000.000</option>
+                      <option value="80000000">80.000.000</option>
+                    </select>
                     <input
                       type="number"
                       value={priceMax || ""}

@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../../../middleware/UserContext";
 
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
-  const { updateUser } = useContext(UserContext); // Get updateUser from context
-
+  const { updateUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -23,39 +23,58 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
   };
 
   const onHandlLogIn = async () => {
+    if (!formData.email || !formData.password) {
+      alert("Vui lòng nhập email và mật khẩu!");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Email không hợp lệ!");
+      return;
+    }
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        "http://192.168.0.186:3009/api/user/sign-in",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password
-          })
-        }
-      );
+      const response = await fetch("http://localhost:3009/api/user/sign-in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
       if (!response.ok) {
         alert("Đăng nhập không thành công! Vui lòng kiểm tra lại thông tin.");
         return;
       }
-      const dataUser = await response.json();
-      alert("Đăng nhập thành công!");
 
-      // Lưu thông tin người dùng vào localStorage và context
-      localStorage.setItem("user", JSON.stringify(dataUser.data));
-      updateUser(dataUser.data); // Update user state in context
+      const dataUser = await response.json();
+
+      // Giả sử API trả về token
+      const { token, user } = dataUser.data;
+
+      // Lưu token và thông tin người dùng vào localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Cập nhật trạng thái người dùng
+      updateUser(user);
+      console.log(updateUser);
       closeLoginForm();
     } catch (error) {
       alert({ message: error.message });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       onHandlLogIn();
+    } else if (e.key === "Escape") {
+      closeLoginForm();
     }
   };
 
@@ -84,11 +103,14 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
         <span className="forget-pass">
           <Link>Quên mật khẩu</Link>
         </span>
-        <button onClick={onHandlLogIn}>Đăng nhập</button>
+        <button onClick={onHandlLogIn} disabled={isLoading}>
+          {isLoading ? "Đang xử lý..." : "Đăng nhập"}
+        </button>
         <span className="signup">
           Bạn chưa có tài khoản?
           <Link> Đăng ký ngay</Link>
         </span>
+
         <div className="other-login">
           <div className="facebook-login">
             <FaFacebook /> <span>Facebook</span>
