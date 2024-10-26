@@ -15,64 +15,72 @@ const HomePage = () => {
   const [menuCategories, setMenuCategories] = useState([
     {
       name: "Laptop Gaming",
+      title: "laptopgaming",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS,
+      path: ROUTERS.USER.PRODUCT_TYPE,
       child: [
         {
           name: "MAC",
-          path: ROUTERS.USER.PRODUCTS
+          path: ROUTERS.USER.PRODUCT_TYPE
         },
         {
           name: "ASUS",
-          path: ROUTERS.USER.PRODUCTS
+          path: ROUTERS.USER.PRODUCT_TYPE
         }
       ]
     },
     {
       name: "Laptop AI",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop đồ họa ",
+      title: "laptopdohoa",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS,
+      path: ROUTERS.USER.PRODUCT_TYPE,
       child: [
         {
           name: "Macbook Pro",
-          path: ROUTERS.USER.PRODUCTS
+
+          path: ROUTERS.USER.PRODUCT_TYPE
         },
         {
           name: "Macbook Air",
-          path: ROUTERS.USER.PRODUCTS
+          path: ROUTERS.USER.PRODUCT_TYPE
         }
       ]
     },
     {
       name: "Laptop Văn phòng",
+      title: "laptopvanphong",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
 
     {
       name: "Laptop Sinh viên",
+      title: "laptopsinhvien",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop cảm ứng",
+      title: "laptopcamung",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop mỏng nhẹ",
+      title: "laptopmongnhẹ",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop cũ",
+      title: "laptopcu",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCTS
+      path: ROUTERS.USER.PRODUCT_TYPE
     }
   ]);
   const images = [
@@ -108,7 +116,12 @@ const HomePage = () => {
                   {menuCategories.map((itemCategory, keyCategory) => {
                     return (
                       <li key={keyCategory}>
-                        <Link to={itemCategory.path}>
+                        <Link
+                          to={itemCategory.path}
+                          state={{
+                            title: itemCategory.title
+                          }}
+                        >
                           {itemCategory.name} {itemCategory.icon}{" "}
                         </Link>{" "}
                       </li>

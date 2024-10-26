@@ -1,0 +1,128 @@
+@use "sass:map";
+@import "../../../styles/pages/_theme.scss";
+
+$bg-color: #f8f9fa;
+$form-bg-color: #ffffff;
+$summary-bg-color: #e8f5e9;
+$button-color: #d70018;
+$button-hover-color: #c50017;
+$text-color: #333;
+$input-border-color: #dcdcdc;
+
+.payment-page {
+  margin-top: 100px !important;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background-color: $bg-color;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: $text-color;
+  }
+
+  .payment-form {
+    background-color: $form-bg-color;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: $text-color;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 1rem;
+      border: 1px solid $input-border-color;
+      border-radius: 5px;
+
+      &:focus {
+        border-color: $button-color;
+        outline: none;
+      }
+    }
+
+    .complete-payment {
+      background-color: $button-color;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 15px;
+      margin-left: 40%;
+      width: 20%;
+      align-items: center;
+
+      &:hover {
+        background-color: $button-hover-color;
+      }
+    }
+  }
+
+  .payment-methods {
+    text-align: center;
+    margin-top: 30px;
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .payment-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+
+      svg {
+        color: $button-color;
+        transition: transform 0.3s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .order-summary {
+    background-color: $summary-bg-color;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 30px;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: $text-color;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 1rem;
+    }
+
+    .total-price {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: $button-color;
+      margin-top: 10px;
+    }
+  }
+}

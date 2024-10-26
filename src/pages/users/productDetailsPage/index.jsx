@@ -13,11 +13,12 @@ const ProductDetailsPage = () => {
   const { product } = location.state || {};
   const { addToCart } = useContext(CartContext);
 
-
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product); // Thêm sản phẩm vào giỏ hàng
-      alert ( `${product.Company} ${product.Type_name} đã được thêm vào giỏ hàng!`);
+      addToCart(product);
+      alert(
+        `${product.Company} ${product.Type_name} đã được thêm vào giỏ hàng!`
+      );
       console.log("success");
     }
   };
@@ -66,7 +67,7 @@ const ProductDetailsPage = () => {
                             className="button btn-buyonl"
                             name="buy-onl"
                             id="buy-onl"
-                            onClick={()=>handleAddToCart(product)}
+                            onClick={() => handleAddToCart(product)}
                           >
                             <span className="icon-addtocart">
                               <AiOutlineShoppingCart />

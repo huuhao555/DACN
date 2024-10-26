@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 import ProductsComponent from "../../../component/productGrid/index";
 import { AiOutlineSearch } from "react-icons/ai";
 const ProductPage = () => {
-  const [products, setProducts] = useState([
+  const [dataMain] = useState([
     {
       laptop_ID: 1,
       Type_name: "Macbook ",
@@ -158,30 +158,28 @@ const ProductPage = () => {
     }
   ]);
 
-  const dataProductsNew = [];
-  dataProductsNew.push(products);
-  const [dataProducts, setDataProducts] = useState([products] || []);
-  const dataSearch = [];
+  const [products, setProducts] = useState(dataMain);
+
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
-    const filteredProducts = products.filter((product) =>
-      product.Type_name.toLowerCase().includes(valueInputSearch)
-    );
+
+    if (valueInputSearch === "") {
+      setProducts(dataMain);
+      return;
+    }
+
+    const filteredProducts = dataMain.filter((product) => {
+      return (
+        product.Company.toLowerCase().includes(valueInputSearch) ||
+        product.Type_name.toLowerCase().includes(valueInputSearch)
+      );
+    }, []);
+
     setProducts(filteredProducts);
   };
 
-  const Sort = (key) => {
-    const dataNewSort = [...products];
-    if (key === 1) {
-      dataNewSort.sort((a, b) => a.Price - b.Price);
-    } else if (key === 2) {
-      dataNewSort.sort((a, b) => b.Price - a.Price);
-    }
-    setProducts(dataNewSort);
-  };
-
-  const [priceMin, setPriceMin] = useState(null);
-  const [priceMax, setPriceMax] = useState(null);
+  const [priceMin, setPriceMin] = useState(0);
+  const [priceMax, setPriceMax] = useState(0);
 
   const handleOptionMin = (e) => {
     setPriceMin(e.target.value);
@@ -190,17 +188,25 @@ const ProductPage = () => {
     setPriceMax(e.target.value);
   };
 
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
   const handlePriceRange = () => {
-    const dataNewSearchPrice = products.filter((item) => {
-      console.log(item.Price);
-      return item.Price >= priceMin && item.Price <= priceMax;
-    });
-    console.log(dataNewSearchPrice);
-    if (dataNewSearchPrice.length > 0) {
-      setProducts(dataNewSearchPrice);
-    } else {
-      alert("Không tìm thấy sản phẩm trong khoảng giá này");
+    const dataNewSearchPrice = dataMain.filter(
+      (item) => item.Price >= priceMin && item.Price <= priceMax
+    );
+    setFilteredProducts(dataNewSearchPrice);
+    setProducts(dataNewSearchPrice);
+    return dataNewSearchPrice;
+  };
+
+  const Sort = (key) => {
+    const dataNewSort = [...filteredProducts];
+    if (key === 1) {
+      dataNewSort.sort((a, b) => a.Price - b.Price);
+    } else if (key === 2) {
+      dataNewSort.sort((a, b) => b.Price - a.Price);
     }
+    setProducts(dataNewSort);
   };
 
   return (
@@ -272,7 +278,7 @@ const ProductPage = () => {
                   ))}
                 </div>
               </div>
-              <div className="sidebar-item">
+              {/* <div className="sidebar-item">
                 <h3>Thể loại khác</h3>
                 <ul>
                   {categories.map((category, key) => (
@@ -281,7 +287,7 @@ const ProductPage = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-lg-9">

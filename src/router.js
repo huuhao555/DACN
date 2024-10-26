@@ -10,6 +10,8 @@ import SignUpPage from "./pages/users/auth/signup/Signup";
 import ProductDetailsPage from "./pages/users/productDetailsPage";
 import CartPage from "./pages/users/cartPage";
 import { CartProvider } from "./middleware/CartContext";
+import PaymentPage from "./pages/users/paymentPage";
+import ProductType from "./pages/users/productType";
 
 const renderUserRouter = () => {
   const userRouter = [
@@ -40,19 +42,25 @@ const renderUserRouter = () => {
     {
       path: ROUTERS.USER.SIGNUP,
       component: <SignUpPage />
+    },
+    {
+      path: ROUTERS.USER.PAYMENT,
+      component: <PaymentPage />
+    },
+    {
+      path: ROUTERS.USER.PRODUCT_TYPE,
+      component: <ProductType />
     }
   ];
 
   return (
     <CartProvider>
       <MasterLayout>
-
         <Routes>
           {userRouter.map((item, key) => (
             <Route key={key} path={item.path} element={item.component} />
           ))}
         </Routes>
-
       </MasterLayout>
     </CartProvider>
   );
