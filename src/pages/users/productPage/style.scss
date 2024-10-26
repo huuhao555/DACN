@@ -4,8 +4,9 @@
 .container-product {
   max-width: 1170px;
   width: 100%;
-  padding: 100px 20px 0 20px;
+  padding: 100px 20px 0;
   margin: auto;
+
   .sidebar {
     padding-right: 20px;
 
@@ -16,61 +17,48 @@
         color: rgb(28, 28, 28);
         padding-bottom: 10px;
       }
-      .price-range-wrap {
-        display: flex;
-        justify-content: space-between;
-        column-gap: 5px;
-        align-items: center;
-        .optionPrice {
-          padding: 5px 15px;
-          font-size: 14px;
-          margin-bottom: 10px;
-        }
-      }
-      svg {
-        font-size: 24px;
-        margin: 25px 0 0 10px;
-        cursor: pointer;
-        font-weight: 900;
-        &:hover {
-          fill: map.get($theme-color, "main-color");
-        }
-      }
-      .tags {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
 
-        .tag {
-          font-size: 16px;
-          color: #6f6f6f;
-          display: inline-block;
-          padding: 8px 25px 6px;
+      &.sidebar-item-search {
+        position: relative;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        max-height: calc(3 * 36px);
+        overflow-y: auto;
+        margin-top: 8px;
+        z-index: 10;
+
+        .suggestion-item {
+          padding: 8px 12px;
           cursor: pointer;
-          background-color: #f5f5f5;
-          margin-bottom: 0;
-
-          &:active {
-            color: white;
-            background-color: map.get($theme-color, "main-color");
-          }
-        }
-      }
-      ul li {
-        list-style: none;
-
-        a {
-          text-decoration: none;
-          line-height: 32px;
-          color: map.get($theme-color, "text");
+          transition: background-color 0.2s ease;
 
           &:hover {
-            color: map.get($theme-color, "main-color");
-            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+
+          &:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           }
         }
       }
+    }
+    .sidebar-item:nth-child(2) {
+      // margin-top: 4 * 36px;
     }
   }
 }

@@ -178,15 +178,15 @@ const ProductType = () => {
   const Sort = (key) => {
     const dataNewSort = [
       ...(sortProducts?.length > 0 ? sortProducts : products)
-    ];
+    ]; // Kiểm tra dữ liệu
 
     if (key === 1) {
-      dataNewSort.sort((a, b) => a.Price - b.Price);
+      dataNewSort.sort((a, b) => a.Price - b.Price); // Giá thấp đến cao
     } else if (key === 2) {
-      dataNewSort.sort((a, b) => b.Price - a.Price);
+      dataNewSort.sort((a, b) => b.Price - a.Price); // Giá cao đến thấp
     }
 
-    setProducts(dataNewSort);
+    setProducts(dataNewSort); // Cập nhật danh sách sản phẩm đã sắp xếp
   };
 
   const [priceMin, setPriceMin] = useState(0);

@@ -159,12 +159,13 @@ const ProductPage = () => {
   ]);
 
   const [products, setProducts] = useState(dataMain);
-
+  const [suggestions, setSuggestions] = useState([]);
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
 
     if (valueInputSearch === "") {
       setProducts(dataMain);
+      setSuggestions([]);
       return;
     }
 
@@ -176,6 +177,7 @@ const ProductPage = () => {
     }, []);
 
     setProducts(filteredProducts);
+    setSuggestions(filteredProducts);
   };
 
   const [priceMin, setPriceMin] = useState(0);
@@ -216,10 +218,18 @@ const ProductPage = () => {
         <div className="row">
           <div className="col-lg-3">
             <div className="sidebar">
-              <div className="sidebar-item">
+              <div className="sidebar-item sidebar-item-search">
                 <h3>Tìm kiếm</h3>
                 <input type="text" onChange={Search} />
+                <div className="suggestions">
+                  {suggestions.map((item) => (
+                    <div key={item.laptop_ID} className="suggestion-item">
+                      {item.Type_name} - {item.Company}
+                    </div>
+                  ))}
+                </div>
               </div>
+
               <div className="sidebar-item">
                 <h3> Mức Giá</h3>
                 <div className="price-range-wrap">
