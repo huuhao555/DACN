@@ -16,7 +16,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [isShowProfile, setShowProfile] = useState(false);
-  const [isShowLoginForm, setShowLoginForm] = useState(false);
+  const [isShowLoginForm, setShowLoginForm] = useState(true);
   const [isShowSignUpForm, setShowSignUpForm] = useState(false);
   const menusHeader = [
     { name: "Trang chủ", path: ROUTERS.USER.HOME },

@@ -39,6 +39,9 @@
         a:hover {
           background-color: map.get($theme-color, "main-color");
           color: white;
+          position:
+            background-color ease 0.3s,
+            color ease 0.3s;
         }
       }
     }
@@ -114,5 +117,14 @@
         }
       }
     }
+  }
+  .slide-product {
+    margin-top: 30px;
+    max-width: 80%;
+    margin-left: 10%;
+  }
+  .grid-product {
+    max-width: 80%;
+    margin-left: 14%;
   }
 }

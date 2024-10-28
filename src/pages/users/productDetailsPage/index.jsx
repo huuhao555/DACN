@@ -4,7 +4,7 @@ import { AiOutlineShoppingCart, AiFillStar } from "react-icons/ai";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 // import { FcGoogle } from "react-icons/fc";
-import ProductsSlideComponent from "../../../component/productSlide/";
+import ProductsSlideComponent from "../../../component/user/productSlide";
 import React, { useContext } from "react";
 import { CartContext } from "../../../middleware/CartContext";
 

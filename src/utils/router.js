@@ -17,5 +17,14 @@ export const ROUTERS = {
     ORDERDETAIL: "/chi-tiet-don-hang",
     ORDERLIST: "/danh-sach-don-hang",
     ORDERLOOKUP: "/tra-cuu-don-hang"
+  },
+  ADMIN: {
+    DASHBOARD: "/admin",
+    CREATE_PRODUCT: "/admin/them-san-pham",
+    PRODUCT_LIST: "/admin/san-pham",
+    MANAGE_STAFF: "/admin/quan-ly-nguoi-dung",
+    MANAGE_PRODUCTS: "/admin/quan-ly-san-pham",
+    REVENUE_STATS: "/admin/bao-cao-doanh-thu",
+    PURCHASE_HISTORY: "/admin/lich-su-giao-dich"
   }
 };

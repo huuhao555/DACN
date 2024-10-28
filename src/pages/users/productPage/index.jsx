@@ -1,17 +1,10 @@
 import "./style.scss";
 import { memo, useState } from "react";
-import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { IMAGES } from "../../../assets/image";
-// import React, { useContext } from "react";
-import { useLocation } from "react-router-dom";
-// import {
-//   AiOutlineHeart,
-//   AiOutlineShoppingCart,
-//   AiFillHeart
-// } from "react-icons/ai";
-import ProductsComponent from "../../../component/productGrid/index";
+import { AiOutlineClose } from "react-icons/ai";
+import ProductsComponent from "../../../component/user/productGrid/index";
 import { AiOutlineSearch } from "react-icons/ai";
 const ProductPage = () => {
   const [dataMain] = useState([
@@ -191,18 +184,36 @@ const ProductPage = () => {
   };
 
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [noResults, setNoResults] = useState(false);
   const handlePriceRange = () => {
-    const dataNewSearchPrice = dataMain.filter(
-      (item) => item.Price >= priceMin && item.Price <= priceMax
-    );
-    setFilteredProducts(dataNewSearchPrice);
-    setProducts(dataNewSearchPrice);
-    return dataNewSearchPrice;
+    if (parseFloat(priceMin) === 0 && parseFloat(priceMax) === 0) {
+      setProducts(dataMain);
+    } else {
+      const dataNewSearchPrice = dataMain.filter(
+        (item) =>
+          parseFloat(item.Price) >= parseFloat(priceMin) &&
+          parseFloat(item.Price) <= parseFloat(priceMax)
+      );
+
+      if (dataNewSearchPrice.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+        setFilteredProducts(dataNewSearchPrice);
+        setProducts(dataNewSearchPrice);
+      }
+
+      return dataNewSearchPrice;
+    }
   };
 
   const Sort = (key) => {
-    const dataNewSort = [...filteredProducts];
+    const dataNewSort = [
+      ...(filteredProducts && filteredProducts.length > 0
+        ? filteredProducts
+        : dataMain)
+    ];
+
     if (key === 1) {
       dataNewSort.sort((a, b) => a.Price - b.Price);
     } else if (key === 2) {
@@ -211,6 +222,13 @@ const ProductPage = () => {
     setProducts(dataNewSort);
   };
 
+  const clearSidebar = () => {
+    setProducts(dataMain);
+    setNoResults(false);
+    setPriceMin("0");
+    setPriceMax("0");
+    setFilteredProducts([]);
+  };
   return (
     <>
       <Breadcrumb />
@@ -219,7 +237,13 @@ const ProductPage = () => {
           <div className="col-lg-3">
             <div className="sidebar">
               <div className="sidebar-item sidebar-item-search">
-                <h3>Tìm kiếm</h3>
+                <div className="top-sidebar-item">
+                  <h3>Tìm kiếm</h3>
+                  <AiOutlineClose
+                    className="icon-close"
+                    onClick={clearSidebar}
+                  />
+                </div>
                 <input type="text" onChange={Search} />
                 <div className="suggestions">
                   {suggestions.map((item) => (
@@ -235,12 +259,20 @@ const ProductPage = () => {
                 <div className="price-range-wrap">
                   <div>
                     <p>Từ </p>
-                    <select onChange={handleOptionMin} className="optionPrice">
-                      <option value="#">---Chọn---</option>
+                    <select
+                      onChange={handleOptionMin}
+                      className="optionPrice"
+                      value={priceMin}
+                    >
+                      <option value="0">---Chọn---</option>
                       <option value="10000000">10.000.000</option>
                       <option value="20000000">20.000.000</option>
                       <option value="30000000">30.000.000</option>
                       <option value="40000000">40.000.000</option>
+                      <option value="50000000">50.000.000</option>
+                      <option value="60000000">60.000.000</option>
+                      <option value="70000000">70.000.000</option>
+                      <option value="80000000">80.000.000</option>
                     </select>
                     <input
                       type="number"
@@ -253,8 +285,16 @@ const ProductPage = () => {
                   </div>
                   <div>
                     <p>Đến</p>
-                    <select onChange={handleOptionMax} className="optionPrice">
-                      <option value="#">---Chọn---</option>
+                    <select
+                      onChange={handleOptionMax}
+                      className="optionPrice"
+                      value={priceMax}
+                    >
+                      <option value="0">---Chọn---</option>
+                      <option value="10000000">10.000.000</option>
+                      <option value="20000000">20.000.000</option>
+                      <option value="30000000">30.000.000</option>
+                      <option value="40000000">40.000.000</option>
                       <option value="50000000">50.000.000</option>
                       <option value="60000000">60.000.000</option>
                       <option value="70000000">70.000.000</option>
@@ -300,12 +340,13 @@ const ProductPage = () => {
               </div> */}
             </div>
           </div>
+
           <div className="col-lg-9">
-            <div className="row">
-              <div className="col-lg-9">
-                <ProductsComponent products={products} />
-              </div>
-            </div>
+            {noResults ? (
+              <h2>Không tìm thấy sản phẩm </h2>
+            ) : (
+              <ProductsComponent products={products} />
+            )}
           </div>
         </div>
       </div>

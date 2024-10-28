@@ -1,0 +1,84 @@
+@use "sass:map";
+@import "../../../styles/pages/_theme.scss";
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  //   text-align: left;
+  font-family: Arial, sans-serif;
+}
+
+.product-table th {
+  background-color: map.get($theme-color, "main-color");
+  //   border-bottom: 2px solid map.get($theme-color, "main-color");
+  //   color: map.get($theme-color, "main-color");
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.product-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+}
+
+.product-info img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.price-old {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 5px;
+}
+
+.price-new {
+  color: red;
+  font-weight: bold;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+  padding: 5px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.view-btn .delete-btn .edit-btn {
+  background-color: white !important;
+}
+.view-btn {
+  &:hover {
+    background-color: #ff69b4;
+  }
+  color: white;
+  background-color: white;
+}
+
+.edit-btn {
+  color: white;
+  background-color: white;
+  &:hover {
+    background-color: #28a745;
+  }
+}
+
+.delete-btn {
+  color: white;
+  background-color: white;
+  &:hover {
+    background-color: map.get($theme-color, "main-color");
+  }
+}

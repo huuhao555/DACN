@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { IMAGES } from "../../../assets/image";
 import { useState, useEffect } from "react";
-import ProductsGridComponent from "../../../component/productGrid";
+import ProductsGridComponent from "../../../component/user/productGrid";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./style.scss";
 const ProductType = () => {

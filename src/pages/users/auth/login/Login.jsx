@@ -5,8 +5,9 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../../middleware/UserContext";
-
+import { useNavigate } from "react-router-dom";
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
+  const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,10 +40,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
@@ -51,20 +49,18 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       }
 
       const dataUser = await response.json();
+      const isAdminUser = dataUser.dataUser.isAdmin;
+      isAdminUser ? navigate("/admin") : navigate("/");
 
-      // Giả sử API trả về token
-      const { token, user } = dataUser.data;
+      const { token } = dataUser.access_token;
 
-      // Lưu token và thông tin người dùng vào localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      // localStorage.setItem("user", JSON.stringify(user));
 
-      // Cập nhật trạng thái người dùng
-      updateUser(user);
-      console.log(updateUser);
+      // updateUser(user);
       closeLoginForm();
     } catch (error) {
-      alert({ message: error.message });
+      alert("error");
     } finally {
       setIsLoading(false);
     }

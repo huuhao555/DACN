@@ -1,0 +1,29 @@
+@use "sass:map";
+@import "../../../../styles/pages/theme.scss";
+
+.header-main-admin {
+  width: 100%;
+  padding-left: 15vw;
+  border-bottom: #ccc solid 2px;
+  background-color: map.get($theme-color, "main-color");
+
+  .container-fixed-admin {
+    width: 100%;
+    padding: 0 20px 0 20px;
+  }
+  .header-logo {
+    padding-top: 10px;
+    margin-left: -40%;
+    img {
+      width: 200px;
+    }
+  }
+  .log-out {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    a:last-child {
+      color: #fff;
+    }
+  }
+}

@@ -45,8 +45,9 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
       }
       alert("Đăng ký thành công!");
       const data = await response.json();
+      closeSignUpForm();
     } catch (error) {
-      alert({ message: error.message });
+      alert("Error");
     }
   };
   if (!isShowSignUpForm) return null;
