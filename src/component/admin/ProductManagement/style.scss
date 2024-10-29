@@ -1,17 +1,20 @@
 @use "sass:map";
 @import "../../../styles/pages/_theme.scss";
 
+.product-table-container {
+  max-height: 90vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
 .product-table {
   width: 100%;
   border-collapse: collapse;
-  //   text-align: left;
   font-family: Arial, sans-serif;
 }
 
 .product-table th {
   background-color: map.get($theme-color, "main-color");
-  //   border-bottom: 2px solid map.get($theme-color, "main-color");
-  //   color: map.get($theme-color, "main-color");
   color: white;
   padding: 10px;
   text-align: center;
@@ -29,8 +32,8 @@
 }
 
 .product-info img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   margin-right: 10px;
   border-radius: 5px;
@@ -56,9 +59,11 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
 .view-btn .delete-btn .edit-btn {
   background-color: white !important;
 }
+
 .view-btn {
   &:hover {
     background-color: #ff69b4;
@@ -80,5 +85,30 @@
   background-color: white;
   &:hover {
     background-color: map.get($theme-color, "main-color");
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-number {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &.active {
+    background-color: map.get($theme-color, "main-color");
+    color: white;
+  }
+
+  &:hover {
+    background-color: #ddd;
   }
 }

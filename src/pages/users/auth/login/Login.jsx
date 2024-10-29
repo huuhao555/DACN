@@ -6,6 +6,7 @@ import { FaFacebook } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../../middleware/UserContext";
 import { useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../../utils/router";
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
@@ -52,12 +53,10 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       const isAdminUser = dataUser.dataUser.isAdmin;
       isAdminUser ? navigate("/admin") : navigate("/");
 
-      const { token } = dataUser.access_token;
+      localStorage.setItem("token", dataUser.access_token);
+      localStorage.setItem("user", JSON.stringify(dataUser));
 
-      localStorage.setItem("token", token);
-      // localStorage.setItem("user", JSON.stringify(user));
-
-      // updateUser(user);
+      updateUser(dataUser);
       closeLoginForm();
     } catch (error) {
       alert("error");
@@ -104,7 +103,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
         </button>
         <span className="signup">
           Bạn chưa có tài khoản?
-          <Link> Đăng ký ngay</Link>
+          <Link to={ROUTERS.USER.SIGNUP}> Đăng ký ngay</Link>
         </span>
 
         <div className="other-login">

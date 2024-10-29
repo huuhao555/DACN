@@ -6,6 +6,12 @@ import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
 
 const HeaderAdmin = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
   return (
     <>
       <div className="header-main-admin">
@@ -21,7 +27,7 @@ const HeaderAdmin = () => {
             <div className="col-xl-6"></div>
             <div className="col-xl-3">
               <div className="log-out">
-                <Link to="/">Đăng xuất</Link>
+                <button onClick={handleLogout}>Đăng Xuất</button>
               </div>
             </div>
           </div>

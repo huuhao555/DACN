@@ -25,6 +25,11 @@ export const ROUTERS = {
     MANAGE_STAFF: "/admin/quan-ly-nguoi-dung",
     MANAGE_PRODUCTS: "/admin/quan-ly-san-pham",
     REVENUE_STATS: "/admin/bao-cao-doanh-thu",
-    PURCHASE_HISTORY: "/admin/lich-su-giao-dich"
+    PURCHASE_HISTORY: "/admin/lich-su-giao-dich",
+    UPDATE_PRODUCT: "/admin/chinh-sua-san-pham",
+    DELETE_PRODUCT: "/admin/xoa-san-pham",
+    DETAILS_PRODUCT: "/admin/chi-tiet-san-pham",
+    UPDATE_USER: "/admin/chinh-sua-tai-khoan",
+    DELETE_USER: "/admin/xoa-tai-khoan"
   }
 };

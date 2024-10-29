@@ -16,8 +16,8 @@ const ProductList = () => {
         const response = await fetch(
           "http://localhost:3009/api/product/getAllProduct"
         );
+        console.log(response);
         if (!response.ok) throw new Error(response.statusText);
-
         const data = await response.json();
         setProducts(Array.isArray(data.data) ? data.data : []);
         console.log(data.data);
@@ -34,48 +34,19 @@ const ProductList = () => {
       {products.map((product) => (
         <div className="product-item" key={product._id}>
           <div className="product-item-image">
-            <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
-              <img
-                className="add-to-img"
-                src={product.imageUrl}
-                alt={product.name}
-              />
-            </Link>
+            <img
+              className="add-to-img"
+              src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+              alt={product.name}
+            />
           </div>
 
           <div className="product-item-bottom">
-            <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
-              <div className="item-product-bottom">
-                <h3>{product.company + " " + product.productsTypeName}</h3>
-                <div className="proloop-technical">
-                  {[
-                    {
-                      tag: "ssd",
-                      icon: <BsDeviceSsdFill />,
-                      value: product.memory
-                    },
-                    {
-                      tag: "lcd",
-                      icon: <PiFrameCornersBold />,
-                      value: `${product.inches} inch ${product.screenResolution}`
-                    },
-                    { tag: "ram", icon: <FaMemory />, value: product.ram },
-                    { tag: "cpu", icon: <RiCpuLine />, value: product.cpu }
-                  ].map((item) => (
-                    <div
-                      className="proloop-technical--line"
-                      data-tag={item.tag}
-                      key={item.tag}
-                    >
-                      {item.icon}
-                      <span>{item.value}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="item-product-bottom">
+              <h3>{product.name}</h3>
 
-                <p>{product.prices}đ</p>
-              </div>
-            </Link>
+              <p>{product.prices}đ</p>
+            </div>
           </div>
         </div>
       ))}

@@ -1,28 +1,30 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./style.scss";
 import { forEach } from "abc/lib/async";
-import { useNavigate } from "react-router-dom";
-import { NotificationContext } from "../../../middleware/NotificationContext";
-const UpdateProduct = () => {
-  const { addNotification } = useContext(NotificationContext);
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    productsTypeName: "",
-    quantityInStock: "",
-    prices: "",
-    inches: "",
-    screenResolution: "",
-    imageUrl: null,
-    bannerUrl: null,
-    company: "",
-    cpu: "",
-    ram: "",
-    memory: "",
-    gpu: "",
-    weight: ""
-  });
+import { useLocation, useNavigate } from "react-router-dom";
 
+const CreateProduct = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { product, id } = location.state || {};
+
+  const [dataUpdate] = useState({
+    name: product.name,
+    productsTypeName: product.productsTypeName,
+    quantityInStock: product.quantityInStock,
+    prices: product.prices,
+    inches: product.inches,
+    screenResolution: product.screenResolution,
+    imageUrl: product.imageUrl,
+    bannerUrl: product.bannerUrl,
+    company: product.company,
+    cpu: product.cpu,
+    ram: product.ram,
+    memory: product.memory,
+    gpu: product.gpu,
+    weight: product.weight
+  });
+  const [formData, setFormData] = useState(dataUpdate);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -43,7 +45,6 @@ const UpdateProduct = () => {
       setFormData({ ...formData, bannerUrl, bannerFile: file });
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,38 +57,31 @@ const UpdateProduct = () => {
           formToSubmit.append(key, formData[key]);
         }
       });
-
-      const response = await fetch("http://localhost:3009/api/product/create", {
-        method: "POST",
-        body: formToSubmit
-      });
-
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
+        return;
+      }
+      const response = await fetch(
+        `http://localhost:3009/api/product/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            token: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }
+      );
       if (!response.ok) {
         alert(
-          "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
+          "Sửa sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
         );
         return;
       }
 
-      alert("Thêm sản phẩm thành công");
+      alert("Sửa sản phẩm thành công");
       navigate("/admin/quan-ly-san-pham");
-      addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
-      setFormData({
-        name: "",
-        productsTypeName: "",
-        quantityInStock: "",
-        prices: "",
-        inches: "",
-        screenResolution: "",
-        imageUrl: null,
-        bannerUrl: null,
-        company: "",
-        cpu: "",
-        ram: "",
-        memory: "",
-        gpu: "",
-        weight: ""
-      });
     } catch (error) {
       console.error(error);
     }
@@ -159,27 +153,24 @@ const UpdateProduct = () => {
         </div>
         <div className="image">
           <label>Ảnh sản phẩm:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-          {formData.imageUrl && (
-            <img src={formData.imageUrl} alt="Product Preview" />
-          )}
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+          {
+            <img
+              src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+              alt="Product Preview"
+            />
+          }
         </div>
         <div className="banner">
           <label>Banner sản phẩm:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleBannerChange}
-            required
-          />
-          {formData.bannerUrl && (
-            <img src={formData.bannerUrl} alt="Banner Preview" />
-          )}
+          <input type="file" accept="image/*" onChange={handleBannerChange} />
+          {
+            <img
+              className="slide"
+              src={`http://localhost:3009/uploads/slides/${product.bannerUrl}`}
+              alt="Banner Preview"
+            />
+          }
         </div>
 
         <div>
@@ -242,10 +233,10 @@ const UpdateProduct = () => {
             required
           />
         </div>
-        <button type="submit">Thêm sản phẩm</button>
+        <button type="submit">Sửa sản phẩm</button>
       </form>
     </div>
   );
 };
 
-export default UpdateProduct;
+export default CreateProduct;

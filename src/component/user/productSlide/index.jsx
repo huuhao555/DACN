@@ -54,13 +54,13 @@ const ProductsSlideComponent = () => {
             <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
               <img
                 className="add-to-img"
-                src={product.imageUrl}
+                src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
                 alt={product.name}
               />
             </Link>
             <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
               <div className="item-productSlide-bottom">
-                <h3>{product.company + " " + product.productsTypeName}</h3>
+                <h3>{product.name}</h3>
                 <p>{product.prices}đ</p>
               </div>
             </Link>

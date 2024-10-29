@@ -23,6 +23,9 @@ import PurchaseHistoryAdmin from "./component/admin/PurchaseHistory/PurchaseHist
 import AdminLayout from "./pages/admin/theme/adminLayout";
 import CreateProductAdmin from "./component/admin/CreateProduct/index.jsx";
 import Dashboard from "./component/admin/Dashboard/index.jsx";
+import UpdateProduct from "./component/admin/UpdateProduct/index.jsx";
+import UpdateUser from "./pages/admin/auth/UpdateUser/index.jsx";
+import DeleteUser from "./pages/admin/auth/DeleteUser/index.jsx";
 
 const RouterCustom = () => {
   return (
@@ -66,6 +69,15 @@ const RouterCustom = () => {
         <Route
           path={ROUTERS.ADMIN.PURCHASE_HISTORY}
           element={<PurchaseHistoryAdmin />}
+        />
+        <Route
+          path={`${ROUTERS.ADMIN.UPDATE_USER}/:id`}
+          element={<UpdateUser />}
+        />
+        <Route path={ROUTERS.ADMIN.DELETE_USER} element={<DeleteUser />} />
+        <Route
+          path={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/:id`}
+          element={<UpdateProduct />}
         />
       </Route>
     </Routes>
