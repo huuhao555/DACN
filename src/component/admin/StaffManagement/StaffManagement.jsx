@@ -69,6 +69,7 @@ const StaffManagement = () => {
     <table className="product-table">
       <thead>
         <tr>
+          <th>STT</th>
           <th>HỌ & TÊN</th>
           <th>SỐ ĐIỆN THOẠI</th>
           <th>EMAIL</th>
@@ -78,7 +79,7 @@ const StaffManagement = () => {
         </tr>
       </thead>
       <tbody>
-        {dataUser.map((userItem) => (
+        {dataUser.map((userItem, index) => (
           <tr
             key={userItem._id}
             style={{
@@ -87,6 +88,7 @@ const StaffManagement = () => {
                 : "transparent"
             }}
           >
+            <td>{index + 1}</td>
             <td>
               <div className="product-info">
                 <div>

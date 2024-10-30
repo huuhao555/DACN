@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
+import RevenueStatistics from "../RevenueStatistics";
 
 const Dashboard = () => {
   const CardUser = () => {
@@ -139,11 +140,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-cards">
-      <CardUser />
-      <CardOrders />
-      <CardProducts />
-      <CardReviews />
+    <div className="dashboard-container">
+      <div className="dashboard-cards">
+        <CardUser />
+        <CardOrders />
+        <CardProducts />
+        <CardReviews />
+      </div>
+      <div className="chart">
+        <RevenueStatistics />
+      </div>
     </div>
   );
 };

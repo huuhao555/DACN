@@ -13,8 +13,8 @@ const UpdateProduct = () => {
     prices: "",
     inches: "",
     screenResolution: "",
-    imageUrl: null, // Change from imageUrl to imageUrl
-    bannerUrl: null, // Change from bannerUrl to bannerUrl
+    imageUrl: null,
+    bannerUrl: null,
     company: "",
     cpu: "",
     ram: "",
@@ -29,17 +29,18 @@ const UpdateProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = new FileReader();
-      file.readAsDataURL(e.target.files[0]);
-      file.onload = () => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
         setFormData((prevData) => ({
           ...prevData,
-          imageUrl: file.result // Store as imageUrl
+          imageUrl: reader.result
         }));
       };
-      file.onerror = (error) => {
-        console.log("Error reading file:", error);
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
       };
     } else {
       console.log("No file selected");
@@ -47,17 +48,18 @@ const UpdateProduct = () => {
   };
 
   const handleBannerChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = new FileReader();
-      file.readAsDataURL(e.target.files[0]);
-      file.onload = () => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
         setFormData((prevData) => ({
           ...prevData,
-          bannerUrl: file.result // Store as bannerUrl
+          bannerUrl: reader.result
         }));
       };
-      file.onerror = (error) => {
-        console.log("Error reading file:", error);
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
       };
     } else {
       console.log("No file selected");
@@ -75,7 +77,7 @@ const UpdateProduct = () => {
         },
         body: JSON.stringify(formData)
       });
-      console.log({ response }, { formData });
+
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -84,10 +86,9 @@ const UpdateProduct = () => {
       }
 
       alert("Thêm sản phẩm thành công");
-      navigate("/admin/quan-ly-san-pham");
       addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
+      navigate("/admin/quan-ly-san-pham");
 
-      // Reset form data
       setFormData({
         name: "",
         productsTypeName: "",
@@ -183,7 +184,11 @@ const UpdateProduct = () => {
             required
           />
           {formData.imageUrl && (
-            <img src={formData.imageUrl} alt="Product Preview" />
+            <img
+              src={formData.imageUrl}
+              alt="Product Preview"
+              style={{ maxWidth: "200px", marginTop: "10px" }}
+            />
           )}
         </div>
         <div className="banner">
@@ -195,7 +200,11 @@ const UpdateProduct = () => {
             required
           />
           {formData.bannerUrl && (
-            <img src={formData.bannerUrl} alt="Banner Preview" />
+            <img
+              src={formData.bannerUrl}
+              alt="Banner Preview"
+              style={{ maxWidth: "200px", marginTop: "10px" }}
+            />
           )}
         </div>
 

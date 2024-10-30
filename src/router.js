@@ -1,8 +1,6 @@
-// src/router.js
 import { Route, Routes } from "react-router-dom";
 import { ROUTERS } from "./utils/router";
 
-// User pages
 import HomePage from "./pages/users/homePage";
 import MasterLayout from "./pages/users/theme/masterLayout";
 import ProfilePage from "./pages/users/profilePage";
@@ -14,7 +12,6 @@ import CartPage from "./pages/users/cartPage";
 import PaymentPage from "./pages/users/paymentPage";
 import ProductType from "./pages/users/productType";
 
-// Admin pages
 import ProductListAdmin from "./component/admin/ProductList/ProductList.jsx";
 import ManageStaffAdmin from "./component/admin/StaffManagement/StaffManagement.jsx";
 import ManageProductsAdmin from "./component/admin/ProductManagement/ProductManagement.jsx";
@@ -30,7 +27,6 @@ import DeleteUser from "./pages/admin/auth/DeleteUser/index.jsx";
 const RouterCustom = () => {
   return (
     <Routes>
-      {/* User Routes */}
       <Route element={<MasterLayout />}>
         <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
@@ -43,7 +39,6 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
       </Route>
 
-      {/* Admin Routes */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTERS.ADMIN.DASHBOARD} element={<Dashboard />} />
         <Route

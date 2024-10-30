@@ -34,7 +34,7 @@ const ProductDetailsPage = () => {
                   <div className="col-lg-4 product-image">
                     <Zoom>
                       <img
-                        src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
+                        src={product.imageUrl}
                         style={{
                           width: "375px",
                           height: "300px",

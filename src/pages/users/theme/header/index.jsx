@@ -16,8 +16,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
-  console.log(user);
-
   const [isShowProfile, setShowProfile] = useState(false);
   const [isShowLoginForm, setShowLoginForm] = useState(false);
   const [isShowSignUpForm, setShowSignUpForm] = useState(false);

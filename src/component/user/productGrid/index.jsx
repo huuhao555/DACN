@@ -45,7 +45,7 @@ const ProductsGridComponent = () => {
             {
               productId: product._id,
               quantity: 1,
-              prices: product.prices
+              prices: product.prices.toLocaleString("vi-VN")
             }
           ]
         })
@@ -54,7 +54,6 @@ const ProductsGridComponent = () => {
         throw new Error(response.statusText);
       }
       alert("thêm giỏ hàng thành công");
-      // navigate("/gio-hang");
     } catch (error) {
       console.error("Failed to add product to cart:", error);
     }
@@ -68,7 +67,7 @@ const ProductsGridComponent = () => {
               <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
                 <img
                   className="add-to-img"
-                  src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
+                  src={product.imageUrl}
                   alt={product.name}
                 />
               </Link>
@@ -103,7 +102,12 @@ const ProductsGridComponent = () => {
                       </div>
                     ))}
                   </div>
-                  <p>{product.prices ? product.prices : "N/A"}đ</p>{" "}
+                  <p>
+                    {product.prices.toLocaleString("vi-VN")
+                      ? product.prices.toLocaleString("vi-VN")
+                      : "N/A"}
+                    đ
+                  </p>{" "}
                 </div>
               </Link>
             </div>
@@ -123,7 +127,7 @@ const ProductsGridComponent = () => {
           </div>
         ))
       ) : (
-        <p>No products available</p> // Display message if products is empty
+        <p>No products available</p>
       )}
     </div>
   );

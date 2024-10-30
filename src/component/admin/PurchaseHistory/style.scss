@@ -1,7 +1,8 @@
 @use "sass:map";
 @import "../../../styles/pages/theme.scss";
+
 .purchase-history {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -18,6 +19,11 @@
       text-align: center;
       border: 1px solid #ddd;
       font-size: 16px;
+
+      width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     th {

@@ -5,7 +5,7 @@ import "./style.scss";
 const PurchaseHistory = () => {
   const { notifications } = useContext(NotificationContext) || {};
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 10;
 
   const notificationsByDate = notifications.reduce((acc, notification) => {
     const { date, message, time, user } = notification;

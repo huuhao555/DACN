@@ -1,4 +1,3 @@
-// src/middleware/CartContext.js
 import React, { createContext, memo, useState } from "react";
 
 export const CartContext = createContext();

@@ -12,7 +12,6 @@ import {
 const PaymentPage = () => {
   const { cart } = useContext(CartContext);
 
-  // Calculate total price
   const totalPrice = cart.reduce(
     (acc, item) => acc + item.Price * item.quantity,
     0

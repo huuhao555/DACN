@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { forEach } from "abc/lib/async";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const CreateProduct = () => {
@@ -154,12 +153,7 @@ const CreateProduct = () => {
         <div className="image">
           <label>Ảnh sản phẩm:</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
-          {
-            <img
-              src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
-              alt="Product Preview"
-            />
-          }
+          {<img src={product.imageUrl} alt="Product Preview" />}
         </div>
         <div className="banner">
           <label>Banner sản phẩm:</label>

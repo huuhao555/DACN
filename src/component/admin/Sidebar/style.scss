@@ -2,7 +2,7 @@
 @import "../../../styles/pages/theme.scss";
 .sidebar-admin {
   padding: 20px;
-  height: 88.4vh;
+  // height: 88.4vh;
   background-color: map.get($theme-color, "main-color");
   border-right: 1px solid #ddd;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);

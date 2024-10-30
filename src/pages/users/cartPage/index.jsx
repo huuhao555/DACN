@@ -8,7 +8,7 @@ const CartPage = () => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if (!user || !user.dataUser) return; // Check if user is defined before accessing dataUser
+    if (!user || !user.dataUser) return;
 
     const id = user.dataUser.id;
     const fetchCount = async () => {
@@ -28,13 +28,9 @@ const CartPage = () => {
     fetchCount();
   }, [user]);
   console.log(cart);
-  const removeFromCart = (productId) => {
-    // Define logic to remove item from cart by productId
-  };
+  const removeFromCart = (productId) => {};
 
-  const clearCart = () => {
-    // Define logic to clear the cart
-  };
+  const clearCart = () => {};
 
   if (!user) {
     return <p>Loading user data...</p>;
