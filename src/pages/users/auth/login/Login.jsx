@@ -36,7 +36,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
     }
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3009/api/user/sign-in", {
+      const response = await fetch("http://localhost:3001/api/user/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -51,7 +51,6 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
 
       const dataUser = await response.json();
       const isAdminUser = dataUser.dataUser.isAdmin;
-      isAdminUser ? navigate("/admin") : navigate("/");
 
       localStorage.setItem("token", dataUser.access_token);
       localStorage.setItem("user", JSON.stringify(dataUser));

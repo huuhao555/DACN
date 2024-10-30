@@ -12,7 +12,7 @@ const ProductsSlideComponent = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3009/api/product/getAllProduct"
+          "http://localhost:3001/api/product/getAllProduct"
         );
         if (!response.ok) throw new Error(response.statusText);
 
@@ -54,7 +54,7 @@ const ProductsSlideComponent = () => {
             <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
               <img
                 className="add-to-img"
-                src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+                src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
                 alt={product.name}
               />
             </Link>

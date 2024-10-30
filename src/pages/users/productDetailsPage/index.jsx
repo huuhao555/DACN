@@ -12,7 +12,7 @@ const ProductDetailsPage = () => {
   const location = useLocation();
   const { product } = location.state || {};
   const { addToCart } = useContext(CartContext);
-
+  console.log(product);
   const handleAddToCart = () => {
     if (product) {
       addToCart(product);
@@ -34,7 +34,7 @@ const ProductDetailsPage = () => {
                   <div className="col-lg-4 product-image">
                     <Zoom>
                       <img
-                        src={product.Image}
+                        src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
                         style={{
                           width: "375px",
                           height: "300px",
@@ -48,7 +48,7 @@ const ProductDetailsPage = () => {
                     <div className="info-content">
                       <div className="info-top">
                         <div className="product-name">
-                          <h1>{`${product.Company} ${product.Type_name} `}</h1>
+                          <h1>{product.name} </h1>
                         </div>
                         <div className="product-rating">
                           <span className="number">0.0</span>
@@ -102,34 +102,34 @@ const ProductDetailsPage = () => {
                             <tr>
                               <th>Màn hình</th>
                               <td>
-                                {product.Inches +
+                                {product.inches +
                                   " inch " +
-                                  product.ScreenResolution}
+                                  product.screenResolution}
                               </td>
                             </tr>
                             <tr>
                               <th>CPU</th>
-                              <td>{product.Cpu}</td>
+                              <td>{product.cpu}</td>
                             </tr>
                             <tr>
                               <th>RAM</th>
-                              <td>{product.Ram}</td>
+                              <td>{product.ram}</td>
                             </tr>
                             <tr>
                               <th>Ổ cứng</th>
-                              <td>{product.Memory}</td>
+                              <td>{product.memory}</td>
                             </tr>
                             <tr>
                               <th>Card đồ hoạ</th>
-                              <td>{product.Gpu}</td>
+                              <td>{product.gpu}</td>
                             </tr>
                             <tr>
                               <th>Trọng lượng</th>
-                              <td>{product.Weight}</td>
+                              <td>{product.weight}</td>
                             </tr>
                             <tr>
                               <th>Hệ điều hành</th>
-                              <td>{product.OpSys}</td>
+                              <td>{product.opSys}</td>
                             </tr>
                           </tbody>
                         </table>

@@ -15,8 +15,11 @@ import { UserContext } from "../../../../middleware/UserContext"; // Import User
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+
+  console.log(user);
+
   const [isShowProfile, setShowProfile] = useState(false);
-  const [isShowLoginForm, setShowLoginForm] = useState(true);
+  const [isShowLoginForm, setShowLoginForm] = useState(false);
   const [isShowSignUpForm, setShowSignUpForm] = useState(false);
   const menusHeader = [
     { name: "Trang chủ", path: ROUTERS.USER.HOME },
@@ -50,7 +53,9 @@ const Header = () => {
   const handleProfileClick = () => {
     navigate(ROUTERS.USER.PROFILE);
   };
-
+  const handleAdminClick = () => {
+    navigate("/admin");
+  };
   return (
     <>
       <div className="header-main">
@@ -104,6 +109,9 @@ const Header = () => {
                             <li onClick={handleProfileClick}>
                               Thông tin cá nhân
                             </li>
+                            {user.dataUser.isAdmin && (
+                              <li onClick={handleAdminClick}>Trang Admin</li>
+                            )}
                             <li onClick={handleLogOutClick}>Đăng xuất</li>
                           </ul>
                         )
@@ -114,7 +122,9 @@ const Header = () => {
                           </ul>
                         )}
                   </li>
-                  <li className="text-user">{user ? user.name : " "}</li>
+                  <li className="text-user">
+                    {user ? (user.dataUser?.isAdmin ? "Admin" : "Khách") : ""}
+                  </li>
                 </ul>
               </div>
             </div>

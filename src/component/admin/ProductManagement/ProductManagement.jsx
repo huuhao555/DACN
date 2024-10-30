@@ -17,7 +17,7 @@ const ProductManagement = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3009/api/product/getAllProduct"
+          "http://localhost:3001/api/product/getAllProduct"
         );
         if (!response.ok) throw new Error(response.statusText);
 
@@ -39,7 +39,7 @@ const ProductManagement = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3009/api/product/delete-product/${id}`,
+        `http://localhost:3001/api/product/delete-product/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -97,7 +97,7 @@ const ProductManagement = () => {
                 <td>
                   <div className="product-info">
                     <img
-                      src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+                      src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
                       alt={product.name}
                     />
                     <div>

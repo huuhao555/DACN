@@ -25,7 +25,7 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
     if (formData.password !== formData.confirmPassword)
       return alert("Mật khẩu không trùng nhau");
     try {
-      const response = await fetch("http://localhost:3009/api/user/sign-up", {
+      const response = await fetch("http://localhost:3001/api/user/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

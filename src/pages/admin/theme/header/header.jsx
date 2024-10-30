@@ -9,8 +9,6 @@ const HeaderAdmin = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/");
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
   };
   return (
     <>
@@ -27,7 +25,7 @@ const HeaderAdmin = () => {
             <div className="col-xl-6"></div>
             <div className="col-xl-3">
               <div className="log-out">
-                <button onClick={handleLogout}>Đăng Xuất</button>
+                <button onClick={handleLogout}>Quay lại </button>
               </div>
             </div>
           </div>

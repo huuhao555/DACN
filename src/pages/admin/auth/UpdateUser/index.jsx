@@ -26,7 +26,7 @@ const UpdateUser = ({ closeSignUpForm }) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3009/api/user/update-user/${id}`,
+        `http://localhost:3001/api/user/update-user/${id}`,
         {
           method: "PUT",
           headers: {

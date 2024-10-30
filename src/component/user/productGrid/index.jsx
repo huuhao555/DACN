@@ -1,20 +1,23 @@
 import "./styleGrid.scss";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { RiCpuLine } from "react-icons/ri";
 import { BsDeviceSsdFill } from "react-icons/bs";
 import { PiFrameCornersBold } from "react-icons/pi";
 import { FaMemory } from "react-icons/fa";
 import { ROUTERS } from "../../../utils/router";
-
+import { UserContext } from "../../../middleware/UserContext";
 const ProductsGridComponent = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const { user } = useContext(UserContext);
+  console.log(user);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3009/api/product/getAllProduct"
+          "http://localhost:3001/api/product/getAllProduct"
         );
         if (!response.ok) throw new Error(response.statusText);
 
@@ -29,7 +32,33 @@ const ProductsGridComponent = () => {
 
     fetchProducts();
   }, []);
-
+  const handleCart = async (product) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/cart/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: user.dataUser.id,
+          products: [
+            {
+              productId: product._id,
+              quantity: 1,
+              prices: product.prices
+            }
+          ]
+        })
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      alert("thêm giỏ hàng thành công");
+      // navigate("/gio-hang");
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
   return (
     <div className="product-list">
       {products.length > 0 ? (
@@ -39,7 +68,7 @@ const ProductsGridComponent = () => {
               <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
                 <img
                   className="add-to-img"
-                  src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+                  src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
                   alt={product.name}
                 />
               </Link>
@@ -75,12 +104,14 @@ const ProductsGridComponent = () => {
                     ))}
                   </div>
                   <p>{product.prices ? product.prices : "N/A"}đ</p>{" "}
-                  {/* Check for Price */}
                 </div>
               </Link>
             </div>
             <div className="product-item-cart">
               <button
+                onClick={() => {
+                  handleCart(product);
+                }}
                 type="submit"
                 className="button btn-buyonl"
                 name="buy-onl"

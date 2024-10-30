@@ -11,7 +11,7 @@ const Dashboard = () => {
       const fetchCount = async () => {
         try {
           const response = await fetch(
-            "http://localhost:3009/api/user/getAllUser"
+            "http://localhost:3001/api/user/getAllUser"
           );
           if (!response.ok) throw new Error(response.statusText);
 
@@ -44,7 +44,7 @@ const Dashboard = () => {
     useEffect(() => {
       const fetchCount = async () => {
         try {
-          const response = await fetch("http://localhost:3009/api/order/count");
+          const response = await fetch("http://localhost:3001/api/order/count");
           if (!response.ok) throw new Error(response.statusText);
 
           const data = await response.json();
@@ -77,7 +77,7 @@ const Dashboard = () => {
       const fetchCount = async () => {
         try {
           const response = await fetch(
-            "http://localhost:3009/api/product/getAllProduct"
+            "http://localhost:3001/api/product/getAllProduct"
           );
           if (!response.ok) throw new Error(response.statusText);
 
@@ -111,7 +111,7 @@ const Dashboard = () => {
       const fetchCount = async () => {
         try {
           const response = await fetch(
-            "http://localhost:3009/api/review/count"
+            "http://localhost:3001/api/review/count"
           );
           if (!response.ok) throw new Error(response.statusText);
 

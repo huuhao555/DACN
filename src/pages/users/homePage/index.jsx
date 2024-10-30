@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, useContext } from "react";
 import "./style.scss";
 import {
   AiOutlineHeart,
@@ -13,10 +13,12 @@ import { ROUTERS } from "../../../utils/router";
 import { IMAGES } from "../../../assets/image";
 import ProductsGridComponent from "../../../component/user/productGrid";
 import ProductsSlideComponent from "../../../component/user/productSlide/index";
+import { UserContext } from "../../../middleware/UserContext";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [images, setImages] = useState([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -189,10 +191,10 @@ const HomePage = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="slide-product">
-                <ProductsSlideComponent />
+                <ProductsSlideComponent product={products} />
               </div>
               <div className="grid-product">
-                <ProductsGridComponent />
+                <ProductsGridComponent product={products} />
               </div>
             </div>
           </div>

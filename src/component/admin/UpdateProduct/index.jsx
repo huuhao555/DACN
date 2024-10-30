@@ -63,7 +63,7 @@ const CreateProduct = () => {
         return;
       }
       const response = await fetch(
-        `http://localhost:3009/api/product/update/${id}`,
+        `http://localhost:3001/api/product/update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -156,7 +156,7 @@ const CreateProduct = () => {
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {
             <img
-              src={`http://localhost:3009/uploads/images/${product.imageUrl}`}
+              src={`http://localhost:3001/uploads/images/${product.imageUrl}`}
               alt="Product Preview"
             />
           }
@@ -167,7 +167,7 @@ const CreateProduct = () => {
           {
             <img
               className="slide"
-              src={`http://localhost:3009/uploads/slides/${product.bannerUrl}`}
+              src={`http://localhost:3001/uploads/slides/${product.bannerUrl}`}
               alt="Banner Preview"
             />
           }

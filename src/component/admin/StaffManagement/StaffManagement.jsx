@@ -12,7 +12,7 @@ const StaffManagement = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3009/api/user/getAllUser"
+          "http://localhost:3001/api/user/getAllUser"
         );
 
         if (!response.ok) {
@@ -42,7 +42,7 @@ const StaffManagement = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3009/api/user/delete-user/${id}`,
+        `http://localhost:3001/api/user/delete-user/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -58,7 +58,6 @@ const StaffManagement = () => {
       }
 
       const data = await response.json();
-      alert("Xoá tài khoản thành công");
 
       setDataUser((prevUsers) => prevUsers.filter((user) => user._id !== id));
     } catch (error) {

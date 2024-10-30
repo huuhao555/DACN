@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import "./style.scss";
-import { forEach } from "abc/lib/async";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../../middleware/NotificationContext";
+
 const UpdateProduct = () => {
   const { addNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ const UpdateProduct = () => {
     prices: "",
     inches: "",
     screenResolution: "",
-    imageUrl: null,
-    bannerUrl: null,
+    imageUrl: null, // Change from imageUrl to imageUrl
+    bannerUrl: null, // Change from bannerUrl to bannerUrl
     company: "",
     cpu: "",
     ram: "",
@@ -29,18 +29,38 @@ const UpdateProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, imageUrl, imageFile: file });
+    if (e.target.files && e.target.files[0]) {
+      let file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
+      file.onload = () => {
+        setFormData((prevData) => ({
+          ...prevData,
+          imageUrl: file.result // Store as imageUrl
+        }));
+      };
+      file.onerror = (error) => {
+        console.log("Error reading file:", error);
+      };
+    } else {
+      console.log("No file selected");
     }
   };
 
   const handleBannerChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const bannerUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, bannerUrl, bannerFile: file });
+    if (e.target.files && e.target.files[0]) {
+      let file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
+      file.onload = () => {
+        setFormData((prevData) => ({
+          ...prevData,
+          bannerUrl: file.result // Store as bannerUrl
+        }));
+      };
+      file.onerror = (error) => {
+        console.log("Error reading file:", error);
+      };
+    } else {
+      console.log("No file selected");
     }
   };
 
@@ -48,20 +68,14 @@ const UpdateProduct = () => {
     e.preventDefault();
 
     try {
-      const formToSubmit = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (key === "imageFile" || key === "bannerFile") {
-          formToSubmit.append(key, formData[key]);
-        } else {
-          formToSubmit.append(key, formData[key]);
-        }
-      });
-
-      const response = await fetch("http://localhost:3009/api/product/create", {
+      const response = await fetch("http://localhost:3001/api/product/create", {
         method: "POST",
-        body: formToSubmit
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
       });
-
+      console.log({ response }, { formData });
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -72,6 +86,8 @@ const UpdateProduct = () => {
       alert("Thêm sản phẩm thành công");
       navigate("/admin/quan-ly-san-pham");
       addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
+
+      // Reset form data
       setFormData({
         name: "",
         productsTypeName: "",
@@ -97,6 +113,7 @@ const UpdateProduct = () => {
     <div className="create-product-admin">
       <h1>Tạo Sản Phẩm</h1>
       <form onSubmit={handleSubmit}>
+        {/* Form fields as before */}
         <div>
           <label>Tên sản phẩm:</label>
           <input
