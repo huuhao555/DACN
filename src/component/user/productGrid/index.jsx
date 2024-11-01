@@ -11,7 +11,6 @@ const ProductsGridComponent = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const { user } = useContext(UserContext);
-  console.log(user);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,7 +22,6 @@ const ProductsGridComponent = () => {
 
         const data = await response.json();
         setProducts(Array.isArray(data.data) ? data.data : []);
-        console.log(data.data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
@@ -33,23 +31,23 @@ const ProductsGridComponent = () => {
     fetchProducts();
   }, []);
   const handleCart = async (product) => {
+    if (!user) alert("Vui lòng đăng nhập");
     try {
-      const response = await fetch("http://localhost:3001/api/cart/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          userId: user.dataUser.id,
-          products: [
-            {
-              productId: product._id,
-              quantity: 1,
-              prices: product.prices.toLocaleString("vi-VN")
-            }
-          ]
-        })
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: product._id,
+            quantity: 1,
+            prices: product.prices.toLocaleString("vi-VN")
+          })
+        }
+      );
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -64,7 +62,10 @@ const ProductsGridComponent = () => {
         products.map((product) => (
           <div className="product-item" key={product._id}>
             <div className="product-item-image">
-              <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
+              <Link
+                to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                state={{ product }}
+              >
                 <img
                   className="add-to-img"
                   src={product.imageUrl}
@@ -74,7 +75,10 @@ const ProductsGridComponent = () => {
             </div>
 
             <div className="product-item-bottom">
-              <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
+              <Link
+                to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                state={{ product }}
+              >
                 <div className="item-product-bottom">
                   <h3>{product.name}</h3>
                   <div className="proloop-technical">

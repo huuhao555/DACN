@@ -18,7 +18,6 @@ const ProductsSlideComponent = () => {
 
         const data = await response.json();
         setProducts(Array.isArray(data.data) ? data.data : []);
-        console.log(data.data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
@@ -51,14 +50,20 @@ const ProductsSlideComponent = () => {
       >
         {products.map((product) => (
           <div className="productSlide-item" key={product._id}>
-            <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
+            <Link
+              to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+              state={{ product }}
+            >
               <img
                 className="add-to-img"
                 src={product.imageUrl}
                 alt={product.name}
               />
             </Link>
-            <Link to={ROUTERS.USER.DETAILS} state={{ product }}>
+            <Link
+              to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+              state={{ product }}
+            >
               <div className="item-productSlide-bottom">
                 <h3>{product.name}</h3>
                 <p>{product.prices.toLocaleString("vi-VN")}đ</p>

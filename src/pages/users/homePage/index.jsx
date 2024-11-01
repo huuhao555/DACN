@@ -24,7 +24,7 @@ const HomePage = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3009/api/product/getAllProduct"
+          "http://localhost:3001/api/product/getAllProduct"
         );
         if (!response.ok) throw new Error(response.statusText);
 
@@ -32,7 +32,7 @@ const HomePage = () => {
 
         setImages(
           data.data.map((product) => ({
-            urlImage: `http://localhost:3009/uploads/slides/${product.bannerUrl}`
+            urlImage: product.bannerUrl
           }))
         );
 
@@ -192,9 +192,6 @@ const HomePage = () => {
             <div className="col-lg-12">
               <div className="slide-product">
                 <ProductsSlideComponent product={products} />
-              </div>
-              <div className="grid-product">
-                <ProductsGridComponent product={products} />
               </div>
             </div>
           </div>

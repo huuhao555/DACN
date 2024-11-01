@@ -5,23 +5,55 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 // import { FcGoogle } from "react-icons/fc";
 import ProductsSlideComponent from "../../../component/user/productSlide";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "../../../middleware/CartContext";
+import { UserContext } from "../../../middleware/UserContext";
+import { ROUTERS } from "../../../utils/router";
 
 const ProductDetailsPage = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const location = useLocation();
   const { product } = location.state || {};
-  const { addToCart } = useContext(CartContext);
   console.log(product);
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product);
-      alert(
-        `${product.Company} ${product.Type_name} đã được thêm vào giỏ hàng!`
+  const { addToCart } = useContext(CartContext);
+  const { user } = useContext(UserContext);
+  const handleAddToCart = async () => {
+    if (!user) {
+      alert("Vui lòng đăng nhập");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: product._id,
+            quantity: 1,
+            prices: product.prices.toLocaleString("vi-VN")
+          })
+        }
       );
-      console.log("success");
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      alert("Thêm vào giỏ hàng thành công");
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
     }
   };
+
   return (
     <div className="product-body">
       <div className="container">
@@ -50,15 +82,33 @@ const ProductDetailsPage = () => {
                         <div className="product-name">
                           <h1>{product.name} </h1>
                         </div>
-                        <div className="product-rating">
+                        {/* <div className="product-rating">
                           <span className="number">0.0</span>
                           <span className="icon">
                             <AiFillStar />
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="product-description">
-                        <span>{`${product.Description}`}</span>
+                        <span> Bảo hành chính hãng 24 tháng.</span>
+
+                        <span> Hỗ trợ đổi mới trong 7 ngày.</span>
+
+                        <span> Sửa chữa thay mới linh kiện toàn quốc.</span>
+
+                        <span> Miễn phí giao hàng toàn quốc.</span>
+
+                        <span> Tư vấn miễn phí 24/7.</span>
+
+                        <span>
+                          Thanh toán khi nhận hàng (COD) trên toàn quốc.
+                        </span>
+
+                        <span>
+                          Được kiểm tra sản phẩm trước khi thanh toán.
+                        </span>
+
+                        <span> Đổi trả dễ dàng nếu sản phẩm lỗi.</span>
                       </div>
                       <div className="info-bottom">
                         <div className="action-buys">
@@ -117,7 +167,11 @@ const ProductDetailsPage = () => {
                             </tr>
                             <tr>
                               <th>Ổ cứng</th>
-                              <td>{product.memory}</td>
+                              <td>
+                                {product.memory == 1 || product.memory == 2
+                                  ? `${product.memory} TB`
+                                  : `${product.memory} GB`}
+                              </td>
                             </tr>
                             <tr>
                               <th>Card đồ hoạ</th>
@@ -125,7 +179,7 @@ const ProductDetailsPage = () => {
                             </tr>
                             <tr>
                               <th>Trọng lượng</th>
-                              <td>{product.weight}</td>
+                              <td>{`${product.weight} kg`} </td>
                             </tr>
                             <tr>
                               <th>Hệ điều hành</th>

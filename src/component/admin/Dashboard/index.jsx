@@ -141,7 +141,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-cards">
+      <div className="dashboard-cards ">
         <CardUser />
         <CardOrders />
         <CardProducts />

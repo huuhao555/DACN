@@ -41,10 +41,38 @@
             }
           }
         }
+        .info-bottom {
+          .btn-buyonl {
+            margin-top: 10px;
+          }
+        }
 
         .product-description {
-          margin-top: 10px;
-          margin-bottom: 20px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          span {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #333;
+            margin: 8px 0;
+            padding-left: 10px;
+            position: relative;
+
+            &:before {
+              content: "✔";
+              color: #4caf50;
+              font-weight: bold;
+              margin-right: 8px;
+              font-size: 18px;
+            }
+          }
         }
       }
     }

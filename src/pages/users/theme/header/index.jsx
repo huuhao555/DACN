@@ -1,4 +1,4 @@
-import { memo, useState, useContext } from "react";
+import { memo, useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./style.scss";
 import {
@@ -10,11 +10,30 @@ import Login from "../../auth/login/Login";
 import SignUp from "../../auth/signup/Signup";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
-import { UserContext } from "../../../../middleware/UserContext"; // Import UserContext
+import { UserContext } from "../../../../middleware/UserContext";
 
 const Header = () => {
+  const { user, countCart, updateCartCount } = useContext(UserContext);
+  useEffect(() => {
+    const getAllCart = async () => {
+      if (!user || !user.dataUser) return;
+
+      const id = user.dataUser.id;
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/cart/get-cart/${id}`
+        );
+        if (!response.ok) throw new Error(response.statusText);
+        const dataCart = await response.json();
+        updateCartCount(dataCart.products.length);
+      } catch (error) {
+        console.error("Failed to fetch cart count:", error);
+      }
+    };
+    getAllCart();
+  }, [user, updateCartCount]);
+
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
 
   const [isShowProfile, setShowProfile] = useState(false);
   const [isShowLoginForm, setShowLoginForm] = useState(false);
@@ -54,6 +73,18 @@ const Header = () => {
   const handleAdminClick = () => {
     navigate("/admin");
   };
+  const handleCart = () => {
+    user
+      ? navigate(`${ROUTERS.USER.CART}/${user.dataUser.id}`, {
+          state: { product }
+        })
+      : alert("Vui lòng đăng nhập");
+  };
+  const handleFavourite = () => {
+    user
+      ? navigate(ROUTERS.USER.CART, { state: { product } })
+      : alert("Vui lòng đăng nhập");
+  };
   return (
     <>
       <div className="header-main">
@@ -85,22 +116,23 @@ const Header = () => {
               <div className="header-cart">
                 <ul>
                   <li>
-                    <Link to="">
+                    <button onClick={handleFavourite}>
                       <AiOutlineHeart />
-                    </Link>
+                    </button>
                   </li>
                   <li>
-                    <Link to={ROUTERS.USER.CART} state={{ product }}>
+                    <button onClick={handleCart}>
                       <AiOutlineShoppingCart />
-                    </Link>
+                    </button>
+                    <span className="count-cart">{countCart}</span>
                   </li>
                   <li
                     className="profile-user"
                     onClick={() => setShowProfile(!isShowProfile)}
                   >
-                    <Link to="">
+                    <button>
                       <AiOutlineUser />
-                    </Link>
+                    </button>
                     {user
                       ? isShowProfile && (
                           <ul className="sub-profile">
@@ -120,7 +152,10 @@ const Header = () => {
                           </ul>
                         )}
                   </li>
-                  <li className="text-user">
+                  <li
+                    className="text-user"
+                    onClick={() => setShowProfile(!isShowProfile)}
+                  >
                     {user ? (user.dataUser?.isAdmin ? "Admin" : "Khách") : ""}
                   </li>
                 </ul>

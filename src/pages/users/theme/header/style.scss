@@ -111,12 +111,13 @@
 .header-cart {
   display: flex;
   align-items: center;
-  // justify-content: center;
   padding: 12px 0;
+  margin-top: 5px;
 
   ul {
     display: flex;
     margin-left: 20px;
+
     .text-user {
       color: white;
       display: flex;
@@ -124,29 +125,41 @@
       align-items: center;
       margin-bottom: -5px;
     }
+
     li {
-      margin-top: 10px;
       list-style: none;
       position: relative;
       margin-left: 20px;
       cursor: pointer;
-
-      a {
-        text-decoration: none;
+      .count-cart {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: rgba(255, 255, 255, 1);
+        color: map.get($theme-color, "main-color");
+        padding: 2px 6px;
+        border-radius: 50%;
+        font-size: 12px;
+      }
+      button {
+        background: none;
+        border: none;
+        padding: 5px;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
 
         svg {
-          font-size: 25px;
+          font-size: 24px;
           color: white;
         }
 
         span {
-          font-size: 16px;
+          font-size: 14px;
           color: white;
-          text-decoration: none;
-          margin-top: 5px;
+          margin-top: 3px;
         }
       }
     }
@@ -155,19 +168,23 @@
   .profile-user {
     position: relative;
     ul {
+      margin: auto;
       opacity: 1;
       width: 150px;
       border-radius: 5%;
       background-color: white;
       position: absolute;
       left: -25px;
-      top: 30px;
+      top: 40px;
       display: grid;
       place-items: center;
       height: 100%;
       border: 1px solid #ccc;
       height: auto;
-
+      transition:
+        background-color ease 0.2s,
+        position ease 0.2s,
+        opacity ease 0.2s;
       li {
         display: inline-block;
         font-size: 16px;

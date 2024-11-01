@@ -83,4 +83,27 @@
     font-size: 1rem;
     color: #666;
   }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: none;
+      background-color: #f4f4f4;
+      cursor: pointer;
+
+      &.active {
+        background-color: #ff4d4f;
+        color: #fff;
+      }
+
+      &:hover {
+        background-color: #ff7875;
+        color: #fff;
+      }
+    }
+  }
 }

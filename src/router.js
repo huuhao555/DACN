@@ -31,8 +31,11 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
         <Route path={ROUTERS.USER.PROFILE} element={<ProfilePage />} />
-        <Route path={ROUTERS.USER.DETAILS} element={<ProductDetailsPage />} />
-        <Route path={ROUTERS.USER.CART} element={<CartPage />} />
+        <Route
+          path={`${ROUTERS.USER.DETAILS}/:id`}
+          element={<ProductDetailsPage />}
+        />
+        <Route path={`${ROUTERS.USER.CART}/:id`} element={<CartPage />} />
         <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
         <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
         <Route path={ROUTERS.USER.PAYMENT} element={<PaymentPage />} />

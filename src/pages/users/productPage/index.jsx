@@ -1,115 +1,70 @@
 import "./style.scss";
-import { memo, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { IMAGES } from "../../../assets/image";
 import { AiOutlineClose } from "react-icons/ai";
 import ProductsComponent from "../../../component/user/productGrid/index";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { BsDeviceSsdFill } from "react-icons/bs";
+import { PiFrameCornersBold } from "react-icons/pi";
+import { FaMemory } from "react-icons/fa";
+import { RiCpuLine } from "react-icons/ri";
+import { UserContext } from "../../../middleware/UserContext";
+
 const ProductPage = () => {
-  const [dataMain] = useState([
-    {
-      laptop_ID: 1,
-      Type_name: "Macbook ",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
-      Price: 20000000,
-      Description: "This is product 1",
-      Company: "Apple",
-      Inches: "24",
-      ScreenResolution: "2k",
-      Cpu: "Intel Core i5 2.3GHz",
-      Ram: "8GB",
-      Memory: "128GB",
-      Gpu: "Intel Iris Plus Graphics 640",
-      OpSys: "macOS",
-      Weight: "1.37kg"
-    },
-    {
-      laptop_ID: 2,
-      Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
-      Price: 25000000,
-      Description:
-        "Dell's hello  premium ultraportable laptop with high-end build quality",
-      Company: "Dell ",
-      Inches: "13.3",
-      ScreenResolution: "4k",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "512GB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.2kg"
-    },
-    {
-      laptop_ID: 3,
-      Type_name: "Spectre x360",
-      Image: IMAGES.USER.PRODUCTS.HP.SPECTRE_16,
-      Price: 27000000,
-      Description:
-        "HP's premium convertible laptop with touch screen and stylus support",
-      Company: "HP",
-      Inches: "13.3",
-      ScreenResolution: "Full HD",
-      Cpu: "Intel Core i7-10510U",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "Intel UHD Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.3kg"
-    },
-    {
-      laptop_ID: 4,
-      Type_name: "ThinkPad X1 Carbon",
-      Image: IMAGES.USER.PRODUCTS.LENOVO.THINKPAD,
-      Price: 50000000,
-      Description:
-        "Business-class laptop with superior durability and performance",
-      Company: "Lenovo",
-      Inches: "14",
-      ScreenResolution: "Quad HD",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 11",
-      Weight: "1.09kg"
-    },
-    {
-      laptop_ID: 5,
-      Type_name: "ROG Strix G15",
-      Image: IMAGES.USER.PRODUCTS.ASUS.ROR_G16,
-      Price: 5000000,
-      Description:
-        "High-performance gaming laptop with powerful GPU and RGB lighting",
-      Company: "ASUS",
-      Inches: "15.6",
-      ScreenResolution: "Full HD 144Hz",
-      Cpu: "AMD Ryzen 9 5900HX",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "NVIDIA GeForce RTX 3060",
-      OpSys: "Windows 11",
-      Weight: "2.3kg"
-    },
-    {
-      laptop_ID: 6,
-      Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
-      Price: 15000000,
-      Description:
-        "Dell's premium ultraportable laptop with high-end build quality",
-      Company: "Dell ",
-      Inches: "13.3",
-      ScreenResolution: "4k",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "512GB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.2kg"
+  const { user, countCart, updateCartCount } = useContext(UserContext);
+  const [products, setProducts] = useState([]);
+  const [productsAll, setProductsAll] = useState(products);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/product/getAllProduct"
+        );
+        if (!response.ok) throw new Error(response.statusText);
+
+        const data = await response.json();
+        setProducts(Array.isArray(data.data) ? data.data : []);
+        setProductsAll(Array.isArray(data.data) ? data.data : []);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+  const handleCart = async (product) => {
+    if (!user) alert("Vui lòng đăng nhập");
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: product._id,
+            quantity: 1,
+            prices: product.prices.toLocaleString("vi-VN")
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const dataCart = await response.json();
+      const updatedCount = dataCart.products.length;
+      updateCartCount(updatedCount);
+      // alert("Thêm giỏ hàng thành công");
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
     }
-  ]);
+  };
   const sorts = [
     "Mới nhất",
     "Giá thấp đến cao",
@@ -151,24 +106,21 @@ const ProductPage = () => {
     }
   ]);
 
-  const [products, setProducts] = useState(dataMain);
   const [suggestions, setSuggestions] = useState([]);
+
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
-
     if (valueInputSearch === "") {
-      setProducts(dataMain);
+      setProducts(productsAll);
       setSuggestions([]);
       return;
     }
-
-    const filteredProducts = dataMain.filter((product) => {
+    const filteredProducts = productsAll.filter((product) => {
       return (
-        product.Company.toLowerCase().includes(valueInputSearch) ||
-        product.Type_name.toLowerCase().includes(valueInputSearch)
+        product.name.toLowerCase().includes(valueInputSearch) ||
+        product.productsTypeName.toLowerCase().includes(valueInputSearch)
       );
     }, []);
-
     setProducts(filteredProducts);
     setSuggestions(filteredProducts);
   };
@@ -185,18 +137,32 @@ const ProductPage = () => {
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [noResults, setNoResults] = useState(false);
+
   const handlePriceRange = () => {
-    if (parseFloat(priceMin) === 0 && parseFloat(priceMax) === 0) {
-      setProducts(dataMain);
+    const min = parseFloat(priceMin);
+    const max = parseFloat(priceMax);
+
+    if (min === 0 && max === 0) {
+      setFilteredProducts(productsAll);
+      setProducts(productsAll);
+      setNoResults(false);
     } else {
-      const dataNewSearchPrice = dataMain.filter(
-        (item) =>
-          parseFloat(item.Price) >= parseFloat(priceMin) &&
-          parseFloat(item.Price) <= parseFloat(priceMax)
-      );
+      const dataNewSearchPrice = productsAll.filter((item) => {
+        const price = parseFloat(item.prices);
+        if (min > 0 && max > 0) {
+          return price >= min && price <= max;
+        } else if (min > 0) {
+          return price >= min;
+        } else if (max > 0) {
+          return price <= max;
+        }
+        return true;
+      });
 
       if (dataNewSearchPrice.length === 0) {
         setNoResults(true);
+        setFilteredProducts([]);
+        setProducts([]);
       } else {
         setNoResults(false);
         setFilteredProducts(dataNewSearchPrice);
@@ -209,24 +175,37 @@ const ProductPage = () => {
 
   const Sort = (key) => {
     const dataNewSort = [
-      ...(filteredProducts && filteredProducts.length > 0
-        ? filteredProducts
-        : dataMain)
+      ...(filteredProducts.length > 0 ? filteredProducts : productsAll)
     ];
 
-    if (key === 1) {
-      dataNewSort.sort((a, b) => a.Price - b.Price);
-    } else if (key === 2) {
-      dataNewSort.sort((a, b) => b.Price - a.Price);
+    switch (key) {
+      case 0:
+        dataNewSort.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        break;
+      case 1:
+        dataNewSort.sort((a, b) => a.prices - b.prices);
+        break;
+      case 2:
+        dataNewSort.sort((a, b) => b.prices - a.prices);
+        break;
+      case 3:
+        dataNewSort.sort((a, b) => b.discount - a.discount);
+        break;
+      default:
+        break;
     }
+
     setProducts(dataNewSort);
+    setFilteredProducts(dataNewSort);
   };
 
   const clearSidebar = () => {
-    setProducts(dataMain);
+    setProducts(productsAll);
     setNoResults(false);
-    setPriceMin("0");
-    setPriceMax("0");
+    setPriceMin("");
+    setPriceMax("");
     setFilteredProducts([]);
   };
   return (
@@ -345,7 +324,91 @@ const ProductPage = () => {
             {noResults ? (
               <h2>Không tìm thấy sản phẩm </h2>
             ) : (
-              <ProductsComponent products={products} />
+              <div className="product-list">
+                {products.length > 0 ? (
+                  products.map((product) => (
+                    <div className="product-item" key={product._id}>
+                      <div className="product-item-image">
+                        <Link
+                          to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                          state={{ product }}
+                        >
+                          <img
+                            className="add-to-img"
+                            src={product.imageUrl}
+                            alt={product.name}
+                          />
+                        </Link>
+                      </div>
+
+                      <div className="product-item-bottom">
+                        <Link
+                          to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                          state={{ product }}
+                        >
+                          <div className="item-product-bottom">
+                            <h3>{product.name}</h3>
+                            <div className="proloop-technical">
+                              {[
+                                {
+                                  tag: "ssd",
+                                  icon: <BsDeviceSsdFill />,
+                                  value: product.memory
+                                },
+                                {
+                                  tag: "lcd",
+                                  icon: <PiFrameCornersBold />,
+                                  value: `${product.inches} inch ${product.screenResolution}`
+                                },
+                                {
+                                  tag: "ram",
+                                  icon: <FaMemory />,
+                                  value: product.ram
+                                },
+                                {
+                                  tag: "cpu",
+                                  icon: <RiCpuLine />,
+                                  value: product.cpu
+                                }
+                              ].map((item) => (
+                                <div
+                                  className="proloop-technical--line"
+                                  data-tag={item.tag}
+                                  key={item.tag}
+                                >
+                                  {item.icon}
+                                  <span>{item.value}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <p>
+                              {product.prices.toLocaleString("vi-VN")
+                                ? product.prices.toLocaleString("vi-VN")
+                                : "N/A"}
+                              đ
+                            </p>{" "}
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="product-item-cart">
+                        <button
+                          onClick={() => {
+                            handleCart(product);
+                          }}
+                          type="submit"
+                          className="button btn-buyonl"
+                          name="buy-onl"
+                          id="buy-onl"
+                        >
+                          <span>Thêm vào giỏ</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No products available</p>
+                )}
+              </div>
             )}
           </div>
         </div>

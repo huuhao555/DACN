@@ -70,6 +70,7 @@ const UpdateProduct = () => {
     e.preventDefault();
 
     try {
+      console.log(formData);
       const response = await fetch("http://localhost:3001/api/product/create", {
         method: "POST",
         headers: {
@@ -77,7 +78,7 @@ const UpdateProduct = () => {
         },
         body: JSON.stringify(formData)
       });
-
+      console.log(response);
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -132,7 +133,6 @@ const UpdateProduct = () => {
             name="productsTypeName"
             value={formData.productsTypeName}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -162,7 +162,6 @@ const UpdateProduct = () => {
             name="inches"
             value={formData.inches}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -172,17 +171,11 @@ const UpdateProduct = () => {
             name="screenResolution"
             value={formData.screenResolution}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="image">
           <label>Ảnh sản phẩm:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
           {formData.imageUrl && (
             <img
               src={formData.imageUrl}
@@ -193,12 +186,7 @@ const UpdateProduct = () => {
         </div>
         <div className="banner">
           <label>Banner sản phẩm:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleBannerChange}
-            required
-          />
+          <input type="file" accept="image/*" onChange={handleBannerChange} />
           {formData.bannerUrl && (
             <img
               src={formData.bannerUrl}
@@ -215,7 +203,6 @@ const UpdateProduct = () => {
             name="company"
             value={formData.company}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -225,7 +212,6 @@ const UpdateProduct = () => {
             name="cpu"
             value={formData.cpu}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -235,7 +221,6 @@ const UpdateProduct = () => {
             name="ram"
             value={formData.ram}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -245,7 +230,6 @@ const UpdateProduct = () => {
             name="memory"
             value={formData.memory}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -255,7 +239,6 @@ const UpdateProduct = () => {
             name="gpu"
             value={formData.gpu}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -265,7 +248,6 @@ const UpdateProduct = () => {
             name="weight"
             value={formData.weight}
             onChange={handleChange}
-            required
           />
         </div>
         <button type="submit">Thêm sản phẩm</button>

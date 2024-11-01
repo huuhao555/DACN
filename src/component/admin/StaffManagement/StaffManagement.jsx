@@ -7,7 +7,6 @@ import axios from "axios";
 const StaffManagement = () => {
   const [dataUser, setDataUser] = useState([]);
   const { user } = useContext(UserContext);
-  console.log(user);
   useEffect(() => {
     const fetchData = async () => {
       try {
