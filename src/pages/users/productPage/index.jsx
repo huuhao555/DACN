@@ -227,7 +227,7 @@ const ProductPage = () => {
                 <div className="suggestions">
                   {suggestions.map((item) => (
                     <div key={item.laptop_ID} className="suggestion-item">
-                      {item.Type_name} - {item.Company}
+                      {item.name}
                     </div>
                   ))}
                 </div>

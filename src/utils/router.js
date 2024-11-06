@@ -31,5 +31,11 @@ export const ROUTERS = {
     DETAILS_PRODUCT: "/admin/chi-tiet-san-pham",
     UPDATE_USER: "/admin/chinh-sua-tai-khoan",
     DELETE_USER: "/admin/xoa-tai-khoan"
+  },
+  USERPROFILE: {
+    ACCOUNT_INFO: "/thong-tin",
+    ORDER_MANAGERMENT: "/quan-li-don-hang",
+    VIEW_PRODUCTS: "/lich-su-san-pham",
+    ADDRESS_BOOK: "/so-dia-chi"
   }
 };

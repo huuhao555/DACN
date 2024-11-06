@@ -100,7 +100,7 @@ const ProductManagement = () => {
                   <Link
                     to={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/${product._id}`}
                     className="edit-btn"
-                    state={{ product }}
+                    state={{ product, id: product._id }}
                   >
                     ✏️
                   </Link>

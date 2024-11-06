@@ -3,7 +3,7 @@ import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../../middleware/NotificationContext";
 
-const UpdateProduct = () => {
+const CreateProduct = () => {
   const { addNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -13,8 +13,6 @@ const UpdateProduct = () => {
     prices: "",
     inches: "",
     screenResolution: "",
-    imageUrl: null,
-    bannerUrl: null,
     company: "",
     cpu: "",
     ram: "",
@@ -23,62 +21,43 @@ const UpdateProduct = () => {
     weight: ""
   });
 
+  const [imageFile, setImageFile] = useState(null);
+  const [bannerFile, setBannerFile] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          imageUrl: reader.result
-        }));
-      };
-      reader.onerror = (error) => {
-        console.error("Error reading file:", error);
-      };
-    } else {
-      console.log("No file selected");
-    }
+    setImageFile(e.target.files[0]);
   };
 
   const handleBannerChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          bannerUrl: reader.result
-        }));
-      };
-      reader.onerror = (error) => {
-        console.error("Error reading file:", error);
-      };
-    } else {
-      console.log("No file selected");
-    }
+    setBannerFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      console.log(formData);
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (formData[key]) {
+          data.append(key, formData[key]);
+        }
+      });
+
+      // Thêm hình ảnh
+      if (imageFile) data.append("image", imageFile);
+      if (bannerFile) data.append("banner", bannerFile);
+
       const response = await fetch("http://localhost:3001/api/product/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
+        body: data,
+        headers: {}
       });
-      console.log(response);
+
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -90,6 +69,7 @@ const UpdateProduct = () => {
       addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
       navigate("/admin/quan-ly-san-pham");
 
+      // Reset form
       setFormData({
         name: "",
         productsTypeName: "",
@@ -97,8 +77,6 @@ const UpdateProduct = () => {
         prices: "",
         inches: "",
         screenResolution: "",
-        imageUrl: null,
-        bannerUrl: null,
         company: "",
         cpu: "",
         ram: "",
@@ -106,6 +84,8 @@ const UpdateProduct = () => {
         gpu: "",
         weight: ""
       });
+      setImageFile(null);
+      setBannerFile(null);
     } catch (error) {
       console.error(error);
     }
@@ -115,7 +95,6 @@ const UpdateProduct = () => {
     <div className="create-product-admin">
       <h1>Tạo Sản Phẩm</h1>
       <form onSubmit={handleSubmit}>
-        {/* Form fields as before */}
         <div>
           <label>Tên sản phẩm:</label>
           <input
@@ -176,9 +155,9 @@ const UpdateProduct = () => {
         <div className="image">
           <label>Ảnh sản phẩm:</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
-          {formData.imageUrl && (
+          {imageFile && (
             <img
-              src={formData.imageUrl}
+              src={URL.createObjectURL(imageFile)}
               alt="Product Preview"
               style={{ maxWidth: "200px", marginTop: "10px" }}
             />
@@ -187,15 +166,14 @@ const UpdateProduct = () => {
         <div className="banner">
           <label>Banner sản phẩm:</label>
           <input type="file" accept="image/*" onChange={handleBannerChange} />
-          {formData.bannerUrl && (
+          {bannerFile && (
             <img
-              src={formData.bannerUrl}
+              src={URL.createObjectURL(bannerFile)}
               alt="Banner Preview"
               style={{ maxWidth: "200px", marginTop: "10px" }}
             />
           )}
         </div>
-
         <div>
           <label>Công ty:</label>
           <input
@@ -256,4 +234,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default CreateProduct;

@@ -12,7 +12,7 @@ const MasterLayout = (props) => {
       <CartProvider>
         <div {...props}>
           <Header />
-          <Outlet /> {/* Render child routes */}
+          <Outlet />
           <Footer />
         </div>
       </CartProvider>

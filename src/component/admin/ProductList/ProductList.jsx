@@ -15,6 +15,7 @@ const ProductList = () => {
         );
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
+
         setProducts(Array.isArray(data.data) ? data.data : []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -23,7 +24,6 @@ const ProductList = () => {
     };
     fetchProducts();
   }, []);
-
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;

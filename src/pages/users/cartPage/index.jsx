@@ -31,7 +31,7 @@ const CartPage = () => {
       console.error("Failed to fetch count for users:", error);
     }
   };
-
+  console.log(cart);
   useEffect(() => {
     getAllCart();
   }, [user]);
@@ -114,29 +114,32 @@ const CartPage = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.productId.name}</td>
-                  <td>{item.productId.prices.toLocaleString("vi-VN")}đ</td>
-                  <td>{item.quantity}</td>
-                  <td>
-                    {(item.productId.prices * item.quantity).toLocaleString(
-                      "vi-VN"
-                    )}
-                    đ
-                  </td>
-                  <td>
-                    <button
-                      className="remove-button"
-                      onClick={() =>
-                        removeFromCart(item.productId._id, user.dataUser.id)
-                      }
-                    >
-                      <RiDeleteBin5Line /> Xoá
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {currentItems.map((item) => {
+                console.log(item);
+                return (
+                  <tr key={item._id}>
+                    <td>{item.productId.name}</td>
+                    <td>{item.productId.prices.toLocaleString("vi-VN")}đ</td>
+                    <td>{item.quantity}</td>
+                    <td>
+                      {(item.productId.prices * item.quantity).toLocaleString(
+                        "vi-VN"
+                      )}
+                      đ
+                    </td>
+                    <td>
+                      <button
+                        className="remove-button"
+                        onClick={() =>
+                          removeFromCart(item.productId._id, user.dataUser.id)
+                        }
+                      >
+                        <RiDeleteBin5Line /> Xoá
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
               <tr>
                 <td
                   colSpan="3"

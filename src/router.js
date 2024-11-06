@@ -23,7 +23,12 @@ import Dashboard from "./component/admin/Dashboard/index.jsx";
 import UpdateProduct from "./component/admin/UpdateProduct/index.jsx";
 import UpdateUser from "./pages/admin/auth/UpdateUser/index.jsx";
 import DeleteUser from "./pages/admin/auth/DeleteUser/index.jsx";
-
+import ProfilePageLayout from "./pages/users/profilePage/index.jsx";
+import ContactPage from "./pages/users/contactPage/index.jsx";
+import AccountInfo from "./component/user/profilePage/accountInfo/index.jsx";
+import OrderManagement from "./component/user/profilePage/orderManagement/index.jsx";
+import ViewedProducts from "./component/user/profilePage/viewedProducts/index.jsx";
+import AddressBook from "./component/user/profilePage/addressUser/index.jsx";
 const RouterCustom = () => {
   return (
     <Routes>
@@ -31,6 +36,7 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
         <Route path={ROUTERS.USER.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
         <Route
           path={`${ROUTERS.USER.DETAILS}/:id`}
           element={<ProductDetailsPage />}
@@ -76,6 +82,24 @@ const RouterCustom = () => {
         <Route
           path={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/:id`}
           element={<UpdateProduct />}
+        />
+      </Route>
+      <Route element={<ProfilePageLayout />}>
+        <Route
+          path={ROUTERS.USERPROFILE.ACCOUNT_INFO}
+          element={<AccountInfo />}
+        />
+        <Route
+          path={ROUTERS.USERPROFILE.ORDER_MANAGERMENT}
+          element={<OrderManagement />}
+        />
+        <Route
+          path={ROUTERS.USERPROFILE.VIEW_PRODUCTS}
+          element={<ViewedProducts />}
+        />
+        <Route
+          path={ROUTERS.USERPROFILE.ADDRESS_BOOK}
+          element={<AddressBook />}
         />
       </Route>
     </Routes>

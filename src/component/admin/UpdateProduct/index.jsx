@@ -2,76 +2,74 @@ import React, { useState } from "react";
 import "./style.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const CreateProduct = () => {
+const UpdateProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { product, id } = location.state || {};
+  const { product = {}, id = "" } = location.state || {};
 
-  const [dataUpdate] = useState({
-    name: product.name,
-    productsTypeName: product.productsTypeName,
-    quantityInStock: product.quantityInStock,
-    prices: product.prices,
-    inches: product.inches,
-    screenResolution: product.screenResolution,
-    imageUrl: product.imageUrl,
-    bannerUrl: product.bannerUrl,
-    company: product.company,
-    cpu: product.cpu,
-    ram: product.ram,
-    memory: product.memory,
-    gpu: product.gpu,
-    weight: product.weight
+  const [formData, setFormData] = useState({
+    name: product.name || "",
+    productsTypeName: product.productsTypeName || "",
+    quantityInStock: product.quantityInStock || 0,
+    prices: product.prices || 0,
+    inches: product.inches || "",
+    screenResolution: product.screenResolution || "",
+    imageUrl: product.imageUrl || "",
+    bannerUrl: product.bannerUrl || "",
+    company: product.company || "",
+    cpu: product.cpu || "",
+    ram: product.ram || "",
+    memory: product.memory || "",
+    gpu: product.gpu || "",
+    weight: product.weight || ""
   });
-  const [formData, setFormData] = useState(dataUpdate);
+
+  const [imageFile, setImageFile] = useState(null);
+  const [bannerFile, setBannerFile] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, imageUrl, imageFile: file });
-    }
+    setImageFile(e.target.files[0]);
   };
 
   const handleBannerChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const bannerUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, bannerUrl, bannerFile: file });
-    }
+    setBannerFile(e.target.files[0]);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const formToSubmit = new FormData();
       Object.keys(formData).forEach((key) => {
-        if (key === "imageFile" || key === "bannerFile") {
-          formToSubmit.append(key, formData[key]);
-        } else {
+        if (formData[key]) {
           formToSubmit.append(key, formData[key]);
         }
       });
+      if (imageFile) formToSubmit.append("image", imageFile);
+      if (bannerFile) formToSubmit.append("banner", bannerFile);
+
       const token = localStorage.getItem("token");
       if (!token) {
         alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
         return;
       }
+      console.log(token);
       const response = await fetch(
         `http://localhost:3001/api/product/update/${id}`,
         {
           method: "PUT",
           headers: {
-            token: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            token: `Bearer ${token}`
           },
-          body: JSON.stringify(formData)
+          body: formToSubmit
         }
       );
+
       if (!response.ok) {
         alert(
           "Sửa sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -88,7 +86,7 @@ const CreateProduct = () => {
 
   return (
     <div className="create-product-admin">
-      <h1>Tạo Sản Phẩm</h1>
+      <h1>Sửa Sản Phẩm</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Tên sản phẩm:</label>
@@ -107,7 +105,6 @@ const CreateProduct = () => {
             name="productsTypeName"
             value={formData.productsTypeName}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -137,7 +134,6 @@ const CreateProduct = () => {
             name="inches"
             value={formData.inches}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -147,26 +143,30 @@ const CreateProduct = () => {
             name="screenResolution"
             value={formData.screenResolution}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="image">
           <label>Ảnh sản phẩm:</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
-          {<img src={product.imageUrl} alt="Product Preview" />}
+          {formData.imageUrl && (
+            <img
+              src={formData.imageUrl}
+              alt="Product Preview"
+              style={{ maxWidth: "200px", marginTop: "10px" }}
+            />
+          )}
         </div>
         <div className="banner">
           <label>Banner sản phẩm:</label>
           <input type="file" accept="image/*" onChange={handleBannerChange} />
-          {
+          {formData.bannerUrl && (
             <img
-              className="slide"
-              src={`http://localhost:3001/uploads/slides/${product.bannerUrl}`}
+              src={formData.bannerUrl}
               alt="Banner Preview"
+              style={{ maxWidth: "200px", marginTop: "10px" }}
             />
-          }
+          )}
         </div>
-
         <div>
           <label>Công ty:</label>
           <input
@@ -174,7 +174,6 @@ const CreateProduct = () => {
             name="company"
             value={formData.company}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -184,7 +183,6 @@ const CreateProduct = () => {
             name="cpu"
             value={formData.cpu}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -194,7 +192,6 @@ const CreateProduct = () => {
             name="ram"
             value={formData.ram}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -204,7 +201,6 @@ const CreateProduct = () => {
             name="memory"
             value={formData.memory}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -214,7 +210,6 @@ const CreateProduct = () => {
             name="gpu"
             value={formData.gpu}
             onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -224,7 +219,6 @@ const CreateProduct = () => {
             name="weight"
             value={formData.weight}
             onChange={handleChange}
-            required
           />
         </div>
         <button type="submit">Sửa sản phẩm</button>
@@ -233,4 +227,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

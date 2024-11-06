@@ -4,15 +4,7 @@
 .container-layout {
   overflow: hidden;
   .row {
-    display: flex; // Sử dụng Flexbox để bố trí các cột
-    align-items: stretch; // Đảm bảo chiều cao của các cột bằng nhau
-  }
-
-  .col-lg-3 {
-    // Các thuộc tính CSS cho col-lg-3
-  }
-
-  .col-lg-9 {
-    // Các thuộc tính CSS cho col-lg-9
+    display: flex;
+    align-items: stretch;
   }
 }
