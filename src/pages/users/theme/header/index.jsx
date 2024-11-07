@@ -1,19 +1,22 @@
 import { memo, useState, useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./style.scss";
-import {
-  AiOutlineHeart,
-  AiOutlineShoppingCart,
-  AiOutlineUser
-} from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import Login from "../../auth/login/Login";
 import SignUp from "../../auth/signup/Signup";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
 import { UserContext } from "../../../../middleware/UserContext";
+import ForgetPassword from "../../auth/ForgetPassword";
 
 const Header = () => {
   const { user, countCart, updateCartCount } = useContext(UserContext);
+  const [isShowProfile, setShowProfile] = useState(false);
+  const [isShowLoginForm, setShowLoginForm] = useState(false);
+  const [isShowSignUpForm, setShowSignUpForm] = useState(false);
+  const [isShowForgetForm, setShowForgetForm] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getAllCart = async () => {
       if (!user || !user.dataUser) return;
@@ -25,7 +28,7 @@ const Header = () => {
         );
         if (!response.ok) throw new Error(response.statusText);
         const dataCart = await response.json();
-        updateCartCount(dataCart.products.length);
+        updateCartCount(dataCart?.products?.length || 0);
       } catch (error) {
         console.error("Failed to fetch cart count:", error);
       }
@@ -33,62 +36,61 @@ const Header = () => {
     getAllCart();
   }, [user, updateCartCount]);
 
-  const navigate = useNavigate();
-
-  const [isShowProfile, setShowProfile] = useState(false);
-  const [isShowLoginForm, setShowLoginForm] = useState(false);
-  const [isShowSignUpForm, setShowSignUpForm] = useState(false);
   const menusHeader = [
     { name: "Trang chủ", path: ROUTERS.USER.HOME },
     { name: "Sản phẩm", path: ROUTERS.USER.PRODUCTS },
     { name: "Liên hệ", path: ROUTERS.USER.CONTACTS },
     { name: "Tra cứu", path: ROUTERS.USER.ORDERLOOKUP }
   ];
-
-  const location = useLocation();
-  const { product } = location.state || {};
-
   const handleLoginClick = () => {
     setShowLoginForm(true);
+    setShowProfile(false);
+    setShowSignUpForm(false);
+    setShowForgetForm(false);
+  };
+
+  const handleSignUpClick = () => {
+    setShowSignUpForm(true);
+    setShowLoginForm(false);
+    setShowProfile(false);
+    setShowForgetForm(false);
+  };
+
+  const handleForgetClick = () => {
+    setShowForgetForm(true);
+    setShowLoginForm(false);
+    setShowSignUpForm(false);
+    setShowProfile(false);
   };
 
   const closeLoginForm = () => {
     setShowLoginForm(false);
   };
-  const handleSignUpClick = () => {
-    setShowSignUpForm(true);
+  const closeForgetForm = () => {
+    setShowForgetForm(false);
   };
 
   const closeSignUpForm = () => {
     setShowSignUpForm(false);
   };
-  const handleLogOutClick = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
+
   const handleProfileClick = () => {
-    navigate(ROUTERS.USER.PROFILE);
-  };
-  const handleAdminClick = () => {
-    navigate("/admin");
+    if (user) {
+      navigate(ROUTERS.USERPROFILE.ACCOUNT_INFO);
+    } else {
+      setShowProfile(!isShowProfile);
+    }
   };
   const handleCart = () => {
     user
-      ? navigate(`${ROUTERS.USER.CART}/${user.dataUser.id}`, {
-          state: { product }
-        })
+      ? navigate(`${ROUTERS.USER.CART}/${user.dataUser.id}`)
       : alert("Vui lòng đăng nhập");
   };
-  const handleFavourite = () => {
-    user
-      ? navigate(ROUTERS.USER.CART, { state: { product } })
-      : alert("Vui lòng đăng nhập");
-  };
+
   return (
     <>
       <div className="header-main">
-        <div className="container-fixed ">
+        <div className="container-fixed">
           <div className="row">
             <div className="col-xl-3">
               <div className="header-logo">
@@ -96,6 +98,7 @@ const Header = () => {
                   <img
                     style={{ width: "200px", height: "auto" }}
                     src={require("../../../../assets/users/header/1.png")}
+                    alt="Logo"
                   />
                 </Link>
               </div>
@@ -103,9 +106,9 @@ const Header = () => {
             <div className="col-xl-6">
               <nav className="header-menu">
                 <ul>
-                  {menusHeader?.map((menu, menuKey) => (
-                    <li key={menuKey} className={menuKey === 0 ? "active" : ""}>
-                      <Link to={menu.path}>{menu?.name}</Link>
+                  {menusHeader.map((menu, index) => (
+                    <li key={index} className={index === 0 ? "active" : ""}>
+                      <Link to={menu.path}>{menu.name}</Link>
                     </li>
                   ))}
                 </ul>
@@ -116,47 +119,30 @@ const Header = () => {
               <div className="header-cart">
                 <ul>
                   <li>
-                    <button onClick={handleFavourite}>
-                      <AiOutlineHeart />
-                    </button>
-                  </li>
-                  <li>
                     <button onClick={handleCart}>
                       <AiOutlineShoppingCart />
                     </button>
                     <span className="count-cart">{countCart}</span>
                   </li>
-                  <li
-                    className="profile-user"
-                    onClick={() => setShowProfile(!isShowProfile)}
-                  >
+                  <li className="profile-user" onClick={handleProfileClick}>
                     <button>
                       <AiOutlineUser />
                     </button>
-                    {user
-                      ? isShowProfile && (
-                          <ul className="sub-profile">
-                            <li onClick={handleProfileClick}>
-                              Thông tin cá nhân
-                            </li>
-                            {user.dataUser.isAdmin && (
-                              <li onClick={handleAdminClick}>Trang Admin</li>
-                            )}
-                            <li onClick={handleLogOutClick}>Đăng xuất</li>
-                          </ul>
-                        )
-                      : isShowProfile && (
-                          <ul className="sub-profile">
-                            <li onClick={handleLoginClick}>Đăng nhập</li>
-                            <li onClick={handleSignUpClick}>Đăng kí</li>
-                          </ul>
-                        )}
+                    {isShowProfile && !user && (
+                      <ul className="sub-profile">
+                        <li onClick={handleLoginClick}>Đăng nhập</li>
+                        <li onClick={handleSignUpClick}>Đăng kí</li>
+                        <li onClick={handleForgetClick}>Quên mật khẩu</li>
+                      </ul>
+                    )}
                   </li>
                   <li
                     className="text-user"
-                    onClick={() => setShowProfile(!isShowProfile)}
+                    onClick={() => {
+                      navigate(ROUTERS.USERPROFILE.ACCOUNT_INFO);
+                    }}
                   >
-                    {user ? (user.dataUser?.isAdmin ? "Admin" : "Khách") : ""}
+                    {user && user.dataUser ? `${user.dataUser.name}` : ""}
                   </li>
                 </ul>
               </div>
@@ -171,6 +157,10 @@ const Header = () => {
       <SignUp
         isShowSignUpForm={isShowSignUpForm}
         closeSignUpForm={closeSignUpForm}
+      />
+      <ForgetPassword
+        isShowVerifyForm={isShowForgetForm}
+        closeVerifyForm={closeForgetForm}
       />
     </>
   );

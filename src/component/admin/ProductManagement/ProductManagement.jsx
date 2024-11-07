@@ -76,45 +76,54 @@ const ProductManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {currentProducts.map((product, index) => (
-              <tr key={product._id}>
-                <td>{index + 1}</td>
-                <td>
-                  <div className="product-info">
-                    <img
-                      src={product.imageUrl || IMAGES.defaultImage}
-                      alt={product.name}
-                      style={{ width: "100px" }}
-                    />
-                    <div>
-                      <h4>{product.name}</h4>
-                    </div>
-                  </div>
-                </td>
-                <td>{product.company}</td>
-                <td>{product.quantityInStock}</td>
-                <td>{product.prices.toLocaleString("vi-VN")}</td>
+            {currentProducts.map((product, index) => {
+              return (
+                <tr key={product._id}>
+                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
 
-                <td>
-                  <button className="view-btn">👁️</button>
-                  <Link
-                    to={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/${product._id}`}
-                    className="edit-btn"
-                    state={{ product, id: product._id }}
-                  >
-                    ✏️
-                  </Link>
-                  {user?.dataUser?.isAdmin && (
-                    <button
-                      onClick={() => handleDeleteProduct(product._id)}
-                      className="delete-btn"
+                  <td>
+                    <div className="product-info">
+                      <img
+                        src={product.imageUrl || IMAGES.defaultImage}
+                        alt={product.name}
+                        style={{ width: "100px" }}
+                      />
+                      <div style={{ marginLeft: "20px" }}>
+                        <h4>{`${product.company} ${product.name}`}</h4>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{product.company}</td>
+                  <td>{product.quantityInStock}</td>
+                  <td>{product.prices.toLocaleString("vi-VN")}</td>
+
+                  <td>
+                    <Link
+                      to={`${ROUTERS.ADMIN.PRODUCTS_DETAIL}/${product._id}`}
+                      className="view-btn"
+                      state={{ product, id: product._id }}
                     >
-                      🗑️
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+                      👁️
+                    </Link>
+                    <Link
+                      to={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/${product._id}`}
+                      className="edit-btn"
+                      state={{ product, id: product._id }}
+                    >
+                      ✏️
+                    </Link>
+                    {user?.dataUser?.isAdmin && (
+                      <button
+                        onClick={() => handleDeleteProduct(product._id)}
+                        className="delete-btn"
+                      >
+                        🗑️
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

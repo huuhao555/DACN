@@ -3,7 +3,6 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import { UserContext } from "../../../middleware/UserContext";
-import axios from "axios";
 const StaffManagement = () => {
   const [dataUser, setDataUser] = useState([]);
   const { user } = useContext(UserContext);
@@ -56,7 +55,7 @@ const StaffManagement = () => {
         throw new Error(`Network response was not ok: ${errorMessage}`);
       }
 
-      const data = await response.json();
+      await response.json();
 
       setDataUser((prevUsers) => prevUsers.filter((user) => user._id !== id));
     } catch (error) {
@@ -98,7 +97,7 @@ const StaffManagement = () => {
             <td>{userItem.phone}</td>
             <td>{userItem.email}</td>
             <td>***********</td>
-            <td>{userItem.isAdmin ? "Quản lý" : "Người dùng"}</td>
+            <td>{userItem.isAdmin ? "Quản lý" : "Khách hàng"}</td>
             <td>
               <Link
                 to={`${ROUTERS.ADMIN.UPDATE_USER}/${userItem._id}`}

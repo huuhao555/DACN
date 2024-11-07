@@ -1,16 +1,18 @@
 import { useLocation } from "react-router-dom";
 import "./style.scss";
-import { AiOutlineShoppingCart, AiFillStar } from "react-icons/ai";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-// import { FcGoogle } from "react-icons/fc";
 import ProductsSlideComponent from "../../../component/user/productSlide";
 import React, { useContext, useEffect } from "react";
-import { CartContext } from "../../../middleware/CartContext";
 import { UserContext } from "../../../middleware/UserContext";
-import { ROUTERS } from "../../../utils/router";
-
+import Notification, {
+  NotificationContainer
+} from "../../../component/user/Notification";
 const ProductDetailsPage = () => {
+  const { user, updateCartCount } = useContext(UserContext);
+  const { notifications, addNotification } = NotificationContainer();
+
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,9 +20,6 @@ const ProductDetailsPage = () => {
 
   const location = useLocation();
   const { product } = location.state || {};
-  console.log(product);
-  const { addToCart } = useContext(CartContext);
-  const { user } = useContext(UserContext);
   const handleAddToCart = async () => {
     if (!user) {
       alert("Vui lòng đăng nhập");
@@ -47,8 +46,12 @@ const ProductDetailsPage = () => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+      addNotification("Thêm giỏ hàng thành công!");
+      const dataCart = await response.json();
+      const updatedCount = dataCart.data.products.length;
 
-      alert("Thêm vào giỏ hàng thành công");
+      updateCartCount(updatedCount);
+      // alert("Thêm vào giỏ hàng thành công");
     } catch (error) {
       console.error("Failed to add product to cart:", error);
     }
@@ -80,7 +83,7 @@ const ProductDetailsPage = () => {
                     <div className="info-content">
                       <div className="info-top">
                         <div className="product-name">
-                          <h1>{product.name} </h1>
+                          <h1>{`${product.company} ${product.name} `} </h1>
                         </div>
                         {/* <div className="product-rating">
                           <span className="number">0.0</span>
@@ -167,11 +170,7 @@ const ProductDetailsPage = () => {
                             </tr>
                             <tr>
                               <th>Ổ cứng</th>
-                              <td>
-                                {product.memory == 1 || product.memory == 2
-                                  ? `${product.memory} TB`
-                                  : `${product.memory} GB`}
-                              </td>
+                              <td>{product.memory}</td>
                             </tr>
                             <tr>
                               <th>Card đồ hoạ</th>
@@ -179,11 +178,11 @@ const ProductDetailsPage = () => {
                             </tr>
                             <tr>
                               <th>Trọng lượng</th>
-                              <td>{`${product.weight} kg`} </td>
+                              <td>{product.weight} </td>
                             </tr>
                             <tr>
                               <th>Hệ điều hành</th>
-                              <td>{product.opSys}</td>
+                              <td>{product.opsys}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -207,6 +206,17 @@ const ProductDetailsPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="notifications-wrapper">
+        {notifications.map((notification) => (
+          <Notification
+            key={notification.id}
+            message={notification.message}
+            onClose={() => {
+              // Dọn dẹp thông báo
+            }}
+          />
+        ))}
       </div>
     </div>
   );

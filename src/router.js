@@ -29,6 +29,10 @@ import AccountInfo from "./component/user/profilePage/accountInfo/index.jsx";
 import OrderManagement from "./component/user/profilePage/orderManagement/index.jsx";
 import ViewedProducts from "./component/user/profilePage/viewedProducts/index.jsx";
 import AddressBook from "./component/user/profilePage/addressUser/index.jsx";
+import ChangePassword from "./pages/users/auth/changePassword/index.jsx";
+import OrderLookup from "./pages/users/orderLoockup/index.jsx";
+import ProductDetail from "./component/admin/ProductDetail/index.jsx";
+import VerifyOtp from "./pages/users/auth/VerifyOtp/index.jsx";
 const RouterCustom = () => {
   return (
     <Routes>
@@ -37,13 +41,16 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
         <Route path={ROUTERS.USER.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
+        <Route path={ROUTERS.USER.ORDERLOOKUP} element={<OrderLookup />} />
         <Route
           path={`${ROUTERS.USER.DETAILS}/:id`}
           element={<ProductDetailsPage />}
         />
         <Route path={`${ROUTERS.USER.CART}/:id`} element={<CartPage />} />
         <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
         <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
+
         <Route path={ROUTERS.USER.PAYMENT} element={<PaymentPage />} />
         <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
       </Route>
@@ -78,6 +85,10 @@ const RouterCustom = () => {
           path={`${ROUTERS.ADMIN.UPDATE_USER}/:id`}
           element={<UpdateUser />}
         />
+        <Route
+          path={`${ROUTERS.ADMIN.PRODUCTS_DETAIL}/:id`}
+          element={<ProductDetail />}
+        />
         <Route path={ROUTERS.ADMIN.DELETE_USER} element={<DeleteUser />} />
         <Route
           path={`${ROUTERS.ADMIN.UPDATE_PRODUCT}/:id`}
@@ -92,6 +103,10 @@ const RouterCustom = () => {
         <Route
           path={ROUTERS.USERPROFILE.ORDER_MANAGERMENT}
           element={<OrderManagement />}
+        />
+        <Route
+          path={ROUTERS.USER.CHANGEPASSWORD}
+          element={<ChangePassword />}
         />
         <Route
           path={ROUTERS.USERPROFILE.VIEW_PRODUCTS}

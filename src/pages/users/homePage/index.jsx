@@ -1,24 +1,16 @@
-import { memo, useState, useEffect, useContext } from "react";
+import { memo, useState, useEffect } from "react";
 import "./style.scss";
-import {
-  AiOutlineHeart,
-  AiOutlineShoppingCart,
-  AiOutlineRight,
-  AiOutlinePhone,
-  AiOutlineProfile,
-  AiOutlineUser
-} from "react-icons/ai";
-import { Link, Route } from "react-router-dom";
+import { AiOutlineRight, AiOutlinePhone } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
-import { IMAGES } from "../../../assets/image";
-import ProductsGridComponent from "../../../component/user/productGrid";
 import ProductsSlideComponent from "../../../component/user/productSlide/index";
-import { UserContext } from "../../../middleware/UserContext";
+import SlideBanner from "../../../component/user/slideBaner";
 
 const HomePage = () => {
+  const navigator = useNavigate();
   const [products, setProducts] = useState([]);
-  const [images, setImages] = useState([]);
-  const { user } = useContext(UserContext);
+  const [valueSearch, setValueSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,23 +21,37 @@ const HomePage = () => {
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();
-
-        setImages(
-          data.data.map((product) => ({
-            urlImage: product.bannerUrl
-          }))
-        );
-
         setProducts(data.data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
-        setImages([]);
       }
     };
 
     fetchProducts();
   }, []);
-  const [menuCategories, setMenuCategories] = useState([
+
+  useEffect(() => {
+    if (valueSearch.trim() === "") {
+      setSuggestions([]);
+    } else {
+      const filteredProducts = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(valueSearch.toLowerCase()) ||
+          product.productsTypeName
+            .toLowerCase()
+            .includes(valueSearch.toLowerCase())
+      );
+      setSuggestions(filteredProducts);
+    }
+  }, [products, valueSearch]);
+
+  const handleClickSearch = (item) => {
+    navigator(`${ROUTERS.USER.DETAILS}/${item._id}`, {
+      state: { product: item }
+    });
+  };
+
+  const [menuCategories] = useState([
     {
       name: "Laptop Gaming",
       title: "laptopgaming",
@@ -116,16 +122,6 @@ const HomePage = () => {
       path: ROUTERS.USER.PRODUCT_TYPE
     }
   ]);
-
-  const [counter, setCounter] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter((prevCounter) => (prevCounter + 1) % images.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [images.length]);
-
   return (
     <div>
       <div className="header-content">
@@ -151,13 +147,32 @@ const HomePage = () => {
               <div className="search">
                 <div className="search-form">
                   <form>
-                    <input
-                      type="text"
-                      name=""
-                      value=""
-                      placeholder="Bạn cần tìm kiếm gì?"
-                    />
-                    <button type="submit">Tìm kiếm</button>
+                    <div className="input-search">
+                      <input
+                        onChange={(e) => {
+                          setValueSearch(e.target.value);
+                        }}
+                        type="text"
+                        placeholder="Bạn cần tìm kiếm gì?"
+                      />
+                      {valueSearch.trim() && (
+                        <div className="suggestions">
+                          {suggestions.map((item, key) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  handleClickSearch(item);
+                                }}
+                                key={key}
+                                className="suggestion-item"
+                              >
+                                {item.name}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </form>
                 </div>
                 <div className="search-phone">
@@ -174,17 +189,7 @@ const HomePage = () => {
                 </div>
               </div>
               <div className="item-home">
-                <img
-                  src={images[counter]?.urlImage}
-                  alt={`slider-${counter}`}
-                  style={{
-                    marginTop: "8px",
-                    width: "100%",
-                    height: "300px",
-                    objectFit: "contain",
-                    borderRadius: "5px"
-                  }}
-                />
+                <SlideBanner />
               </div>
             </div>
           </div>

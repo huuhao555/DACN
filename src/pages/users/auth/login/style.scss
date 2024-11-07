@@ -21,6 +21,7 @@
     padding: 20px;
     border-radius: 8px;
     text-align: center;
+    height: fit-content;
     .icon-close {
       position: absolute;
       right: 20px;
@@ -41,7 +42,8 @@
     }
     .forget-pass {
       float: left;
-      a {
+      span {
+        cursor: pointer;
         color: map.get($theme-color, "main-color");
         text-decoration: none;
         font-size: 14px;
@@ -51,7 +53,9 @@
       padding-top: 10px;
       display: inline-block;
       font-size: 14px;
-      a {
+      span {
+        cursor: pointer;
+        margin-left: 5px;
         color: map.get($theme-color, "main-color");
         text-decoration: none;
         font-size: 14px;
@@ -112,6 +116,26 @@
     .close-btn {
       background-color: map.get($theme-color, "main-color");
       color: white;
+    }
+    .password-container {
+      position: relative;
+      width: 100%;
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+      }
+
+      .password-toggle-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #888;
+      }
     }
   }
 }

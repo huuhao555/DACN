@@ -1,3 +1,6 @@
+@use "sass:map";
+@import "../../../styles/pages/theme.scss";
+
 .cart-page {
   padding: 20px;
   h1 {
@@ -41,6 +44,50 @@
     tr:hover {
       background-color: #f9f9f9;
     }
+    .handle-quantity {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .button-decrease,
+      .button-increase {
+        font-size: 20px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        border-radius: 50%;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
+
+        &:hover {
+          background-color: #d4d4d4;
+          color: #000;
+        }
+      }
+
+      .button-decrease {
+        margin-right: 10px;
+      }
+
+      .button-increase {
+        margin-left: 10px;
+      }
+    }
+
+    .form-control {
+      text-align: center;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      width: 50px;
+    }
   }
 
   .remove-button {
@@ -76,6 +123,21 @@
 
     &:hover {
       background-color: #ff7875;
+    }
+  }
+  .payment-cart {
+    float: right;
+    margin: 20px 40px 0 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #29960d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #137210;
     }
   }
 

@@ -1,20 +1,29 @@
 import React, { useState, useContext } from "react";
-import "./style.scss";
-import { AiOutlineClose } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlineEye,
+  AiOutlineEyeInvisible
+} from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import { UserContext } from "../../../../middleware/UserContext";
-import { useNavigate } from "react-router-dom";
-import { ROUTERS } from "../../../../utils/router";
+import SignUp from "../signup/Signup";
+import "./style.scss";
+
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
-  const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowSignUpForm, setShowSignUpForm] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const closeSignUpForm = () => {
+    setShowSignUpForm(false);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +59,6 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       }
 
       const dataUser = await response.json();
-      const isAdminUser = dataUser.dataUser.isAdmin;
 
       localStorage.setItem("token", dataUser.access_token);
       localStorage.setItem("user", JSON.stringify(dataUser));
@@ -58,7 +66,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       updateUser(dataUser);
       closeLoginForm();
     } catch (error) {
-      alert("error");
+      alert("Lỗi đăng nhập");
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +81,7 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
   };
 
   if (!isShowLoginForm) return null;
+
   return (
     <div className="login-overlay">
       <div className="login-form">
@@ -86,23 +95,37 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Mật khẩu"
-          value={formData.password}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-        />
+        <div className="password-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Mật khẩu"
+            value={formData.password}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+          />
+          <span
+            className="password-toggle-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+          </span>
+        </div>
         <span className="forget-pass">
-          <Link>Quên mật khẩu</Link>
+          <span onClick={() => {}}>Quên mật khẩu</span>
         </span>
         <button onClick={onHandlLogIn} disabled={isLoading}>
           {isLoading ? "Đang xử lý..." : "Đăng nhập"}
         </button>
         <span className="signup">
           Bạn chưa có tài khoản?
-          <Link to={ROUTERS.USER.SIGNUP}> Đăng ký ngay</Link>
+          <span
+            onClick={() => {
+              setShowSignUpForm(true);
+            }}
+          >
+            Đăng ký ngay
+          </span>
         </span>
 
         <div className="other-login">
@@ -114,6 +137,10 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
           </div>
         </div>
       </div>
+      <SignUp
+        isShowSignUpForm={isShowSignUpForm}
+        closeSignUpForm={closeSignUpForm}
+      />
     </div>
   );
 };

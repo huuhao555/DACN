@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./style.scss";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../utils/router";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -33,11 +34,19 @@ const UpdateProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setFormData({ ...formData, imageUrl: URL.createObjectURL(file) });
+    }
   };
 
   const handleBannerChange = (e) => {
-    setBannerFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setBannerFile(file);
+      setFormData({ ...formData, bannerUrl: URL.createObjectURL(file) });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -45,11 +54,11 @@ const UpdateProduct = () => {
 
     try {
       const formToSubmit = new FormData();
+
       Object.keys(formData).forEach((key) => {
-        if (formData[key]) {
-          formToSubmit.append(key, formData[key]);
-        }
+        formToSubmit.append(key, formData[key]);
       });
+
       if (imageFile) formToSubmit.append("image", imageFile);
       if (bannerFile) formToSubmit.append("banner", bannerFile);
 
@@ -58,7 +67,7 @@ const UpdateProduct = () => {
         alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
         return;
       }
-      console.log(token);
+
       const response = await fetch(
         `http://localhost:3001/api/product/update/${id}`,
         {
@@ -76,9 +85,8 @@ const UpdateProduct = () => {
         );
         return;
       }
-
       alert("Sửa sản phẩm thành công");
-      navigate("/admin/quan-ly-san-pham");
+      navigate(ROUTERS.ADMIN.MANAGE_PRODUCTS);
     } catch (error) {
       console.error(error);
     }

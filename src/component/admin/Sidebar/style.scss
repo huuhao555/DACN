@@ -41,7 +41,8 @@
         width: 100%;
       }
 
-      &:hover {
+      &:hover,
+      &.active {
         background: linear-gradient(
           to left,
           map.get($theme-color, "main-color"),

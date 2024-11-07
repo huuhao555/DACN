@@ -1,0 +1,74 @@
+.notification {
+  position: fixed;
+  top: 70px;
+  right: 40px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+
+  &.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+  }
+
+  .line-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    box-sizing: border-box;
+    animation: lineAnim 5s linear forwards;
+  }
+
+  @keyframes lineAnim {
+    0% {
+      clip-path: inset(0 100% 100% 0);
+      border-top-color: #1a791d;
+    }
+    25% {
+      clip-path: inset(0 100% 0 0);
+      border-right-color: #1a791d;
+    }
+    50% {
+      clip-path: inset(0 0 0 0);
+      border-bottom-color: #1a791d;
+    }
+    75% {
+      clip-path: inset(0 0 0 0);
+      border-left-color: #1a791d;
+    }
+    100% {
+      clip-path: inset(100% 0 0 0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+  }
+}
+
+.notification + .notification {
+  margin-top: 50px;
+}

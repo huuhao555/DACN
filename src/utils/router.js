@@ -1,22 +1,22 @@
 export const ROUTERS = {
   USER: {
     HOME: "/",
-    PROFILE: "/thong-tin-ca-nhan",
     PRODUCTS: "san-pham",
     DETAILS: "/chi-tiet-san-pham",
     CONTACTS: "/lien-he",
     ABOUT: "/khac",
     CART: "/gio-hang",
     ORDERLOOKUP: "/tra-cuu-don-hang",
-    PROFILE: "/thong-tin-ca-nhan",
     LOGIN: "/dang-nhap",
     SIGNUP: "/dang-ky",
+    VERITYOTP: "/xac-thuc-tai-khoan",
+    CHANGEPASSWORD: "doi-mat-khau-nguoi-dung",
     ORDERPAYMENT: "/thanh-toan",
     ORDER: "/don-hang",
-    PRODUCT_TYPE: "loai-san-pham",
+    PRODUCT_TYPE: "/loai-san-pham",
     ORDERDETAIL: "/chi-tiet-don-hang",
     ORDERLIST: "/danh-sach-don-hang",
-    ORDERLOOKUP: "/tra-cuu-don-hang"
+    PAYMENT: "/thanh-toan"
   },
   ADMIN: {
     DASHBOARD: "/admin",
@@ -30,7 +30,8 @@ export const ROUTERS = {
     DELETE_PRODUCT: "/admin/xoa-san-pham",
     DETAILS_PRODUCT: "/admin/chi-tiet-san-pham",
     UPDATE_USER: "/admin/chinh-sua-tai-khoan",
-    DELETE_USER: "/admin/xoa-tai-khoan"
+    DELETE_USER: "/admin/xoa-tai-khoan",
+    PRODUCTS_DETAIL: "/admin/chi-tiet-san-pham"
   },
   USERPROFILE: {
     ACCOUNT_INFO: "/thong-tin",

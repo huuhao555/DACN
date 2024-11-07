@@ -1,24 +1,23 @@
 import "./style.scss";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { UserContext } from "../../../middleware/UserContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../utils/router";
 
 const CartPage = () => {
-  const { user, countCart, updateCartCount } = useContext(UserContext);
-
+  const { user, updateCartCount } = useContext(UserContext);
+  const navigator = useNavigate();
   const { pathname } = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   const [cart, setCart] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
 
-  const getAllCart = async () => {
+  const getAllCart = useCallback(async () => {
     if (!user || !user.dataUser) return;
-
     const id = user.dataUser.id;
     try {
       const response = await fetch(
@@ -30,11 +29,11 @@ const CartPage = () => {
     } catch (error) {
       console.error("Failed to fetch count for users:", error);
     }
-  };
-  console.log(cart);
+  }, [user]); // Thêm user vào mảng phụ thuộc
+
   useEffect(() => {
-    getAllCart();
-  }, [user]);
+    getAllCart(); // Gọi lại getAllCart khi user thay đổi
+  }, [getAllCart]);
 
   const removeFromCart = async (productId, userID) => {
     try {
@@ -54,7 +53,6 @@ const CartPage = () => {
       const dataProduct = await response.json();
 
       updateCartCount(dataProduct.data.products.length);
-      console.log(dataProduct);
     } catch (error) {
       console.error("Failed to delete product from cart:", error);
     }
@@ -78,7 +76,7 @@ const CartPage = () => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      const dataProductRemove = await response.json();
+      await response.json();
       setCart("");
       updateCartCount(0);
     } catch (error) {
@@ -86,17 +84,67 @@ const CartPage = () => {
     }
   };
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleIncrease = async ({ id }) => {
+    if (!user) alert("Vui lòng đăng nhập");
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: id,
+            quantity: 1
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const dataCart = await response.json();
+      setCart(dataCart?.data);
+      updateCartCount(dataCart.data.products.length);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
+
+  const handleDecrease = async (id) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/cart/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: user.dataUser.id,
+          productId: id,
+          quantity: 1
+        })
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const dataCart = await response.json();
+
+      const updatedCount = dataCart.data.products.length;
+      updateCartCount(updatedCount);
+      setCart(dataCart?.data);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
 
   if (!user) {
     return <p>Loading user data...</p>;
   }
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = cart
-    ? cart.products.slice(indexOfFirstItem, indexOfLastItem)
-    : [];
+  const paymentCart = () => {
+    navigator(ROUTERS.USER.PAYMENT);
+  };
 
   return (
     <div className="cart-page">
@@ -106,6 +154,7 @@ const CartPage = () => {
           <table className="cart-table">
             <thead>
               <tr>
+                <th>STT</th>
                 <th>Sản phẩm</th>
                 <th>Giá</th>
                 <th>Số lượng</th>
@@ -114,18 +163,38 @@ const CartPage = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item) => {
-                console.log(item);
+              {cart.products.map((item, key) => {
                 return (
                   <tr key={item._id}>
-                    <td>{item.productId.name}</td>
-                    <td>{item.productId.prices.toLocaleString("vi-VN")}đ</td>
-                    <td>{item.quantity}</td>
+                    <td>{key + 1}</td>
+                    <td>{`${item.productId.name}`}</td>
+                    <td>{item.productId.prices.toLocaleString("vi-VN")}VNĐ</td>
+                    <td>
+                      <div className="handle-quantity">
+                        <span
+                          onClick={() => handleDecrease(item.productId._id)}
+                          className="button-decrease"
+                        >
+                          –
+                        </span>
+                        <div>{item.quantity}</div>
+                        <span
+                          onClick={() =>
+                            handleIncrease({
+                              id: item.productId._id
+                            })
+                          }
+                          className="button-increase"
+                        >
+                          +
+                        </span>
+                      </div>
+                    </td>
                     <td>
                       {(item.productId.prices * item.quantity).toLocaleString(
                         "vi-VN"
                       )}
-                      đ
+                      VNĐ
                     </td>
                     <td>
                       <button
@@ -142,10 +211,10 @@ const CartPage = () => {
               })}
               <tr>
                 <td
-                  colSpan="3"
+                  colSpan="4"
                   style={{ textAlign: "right", fontWeight: "bold" }}
                 >
-                  Tổng tiền giỏ hàng:
+                  Tổng tiền:
                 </td>
                 <td
                   colSpan="2"
@@ -155,32 +224,20 @@ const CartPage = () => {
                     paddingLeft: "60px"
                   }}
                 >
-                  {cart.totalPrice.toLocaleString("vi-VN")}đ
+                  {cart.totalPrice.toLocaleString("vi-VN")}VNĐ
                 </td>
               </tr>
             </tbody>
           </table>
-
-          <div className="pagination">
-            {Array.from(
-              { length: Math.ceil(cart.products.length / itemsPerPage) },
-              (_, i) => (
-                <button
-                  key={i + 1}
-                  onClick={() => paginate(i + 1)}
-                  className={currentPage === i + 1 ? "active" : ""}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
-          </div>
 
           <button
             className="clear-cart"
             onClick={() => clearCart(user.dataUser.id)}
           >
             Xoá giỏ hàng
+          </button>
+          <button className="payment-cart" onClick={() => paymentCart()}>
+            Thanh toán
           </button>
         </div>
       ) : (

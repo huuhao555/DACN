@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IMAGES } from "../../../assets/image";
 import "./style.scss";
 
 const ProductList = () => {
@@ -49,8 +48,8 @@ const ProductList = () => {
           </div>
           <div className="product-item-bottom-admin">
             <div className="item-product-bottom-admin">
-              <h3>{product.name}</h3>
-              <p>{product.prices.toLocaleString("vi-VN")}đ</p>
+              <h3>{`${product.company} ${product.name}`}</h3>
+              <p>{product.prices.toLocaleString("vi-VN")}VNĐ</p>
             </div>
           </div>
         </div>

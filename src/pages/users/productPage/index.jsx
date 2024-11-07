@@ -2,9 +2,7 @@ import "./style.scss";
 import { memo, useContext, useEffect, useState } from "react";
 import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
-import { IMAGES } from "../../../assets/image";
 import { AiOutlineClose } from "react-icons/ai";
-import ProductsComponent from "../../../component/user/productGrid/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { BsDeviceSsdFill } from "react-icons/bs";
@@ -12,11 +10,15 @@ import { PiFrameCornersBold } from "react-icons/pi";
 import { FaMemory } from "react-icons/fa";
 import { RiCpuLine } from "react-icons/ri";
 import { UserContext } from "../../../middleware/UserContext";
-
+import Notification, {
+  NotificationContainer
+} from "../../../component/user/Notification";
 const ProductPage = () => {
-  const { user, countCart, updateCartCount } = useContext(UserContext);
+  const { notifications, addNotification } = NotificationContainer();
+  const { user, updateCartCount } = useContext(UserContext);
   const [products, setProducts] = useState([]);
   const [productsAll, setProductsAll] = useState(products);
+  const [activeTag, setActiveTag] = useState(null);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -26,6 +28,7 @@ const ProductPage = () => {
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();
+
         setProducts(Array.isArray(data.data) ? data.data : []);
         setProductsAll(Array.isArray(data.data) ? data.data : []);
       } catch (error) {
@@ -58,7 +61,8 @@ const ProductPage = () => {
         throw new Error(response.statusText);
       }
       const dataCart = await response.json();
-      const updatedCount = dataCart.products.length;
+      addNotification("Thêm giỏ hàng thành công!");
+      const updatedCount = dataCart.data.products.length;
       updateCartCount(updatedCount);
       // alert("Thêm giỏ hàng thành công");
     } catch (error) {
@@ -71,40 +75,51 @@ const ProductPage = () => {
     "Giá cao đến thấp",
     "Đang giảm giá"
   ];
-  const [categories] = useState([
-    {
-      name: "Điện thoại, Tablet",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Laptop",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Âm thanh",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Đồ gia dụng",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Phụ kiện",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Máy tính để bàn",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Màn hình",
-      path: ROUTERS.USER.PRODUCTS
-    },
-    {
-      name: "Tivi",
-      path: ROUTERS.USER.PRODUCTS
+
+  const handleTagClick = (key) => {
+    // Nếu click vào tag đã chọn, bỏ chọn
+    if (activeTag === key) {
+      setActiveTag(null);
+      setProducts(productsAll); // Reset danh sách sản phẩm
+    } else {
+      setActiveTag(key);
+      Sort(key); // Sắp xếp theo key
     }
-  ]);
+  };
+  // const [categories] = useState([
+  //   {
+  //     name: "Điện thoại, Tablet",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Laptop",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Âm thanh",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Đồ gia dụng",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Phụ kiện",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Máy tính để bàn",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Màn hình",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   },
+  //   {
+  //     name: "Tivi",
+  //     path: ROUTERS.USER.PRODUCTS
+  //   }
+  // ]);
 
   const [suggestions, setSuggestions] = useState([]);
 
@@ -207,6 +222,7 @@ const ProductPage = () => {
     setPriceMin("");
     setPriceMax("");
     setFilteredProducts([]);
+    setActiveTag(null);
   };
   return (
     <>
@@ -298,9 +314,9 @@ const ProductPage = () => {
                 <div className="tags">
                   {sorts.map((item, key) => (
                     <div
-                      className={`tag ${key}`}
+                      className={`tag ${activeTag === key ? "active" : ""}`}
                       key={key}
-                      onClick={() => Sort(key)}
+                      onClick={() => handleTagClick(key)}
                     >
                       {item}
                     </div>
@@ -347,7 +363,7 @@ const ProductPage = () => {
                           state={{ product }}
                         >
                           <div className="item-product-bottom">
-                            <h3>{product.name}</h3>
+                            <h3>{` ${product.company} ${product.name}`}</h3>
                             <div className="proloop-technical">
                               {[
                                 {
@@ -385,7 +401,7 @@ const ProductPage = () => {
                               {product.prices.toLocaleString("vi-VN")
                                 ? product.prices.toLocaleString("vi-VN")
                                 : "N/A"}
-                              đ
+                              VNĐ
                             </p>{" "}
                           </div>
                         </Link>
@@ -412,6 +428,17 @@ const ProductPage = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="notifications-wrapper">
+        {notifications.map((notification) => (
+          <Notification
+            key={notification.id}
+            message={notification.message}
+            onClose={() => {
+              // Dọn dẹp thông báo
+            }}
+          />
+        ))}
       </div>
     </>
   );

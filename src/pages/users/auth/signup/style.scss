@@ -47,7 +47,9 @@
     .signup {
       display: inline-block;
       font-size: 14px;
-      a {
+      span {
+        cursor: pointer;
+        margin-left: 5px;
         color: map.get($theme-color, "main-color");
         text-decoration: none;
         font-size: 14px;
@@ -70,6 +72,24 @@
     .close-btn {
       background-color: red;
       color: white;
+    }
+    .password-input {
+      position: relative;
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+      }
+
+      .eye-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #888;
+      }
     }
   }
 }
