@@ -38,7 +38,7 @@ const SideBarProfile = () => {
         <div className="avatar-wrapper">
           <div className="icon">
             <img
-              src="https://firebasestorage.googleapis.com/v0/b/dacn-714e1.appspot.com/o/download.png?alt=media&token=651323e5-2c2d-4e1b-b49f-ce93017de6cb"
+              src="https://firebasestorage.googleapis.com/v0/b/dacn-714e1.appspot.com/o/DACN%2Fdownload.png?alt=media&token=b49bd698-0b43-4f2a-ac73-698a2ca8f2fa"
               alt="User Avatar"
               style={{ width: "1.3em", height: "auto", color: "grey" }}
             />

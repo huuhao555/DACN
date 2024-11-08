@@ -210,11 +210,6 @@ textarea {
     flex: 0 0 100%;
     max-width: 100%;
   }
-
-  .footer .footer-info .footer-qr {
-    overflow: hidden;
-    opacity: 0;
-  }
 }
 
 @include Responsive($MEDIUM_DEVICE) {

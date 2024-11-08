@@ -4,7 +4,14 @@ import { UserContext } from "../../../../middleware/UserContext";
 
 const AccountInfo = () => {
   const { user } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleChangeEmail = (e) => {
+    setErrorMessage("Email không thể thay đổi!");
+  };
 
+  const handleFocus = () => {
+    setErrorMessage("Email không thể thay đổi!");
+  };
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -87,16 +94,19 @@ const AccountInfo = () => {
             />
           </div>
           <div className="form-line-wrapper">
-            <label>Email</label>
+            <label>Email</label>{" "}
             <input
-              required
               type="email"
               name="email"
-              className="form-control"
+              className="form-control locked-input"
               placeholder="Email"
               value={formData.email}
-              onChange={handleChange}
+              onFocus={handleFocus}
+              readOnly
             />
+            {errorMessage && (
+              <p style={{ color: "red", marginTop: "5px" }}>{errorMessage}</p>
+            )}
           </div>
           <div className="form-line-wrapper">
             <button

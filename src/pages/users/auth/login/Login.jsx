@@ -9,6 +9,7 @@ import { FaFacebook } from "react-icons/fa6";
 import { UserContext } from "../../../../middleware/UserContext";
 import SignUp from "../signup/Signup";
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
   const { updateUser } = useContext(UserContext);
@@ -79,7 +80,9 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
       closeLoginForm();
     }
   };
-
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:3001/auth/google";
+  };
   if (!isShowLoginForm) return null;
 
   return (
@@ -133,7 +136,12 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
             <FaFacebook /> <span>Facebook</span>
           </div>
           <div className="google-login">
-            <FcGoogle /> <span>Google</span>
+            <button
+              onClick={handleGoogleLogin}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <FcGoogle /> <span>Google</span>
+            </button>
           </div>
         </div>
       </div>

@@ -7,8 +7,11 @@ import {
 import "./style.scss";
 import VerifyOtp from "../VerifyOtp";
 import Login from "../login/Login";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
+  const [capVal, setCapVal] = useState(null);
+
   const [isShowLoginForm, setShowLoginForm] = useState(false);
   const closeLoginForm = () => {
     setShowLoginForm(false);
@@ -132,7 +135,14 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
                 value={formData.phone}
                 onChange={handleInputChange}
               />
-              <button onClick={onHandlSignUp}>Đăng ký</button>
+              <ReCAPTCHA
+                sitekey="6Lfg1HgqAAAAABvsZaTk3cTi163YFQPX-HoX_j6Z"
+                // 6Lfg1HgqAAAAAAJm9IeG9pcuyR9SzYWAmOTWgOfR
+                onChange={(token) => setCapVal(token)}
+              />
+              <button disabled={!capVal} onClick={onHandlSignUp}>
+                Đăng ký
+              </button>
 
               <span className="signup">
                 Bạn đã có tài khoản?
