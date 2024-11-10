@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../../middleware/UserContext";
 import "../style.scss";
-import {
-  AiOutlineDown,
-  AiOutlineDownCircle,
-  AiOutlineDownSquare,
-  AiOutlineEye,
-  AiOutlineEyeInvisible
-} from "react-icons/ai";
+import { AiOutlineDownCircle } from "react-icons/ai";
+
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isTableVisible, setTableVisible] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [visibleOrders, setVisibleOrders] = useState({});
+
   useEffect(() => {
     const fetchPendingOrders = async () => {
       const userId = user?.dataUser?.id;
@@ -40,21 +35,26 @@ const PendingOrders = () => {
     fetchPendingOrders();
   }, [user]);
 
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
+
   return (
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
-          {orders?.map((order, orderIndex) => (
-            <div key={order.id} className="order">
+          {orders?.map((order) => (
+            <div key={order._id} className="order">
               <AiOutlineDownCircle
                 className="icon-down"
-                onClick={() => {
-                  setTableVisible(!isTableVisible);
-                }}
+                onClick={() => toggleOrderVisibility(order._id)}
               />
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
-              <p>Địa chỉ: {order.shippingAddress.address}</p>
+              <p>Địa chỉ: {order.shippingAddress?.address}</p>
               <p>Số điện thoại: {order.phone}</p>
               <p>Trạng thái: Đang xử lý</p>
 
@@ -71,7 +71,7 @@ const PendingOrders = () => {
                 </span>
               </h3>
 
-              {isTableVisible && (
+              {visibleOrders[order._id] && (
                 <table>
                   <thead>
                     <tr>
@@ -84,36 +84,38 @@ const PendingOrders = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {order?.products?.map((item, itemIndex) => {
-                      console.log(order.orderTotal);
-                      return (
-                        <tr key={item?.productId?.id}>
-                          <td>{itemIndex + 1}</td>
-                          <td>
-                            <img
-                              src={item?.productId?.imageUrl}
-                              alt={item?.productId?.productName}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                objectFit: "contain"
-                              }}
-                            />
-                          </td>
-                          <td>{item?.productId?.name}</td>
-                          <td>
-                            {item?.productId?.prices.toLocaleString("vi-VN")}VNĐ
-                          </td>
-                          <td>{item?.quantity}</td>
-                          <td>
-                            {(
-                              item?.productId?.prices * item.quantity
-                            ).toLocaleString("vi-VN")}
-                            VNĐ
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {order?.products?.map((item, itemIndex) => (
+                      <tr key={item?.productId?._id}>
+                        <td>{itemIndex + 1}</td>
+                        <td>
+                          <img
+                            src={
+                              item?.productId?.imageUrl ||
+                              "/path/to/fallback.jpg"
+                            }
+                            alt={
+                              item?.productId?.productName || "Product Image"
+                            }
+                            style={{
+                              width: "100px",
+                              height: "100px",
+                              objectFit: "contain"
+                            }}
+                          />
+                        </td>
+                        <td>{item?.productId?.name}</td>
+                        <td>
+                          {item?.productId?.prices?.toLocaleString("vi-VN")} VNĐ
+                        </td>
+                        <td>{item?.quantity}</td>
+                        <td>
+                          {(
+                            item?.productId?.prices * item.quantity
+                          ).toLocaleString("vi-VN")}{" "}
+                          VNĐ
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               )}
@@ -121,23 +123,21 @@ const PendingOrders = () => {
                 <h3>Chi tiết thanh toán</h3>
                 <p>
                   Tổng tiền hàng:
-                  <span>{order.totalPrice.toLocaleString("vi-VN")} VNĐ</span>
+                  <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
                 <p>
                   Chi phí vận chuyển:
                   {order.shippingFee === 0 ? (
                     <span className="shipping-fee">
-                      <span
-                        style={{
-                          textDecoration: "line-through"
-                        }}
-                      >
+                      <span style={{ textDecoration: "line-through" }}>
                         {(200000).toLocaleString("vi-VN")} VNĐ
                       </span>
                       <span style={{ marginLeft: "10px" }}>0 VNĐ</span>
                     </span>
                   ) : (
-                    <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
+                    <span>
+                      {order.shippingFee?.toLocaleString("vi-VN")} VNĐ
+                    </span>
                   )}
                 </p>
 
