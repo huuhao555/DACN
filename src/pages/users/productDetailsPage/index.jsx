@@ -10,7 +10,7 @@ import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
 const ProductDetailsPage = () => {
-  const { user, updateCartCount } = useContext(UserContext);
+  const { user, updateCartCount } = useContext(UserContext) || {};
   const { notifications, addNotification } = NotificationContainer();
 
   const { pathname } = useLocation();

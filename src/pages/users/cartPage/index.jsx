@@ -6,15 +6,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 
 const CartPage = () => {
+  const [cart, setCart] = useState(null);
+
   const { user, updateCartCount } = useContext(UserContext);
+
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const navigator = useNavigate();
   const { pathname } = useLocation();
-
+  useEffect(() => {
+    if (cart && cart.products) {
+      const allProductIds = cart.products.map((item) => item.productId._id);
+      setSelectedProducts(allProductIds);
+    }
+  }, [cart]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  const [cart, setCart] = useState(null);
 
   const getAllCart = useCallback(async () => {
     if (!user || !user.dataUser) return;
@@ -143,9 +150,29 @@ const CartPage = () => {
   }
 
   const paymentCart = () => {
-    navigator(ROUTERS.USER.PAYMENT);
+    navigator(ROUTERS.USER.ORDER, {
+      state: {
+        selectedProducts
+      }
+    });
+  };
+  const handleCheckboxChange = (productId) => {
+    setSelectedProducts((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
   };
 
+  const calculateTotal = () => {
+    if (!cart || !cart.products) return 0;
+    return cart.products
+      .filter((item) => selectedProducts.includes(item.productId._id))
+      .reduce(
+        (total, item) => total + item.productId.prices * item.quantity,
+        0
+      );
+  };
   return (
     <div className="cart-page">
       <h1>Shopping Cart</h1>
@@ -154,6 +181,7 @@ const CartPage = () => {
           <table className="cart-table">
             <thead>
               <tr>
+                <th>Chọn</th>
                 <th>STT</th>
                 <th>Sản phẩm</th>
                 <th>Giá</th>
@@ -166,6 +194,15 @@ const CartPage = () => {
               {cart.products.map((item, key) => {
                 return (
                   <tr key={item._id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.includes(item.productId._id)}
+                        onChange={() =>
+                          handleCheckboxChange(item.productId._id)
+                        }
+                      />
+                    </td>
                     <td>{key + 1}</td>
                     <td>{`${item.productId.name}`}</td>
                     <td>{item.productId.prices.toLocaleString("vi-VN")}VNĐ</td>
@@ -211,20 +248,13 @@ const CartPage = () => {
               })}
               <tr>
                 <td
-                  colSpan="4"
+                  colSpan="5"
                   style={{ textAlign: "right", fontWeight: "bold" }}
                 >
                   Tổng tiền:
                 </td>
-                <td
-                  colSpan="2"
-                  style={{
-                    textAlign: "left",
-                    fontWeight: "bold",
-                    paddingLeft: "60px"
-                  }}
-                >
-                  {cart.totalPrice.toLocaleString("vi-VN")}VNĐ
+                <td colSpan="2" style={{ fontWeight: "bold" }}>
+                  {calculateTotal().toLocaleString("vi-VN")} VNĐ
                 </td>
               </tr>
             </tbody>
@@ -236,7 +266,7 @@ const CartPage = () => {
           >
             Xoá giỏ hàng
           </button>
-          <button className="payment-cart" onClick={() => paymentCart()}>
+          <button className="payment-cart" onClick={paymentCart}>
             Thanh toán
           </button>
         </div>

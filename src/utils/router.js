@@ -14,7 +14,8 @@ export const ROUTERS = {
     ORDERPAYMENT: "/thanh-toan",
     ORDER: "/don-hang",
     PRODUCT_TYPE: "/loai-san-pham",
-    ORDERDETAIL: "/chi-tiet-don-hang",
+    ORDER: "/chi-tiet-don-hang",
+    ORDER_STORAGE: "/don-hang-ca-nhan",
     ORDERLIST: "/danh-sach-don-hang",
     PAYMENT: "/thanh-toan"
   },
@@ -35,7 +36,7 @@ export const ROUTERS = {
   },
   USERPROFILE: {
     ACCOUNT_INFO: "/thong-tin",
-    ORDER_MANAGERMENT: "/quan-li-don-hang",
+    ORDER_MANAGERMENT: "/quan-ly-don-hang",
     VIEW_PRODUCTS: "/lich-su-san-pham",
     ADDRESS_BOOK: "/so-dia-chi"
   }

@@ -38,26 +38,29 @@
         margin-bottom: 10px;
       }
 
-      ul {
-        list-style-type: none;
-        padding: 0;
+      .product-table {
+        width: 100%;
+        border-collapse: collapse;
 
-        .product-item {
-          display: flex;
-          justify-content: space-between;
-          padding: 10px 0;
+        th,
+        td {
+          padding: 10px;
+          text-align: left;
           border-bottom: 1px solid #ddd;
+          text-align: center;
+        }
 
-          .product-name {
-            font-weight: bold;
-            color: #333;
-          }
+        th {
+          background-color: #f5f5f5;
+          color: #333;
+        }
 
-          .product-quantity,
-          .product-price {
-            color: #666;
-            font-size: 14px;
-          }
+        td {
+          color: #555;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
         }
       }
     }

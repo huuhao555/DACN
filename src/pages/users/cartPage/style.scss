@@ -88,6 +88,12 @@
       padding: 8px;
       width: 50px;
     }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
   }
 
   .remove-button {

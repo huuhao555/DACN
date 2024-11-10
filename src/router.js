@@ -3,13 +3,11 @@ import { ROUTERS } from "./utils/router";
 
 import HomePage from "./pages/users/homePage";
 import MasterLayout from "./pages/users/theme/masterLayout";
-import ProfilePage from "./pages/users/profilePage";
 import LoginPage from "./pages/users/auth/login/Login";
 import ProductPage from "./pages/users/productPage";
 import SignUpPage from "./pages/users/auth/signup/Signup";
 import ProductDetailsPage from "./pages/users/productDetailsPage";
 import CartPage from "./pages/users/cartPage";
-import PaymentPage from "./pages/users/paymentPage";
 import ProductType from "./pages/users/productType";
 
 import ProductListAdmin from "./component/admin/ProductList/ProductList.jsx";
@@ -23,25 +21,27 @@ import Dashboard from "./component/admin/Dashboard/index.jsx";
 import UpdateProduct from "./component/admin/UpdateProduct/index.jsx";
 import UpdateUser from "./pages/admin/auth/UpdateUser/index.jsx";
 import DeleteUser from "./pages/admin/auth/DeleteUser/index.jsx";
-import ProfilePageLayout from "./pages/users/profilePage/index.jsx";
+import ProfilePageLayout from "./pages/users/theme/profileLayout";
 import ContactPage from "./pages/users/contactPage/index.jsx";
-import AccountInfo from "./component/user/profilePage/accountInfo/index.jsx";
-import OrderManagement from "./component/user/profilePage/orderManagement/index.jsx";
-import ViewedProducts from "./component/user/profilePage/viewedProducts/index.jsx";
-import AddressBook from "./component/user/profilePage/addressUser/index.jsx";
+import AccountInfo from "./pages/users/profilePage/accountInfo/index.jsx";
+import OrderManagement from "./pages/users/profilePage/orderManagement/index.jsx";
+import ViewedProducts from "./pages/users/profilePage/viewedProducts/index.jsx";
+import AddressBook from "./pages/users/profilePage/addressUser/index.jsx";
 import ChangePassword from "./pages/users/auth/changePassword/index.jsx";
 import OrderLookup from "./pages/users/orderLoockup/index.jsx";
 import ProductDetail from "./component/admin/ProductDetail/index.jsx";
 import VerifyOtp from "./pages/users/auth/VerifyOtp/index.jsx";
+import OrderPage from "./pages/users/paymentPage/index.jsx";
+import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
 const RouterCustom = () => {
   return (
     <Routes>
       <Route element={<MasterLayout />}>
         <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
-        <Route path={ROUTERS.USER.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
         <Route path={ROUTERS.USER.ORDERLOOKUP} element={<OrderLookup />} />
+        <Route path={ROUTERS.USER.ORDER_STORAGE} element={<OrderStorage />} />
         <Route
           path={`${ROUTERS.USER.DETAILS}/:id`}
           element={<ProductDetailsPage />}
@@ -50,8 +50,8 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
         <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
         <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
+        <Route path={ROUTERS.USER.ORDER} element={<OrderPage />} />
 
-        <Route path={ROUTERS.USER.PAYMENT} element={<PaymentPage />} />
         <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
       </Route>
 

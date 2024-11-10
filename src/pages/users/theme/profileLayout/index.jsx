@@ -1,10 +1,11 @@
 import { memo } from "react";
 import "./style.scss";
-import { UserProvider } from "../../../middleware/UserContext";
-import SideBarProfile from "../../../component/user/profilePage/sidebarProfile";
+
 import { Outlet } from "react-router-dom";
-import Header from "../theme/header";
-import Footer from "../theme/footer";
+import { UserProvider } from "../../../../middleware/UserContext";
+import SideBarProfile from "../../../../pages/users/profilePage/sidebarProfile";
+import Footer from "../footer";
+import Header from "../header";
 const ProfilePageLayout = (props) => {
   return (
     <UserProvider>
