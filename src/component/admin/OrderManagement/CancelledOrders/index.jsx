@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../../../../middleware/UserContext";
+import { UserContext } from "../../../../middleware/UserContext";
 import "../style.scss";
 import {
   AiOutlineDown,
@@ -8,7 +8,7 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible
 } from "react-icons/ai";
-const ShippingOrders = () => {
+const CancelledOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
   const [isTableVisible, setTableVisible] = useState(false);
@@ -22,16 +22,14 @@ const ShippingOrders = () => {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/order/getAll/${userId}`
-        );
+        const response = await fetch(`http://localhost:3001/api/order/getAll`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
 
         const data = await response.json();
-        setOrders(data?.data.filter((order) => order.status === "Shipped"));
+        setOrders(data?.data.filter((order) => order.status === "Cancelled"));
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -39,57 +37,19 @@ const ShippingOrders = () => {
 
     fetchPendingOrders();
   }, [user]);
-  const handleSubmidOrder = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/order/deliver`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ orderId: id })
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to deliver order");
-      }
-
-      const data = await response.json();
-      console.log(data);
-
-      // Fetch the updated list of shipped orders
-      const userId = user?.dataUser?.id;
-      const updatedOrdersResponse = await fetch(
-        `http://localhost:3001/api/order/getAll/${userId}`
-      );
-
-      if (!updatedOrdersResponse.ok) {
-        throw new Error("Failed to fetch updated orders");
-      }
-
-      const updatedOrders = await updatedOrdersResponse.json();
-      setOrders(
-        updatedOrders?.data.filter((order) => order.status === "Shipped")
-      );
-    } catch (error) {
-      console.error("Error delivering order:", error);
-    }
-  };
-
+  console.log(orders);
   return (
-    <div className="orders-list">
+    <div className="orders-list-admin">
       {orders.length > 0 ? (
         <div>
           {orders?.map((order, orderIndex) => (
-            <div key={order.id} className="order">
-              <button
-                className="btn-confirm"
+            <div key={order.id} className="order-admin">
+              <AiOutlineDownCircle
+                className="icon-down-admin"
                 onClick={() => {
-                  handleSubmidOrder(order._id);
+                  setTableVisible(!isTableVisible);
                 }}
-              >
-                Nhận hàng
-              </button>
-
+              />
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
               <p>Địa chỉ: {order.shippingAddress.address}</p>
@@ -97,7 +57,7 @@ const ShippingOrders = () => {
               <p>Trạng thái: {order.status}</p>
               <p>Mã đơn hàng: {order._id} </p>
               <h3 className="text-order">
-                Chi tiết đơn hàng{" "}
+                Chi tiết đơn hàng
                 <span
                   style={{
                     fontSize: "16px",
@@ -105,15 +65,10 @@ const ShippingOrders = () => {
                     fontStyle: "italic"
                   }}
                 >
-                  ({order?.products?.length} sản phẩm)
+                  {` (${order?.products?.length} sản phẩm)`}
                 </span>
               </h3>
-              <AiOutlineDownCircle
-                className="icon-down"
-                onClick={() => {
-                  setTableVisible(!isTableVisible);
-                }}
-              />
+
               {isTableVisible && (
                 <table>
                   <thead>
@@ -128,18 +83,14 @@ const ShippingOrders = () => {
                   </thead>
                   <tbody>
                     {order?.products?.map((item, itemIndex) => {
+                      console.log(order.orderTotal);
                       return (
-                        <tr key={item?.productId?._id}>
+                        <tr key={item?.productId?.id}>
                           <td>{itemIndex + 1}</td>
                           <td>
                             <img
-                              src={
-                                item?.productId?.imageUrl ||
-                                "/path/to/fallback.jpg"
-                              }
-                              alt={
-                                item?.productId?.productName || "Product Image"
-                              }
+                              src={item?.productId?.imageUrl}
+                              alt={item?.productId?.productName}
                               style={{
                                 width: "100px",
                                 height: "100px",
@@ -149,14 +100,14 @@ const ShippingOrders = () => {
                           </td>
                           <td>{item?.productId?.name}</td>
                           <td>
-                            {item?.productId?.prices?.toLocaleString("vi-VN")}{" "}
+                            {item?.productId?.prices.toLocaleString("vi-VN")}{" "}
                             VNĐ
                           </td>
                           <td>{item?.quantity}</td>
                           <td>
                             {(
                               item?.productId?.prices * item.quantity
-                            ).toLocaleString("vi-VN")}{" "}
+                            ).toLocaleString("vi-VN")}
                             VNĐ
                           </td>
                         </tr>
@@ -169,17 +120,32 @@ const ShippingOrders = () => {
                 <h3>Chi tiết thanh toán</h3>
                 <p>
                   Tổng tiền hàng:
-                  <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
+                  <span>{order.totalPrice.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
                 <p>
                   Chi phí vận chuyển:
-                  <span>{order.shippingFee?.toLocaleString("vi-VN")} VNĐ</span>
+                  {order.shippingFee === 0 ? (
+                    <span className="shipping-fee">
+                      <span
+                        style={{
+                          textDecoration: "line-through"
+                        }}
+                      >
+                        {(200000).toLocaleString("vi-VN")} VNĐ
+                      </span>
+                      <span style={{ marginLeft: "10px" }}>0 VNĐ</span>
+                    </span>
+                  ) : (
+                    <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
+                  )}
                 </p>
 
                 <p>
                   Tổng cộng:
                   <span style={{ marginLeft: "10px" }}>
-                    {order.orderTotal.toLocaleString("vi-VN")}
+                    {(order.orderTotal + order.shippingFee).toLocaleString(
+                      "vi-VN"
+                    )}{" "}
                     VNĐ
                   </span>
                 </p>
@@ -194,4 +160,4 @@ const ShippingOrders = () => {
   );
 };
 
-export default ShippingOrders;
+export default CancelledOrdersAdmin;

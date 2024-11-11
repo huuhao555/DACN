@@ -44,11 +44,18 @@ function Sidebar() {
           <Link to={ROUTERS.ADMIN.MANAGE_STAFF}>Quản lý nhân sự</Link>
         </li>
         <li
+          className={activeItem === "manager_order" ? "active" : ""}
+          onClick={() => handleClick("manager_order")}
+        >
+          <Link to={ROUTERS.ADMIN.MANAGER_ORDER}>Quản lý đơn hàng</Link>
+        </li>
+        <li
           className={activeItem === "revenue_stats" ? "active" : ""}
           onClick={() => handleClick("revenue_stats")}
         >
           <Link to={ROUTERS.ADMIN.REVENUE_STATS}>Thống kê doanh thu</Link>
         </li>
+
         <li
           className={activeItem === "purchase_history" ? "active" : ""}
           onClick={() => handleClick("purchase_history")}

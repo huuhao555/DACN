@@ -56,8 +56,8 @@ const CancelledOrders = () => {
               <p>Tên người nhận: {order.name}</p>
               <p>Địa chỉ: {order.shippingAddress.address}</p>
               <p>Số điện thoại: {order.phone}</p>
-              <p>Trạng thái: Đang xử lý</p>
-
+              <p>Trạng thái: {order.status}</p>
+              <p>Mã đơn hàng: {order._id} </p>
               <h3 className="text-order">
                 Chi tiết đơn hàng
                 <span
@@ -85,7 +85,6 @@ const CancelledOrders = () => {
                   </thead>
                   <tbody>
                     {order?.products?.map((item, itemIndex) => {
-                      console.log(order.orderTotal);
                       return (
                         <tr key={item?.productId?.id}>
                           <td>{itemIndex + 1}</td>
@@ -102,7 +101,8 @@ const CancelledOrders = () => {
                           </td>
                           <td>{item?.productId?.name}</td>
                           <td>
-                            {item?.productId?.prices.toLocaleString("vi-VN")}VNĐ
+                            {item?.productId?.prices.toLocaleString("vi-VN")}{" "}
+                            VNĐ
                           </td>
                           <td>{item?.quantity}</td>
                           <td>
@@ -121,32 +121,17 @@ const CancelledOrders = () => {
                 <h3>Chi tiết thanh toán</h3>
                 <p>
                   Tổng tiền hàng:
-                  <span>{order.totalPrice.toLocaleString("vi-VN")} VNĐ</span>
+                  <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
                 <p>
                   Chi phí vận chuyển:
-                  {order.shippingFee === 0 ? (
-                    <span className="shipping-fee">
-                      <span
-                        style={{
-                          textDecoration: "line-through"
-                        }}
-                      >
-                        {(200000).toLocaleString("vi-VN")} VNĐ
-                      </span>
-                      <span style={{ marginLeft: "10px" }}>0 VNĐ</span>
-                    </span>
-                  ) : (
-                    <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
-                  )}
+                  <span>{order.shippingFee?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
 
                 <p>
                   Tổng cộng:
                   <span style={{ marginLeft: "10px" }}>
-                    {(order.orderTotal + order.shippingFee).toLocaleString(
-                      "vi-VN"
-                    )}{" "}
+                    {order.orderTotal.toLocaleString("vi-VN")}
                     VNĐ
                   </span>
                 </p>

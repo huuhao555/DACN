@@ -13,6 +13,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 
 const OrderPage = (state) => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const navigator = useNavigate();
   const location = useLocation();
   const { selectedProducts } = location.state || {};
@@ -50,7 +55,9 @@ const OrderPage = (state) => {
         0
       )
     : 0;
-
+  const shippingCost = totalPrice && totalPrice > 50000000 ? 0 : 800000;
+  const vat = parseInt(totalPrice ? totalPrice * 0.1 : 0);
+  const grandTotal = totalPrice + vat + shippingCost;
   const [paymentDetails, setPaymentDetails] = useState({
     cardName: user?.dataUser?.name || "",
     phone: user?.dataUser?.phone || "",
@@ -133,9 +140,6 @@ const OrderPage = (state) => {
               value={paymentDetails.address}
               onChange={handleInputChange}
             />
-            <button className="complete-payment" onClick={handlePayment}>
-              Thanh toán
-            </button>
           </div>
           {/* <div className="payment-methods">
             <h3>Hoặc thanh toán bằng</h3>
@@ -180,15 +184,32 @@ const OrderPage = (state) => {
                         </td>
                       </tr>
                     ))}
+
                     <tr>
-                      <td
-                        colSpan="4"
-                        style={{ textAlign: "right", fontWeight: "bold" }}
-                      >
+                      <td colSpan="4" style={{ textAlign: "right" }}>
+                        Tổng tiền hàng:
+                      </td>
+                      <td>{totalPrice.toLocaleString("vi-VN")} VNĐ</td>
+                    </tr>
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: "right" }}>
+                        VAT:
+                      </td>
+                      <td>{vat.toLocaleString("vi-VN")} VNĐ</td>
+                    </tr>
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: "right" }}>
+                        Chi phí vận chuyển:
+                      </td>
+                      <td>{shippingCost.toLocaleString("vi-VN")} VNĐ</td>
+                    </tr>
+
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: "right" }}>
                         Tổng tiền:
                       </td>
                       <td style={{ textAlign: "left", fontWeight: "bold" }}>
-                        {totalPrice.toLocaleString("vi-VN")} VNĐ
+                        {grandTotal.toLocaleString("vi-VN")} VNĐ
                       </td>
                     </tr>
                   </tbody>
@@ -197,6 +218,9 @@ const OrderPage = (state) => {
             ) : (
               <p>Không có sản phẩm trong giỏ hàng.</p>
             )}
+            <button className="complete-payment" onClick={handlePayment}>
+              Thanh toán
+            </button>
           </div>
         </div>
       </div>

@@ -41,7 +41,7 @@ const OrderLookup = () => {
       alert("Tra cứu đơn hàng thất bại");
     }
   };
-  console.log(orderInfo);
+
   return (
     <div className="order-lookup-container">
       <h2>Tra cứu Đơn hàng</h2>
@@ -57,25 +57,25 @@ const OrderLookup = () => {
         </div>
       </div>
 
-      {searchTerm && (
-        <div className="order-info">
-          <div className="order-header">
-            <p>
-              <strong>Người mua:</strong> {orderInfo.buyerName}
-            </p>
-            <p>
-              <strong>Địa chỉ nhận hàng:</strong> {orderInfo.address.address}
-            </p>
-            <p>
-              <strong>Mã đơn hàng:</strong> {orderInfo.orderNumber}
-            </p>
-            <p>
-              <strong>Ngày đặt:</strong> {orderInfo.orderDate}
-            </p>
-            <p>
-              <strong>Trạng thái:</strong> {orderInfo.status}
-            </p>
-          </div>
+      <div className="order-info">
+        <div className="order-header">
+          <p>
+            <strong>Người mua:</strong> {orderInfo.buyerName}
+          </p>
+          <p>
+            <strong>Địa chỉ nhận hàng:</strong> {orderInfo.address.address}
+          </p>
+          <p>
+            <strong>Mã đơn hàng:</strong> {orderInfo.orderNumber}
+          </p>
+          <p>
+            <strong>Ngày đặt:</strong> {orderInfo.orderDate}
+          </p>
+          <p>
+            <strong>Trạng thái:</strong> {orderInfo.status}
+          </p>
+        </div>
+        {searchTerm && (
           <div className="order-products">
             <h3>Chi tiết sản phẩm</h3>
             <table className="product-table">
@@ -105,13 +105,12 @@ const OrderLookup = () => {
               </tbody>
             </table>
           </div>
-
-          <div className="order-total">
-            <strong>Tổng cộng:</strong>{" "}
-            {orderInfo.totalAmount.toLocaleString("vi-VN")} VND
-          </div>
+        )}
+        <div className="order-total">
+          <strong>Tổng cộng:</strong>{" "}
+          {orderInfo.totalAmount.toLocaleString("vi-VN")} VND
         </div>
-      )}
+      </div>
     </div>
   );
 };

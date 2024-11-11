@@ -13,15 +13,18 @@ const CartPage = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const navigator = useNavigate();
   const { pathname } = useLocation();
-  useEffect(() => {
-    if (cart && cart.products) {
-      const allProductIds = cart.products.map((item) => item.productId._id);
-      setSelectedProducts(allProductIds);
-    }
-  }, [cart]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  useEffect(
+    () => {
+      if (cart && cart.products) {
+        const allProductIds = cart.products.map((item) => item?.productId._id);
+        setSelectedProducts(allProductIds);
+      }
+      window.scrollTo(0, 0);
+    },
+
+    [cart],
+    [pathname]
+  );
 
   const getAllCart = useCallback(async () => {
     if (!user || !user.dataUser) return;
@@ -32,14 +35,15 @@ const CartPage = () => {
       );
       if (!response.ok) throw new Error(response.statusText);
       const dataCart = await response.json();
+      console.log(dataCart);
       setCart(dataCart);
     } catch (error) {
       console.error("Failed to fetch count for users:", error);
     }
-  }, [user]); // Thêm user vào mảng phụ thuộc
+  }, [user]);
 
   useEffect(() => {
-    getAllCart(); // Gọi lại getAllCart khi user thay đổi
+    getAllCart();
   }, [getAllCart]);
 
   const removeFromCart = async (productId, userID) => {
@@ -92,7 +96,11 @@ const CartPage = () => {
   };
 
   const handleIncrease = async ({ id }) => {
-    if (!user) alert("Vui lòng đăng nhập");
+    if (!user) {
+      alert("Vui lòng đăng nhập");
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:3001/api/cart/add-update",
@@ -108,12 +116,16 @@ const CartPage = () => {
           })
         }
       );
+
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+
       const dataCart = await response.json();
+      console.log(dataCart.data);
+      const updatedCount = dataCart.data.products.length;
+      updateCartCount(updatedCount);
       setCart(dataCart?.data);
-      updateCartCount(dataCart.data.products.length);
     } catch (error) {
       console.error("Failed to add product to cart:", error);
     }
@@ -136,7 +148,7 @@ const CartPage = () => {
         throw new Error(response.statusText);
       }
       const dataCart = await response.json();
-
+      console.log(dataCart.data);
       const updatedCount = dataCart.data.products.length;
       updateCartCount(updatedCount);
       setCart(dataCart?.data);
@@ -167,9 +179,9 @@ const CartPage = () => {
   const calculateTotal = () => {
     if (!cart || !cart.products) return 0;
     return cart.products
-      .filter((item) => selectedProducts.includes(item.productId._id))
+      .filter((item) => selectedProducts.includes(item?.productId._id))
       .reduce(
-        (total, item) => total + item.productId.prices * item.quantity,
+        (total, item) => total + item?.productId.prices * item?.quantity,
         0
       );
   };
@@ -193,32 +205,38 @@ const CartPage = () => {
             <tbody>
               {cart.products.map((item, key) => {
                 return (
-                  <tr key={item._id}>
+                  <tr key={item?._id}>
                     <td>
                       <input
                         type="checkbox"
-                        checked={selectedProducts.includes(item.productId._id)}
+                        checked={selectedProducts.includes(item?.productId._id)}
                         onChange={() =>
-                          handleCheckboxChange(item.productId._id)
+                          handleCheckboxChange(item?.productId._id)
                         }
                       />
                     </td>
                     <td>{key + 1}</td>
-                    <td>{`${item.productId.name}`}</td>
-                    <td>{item.productId.prices.toLocaleString("vi-VN")}VNĐ</td>
+                    <td>{`${item?.productId.name}`}</td>
+                    <td>
+                      {item?.productId.prices
+                        ? item?.productId.prices.toLocaleString("vi-VN")
+                        : "0"}{" "}
+                      VNĐ
+                    </td>
+
                     <td>
                       <div className="handle-quantity">
                         <span
-                          onClick={() => handleDecrease(item.productId._id)}
+                          onClick={() => handleDecrease(item?.productId._id)}
                           className="button-decrease"
                         >
                           –
                         </span>
-                        <div>{item.quantity}</div>
+                        <div>{item?.quantity}</div>
                         <span
                           onClick={() =>
                             handleIncrease({
-                              id: item.productId._id
+                              id: item?.productId._id
                             })
                           }
                           className="button-increase"
@@ -228,16 +246,19 @@ const CartPage = () => {
                       </div>
                     </td>
                     <td>
-                      {(item.productId.prices * item.quantity).toLocaleString(
-                        "vi-VN"
-                      )}
+                      {item?.productId.prices
+                        ? (
+                            item?.productId?.prices * item?.quantity
+                          ).toLocaleString("vi-VN")
+                        : "0"}{" "}
                       VNĐ
                     </td>
+
                     <td>
                       <button
                         className="remove-button"
                         onClick={() =>
-                          removeFromCart(item.productId._id, user.dataUser.id)
+                          removeFromCart(item?.productId._id, user.dataUser.id)
                         }
                       >
                         <RiDeleteBin5Line /> Xoá
@@ -248,12 +269,40 @@ const CartPage = () => {
               })}
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan="1"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <input
+                    style={{
+                      marginRight: "5px",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => {
+                      setSelectedProducts([]);
+                    }}
+                    type="checkbox"
+                  />
+                  <span style={{ cursor: "pointer" }}>Bỏ chọn</span>
+                </td>
+
+                <td
+                  colSpan="4"
                   style={{ textAlign: "right", fontWeight: "bold" }}
                 >
                   Tổng tiền:
                 </td>
-                <td colSpan="2" style={{ fontWeight: "bold" }}>
+                <td
+                  colSpan="2"
+                  style={{
+                    paddingLeft: "5%",
+                    textAlign: "left",
+                    fontWeight: "bold"
+                  }}
+                >
                   {calculateTotal().toLocaleString("vi-VN")} VNĐ
                 </td>
               </tr>

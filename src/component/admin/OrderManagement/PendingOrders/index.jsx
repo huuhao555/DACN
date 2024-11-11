@@ -1,38 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../../../../middleware/UserContext";
+import { UserContext } from "../../../../middleware/UserContext";
 import "../style.scss";
 import { AiOutlineDownCircle } from "react-icons/ai";
 
-const PendingOrders = () => {
+const PendingOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
   const [visibleOrders, setVisibleOrders] = useState({});
 
+  const fetchPendingOrders = async () => {
+    const userId = user?.dataUser?.id;
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/api/order/getAll`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const data = await response.json();
+      setOrders(data?.data.filter((order) => order.status === "Pending"));
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchPendingOrders = async () => {
-      const userId = user?.dataUser?.id;
-      if (!userId) {
-        console.error("User ID is not available");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/order/getAll/${userId}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setOrders(data?.data.filter((order) => order.status === "Pending"));
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-
     fetchPendingOrders();
   }, [user]);
 
@@ -42,7 +38,31 @@ const PendingOrders = () => {
       [orderId]: !prev[orderId]
     }));
   };
+
   const handleSubmidOrder = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/order/ship`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ orderId: id })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit order");
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      // Refresh orders by calling fetchPendingOrders
+      fetchPendingOrders();
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    }
+  };
+  const handleCancelOrder = async (id) => {
     try {
       const response = await fetch(`http://localhost:3001/api/order/cancel`, {
         method: "PUT",
@@ -53,47 +73,46 @@ const PendingOrders = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to cancel order");
+        throw new Error("Failed to submit order");
       }
 
       const data = await response.json();
+      console.log(data);
 
-      const userId = user?.dataUser?.id;
-      const updatedOrdersResponse = await fetch(
-        `http://localhost:3001/api/order/getAll/${userId}`
-      );
-
-      if (!updatedOrdersResponse.ok) {
-        throw new Error("Failed to fetch updated orders");
-      }
-
-      const updatedOrders = await updatedOrdersResponse.json();
-      setOrders(
-        updatedOrders?.data.filter((order) => order.status === "Pending")
-      );
+      // Refresh orders by calling fetchPendingOrders
+      fetchPendingOrders();
     } catch (error) {
-      console.error("Error cancelling order:", error);
+      console.error("Error submitting order:", error);
     }
   };
-
   return (
-    <div className="orders-list">
+    <div className="orders-list-admin">
       {orders.length > 0 ? (
         <div>
           {orders?.map((order) => {
-            const grandTotal =
-              order.totalPrice + parseInt(order.VATorder) + order.shippingFee;
+            console.log(
+              order.orderTotal,
+              order.shippingFee,
+              order.orderTotal + order.shippingFee
+            );
             return (
-              <div key={order._id} className="order">
+              <div key={order._id} className="order-admin">
                 <button
-                  className="btn-cancel"
+                  className="btn-confirm"
                   onClick={() => {
                     handleSubmidOrder(order._id);
                   }}
                 >
-                  Huỷ đơn hàng
+                  Xác nhận
                 </button>
-
+                <button
+                  className="btn-cancel"
+                  onClick={() => {
+                    handleCancelOrder(order._id);
+                  }}
+                >
+                  Huỷ đơn
+                </button>
                 <h2>Thông tin người nhận hàng</h2>
                 <p>Tên người nhận: {order.name}</p>
                 <p>Địa chỉ: {order.shippingAddress?.address}</p>
@@ -114,7 +133,7 @@ const PendingOrders = () => {
                   </span>
                 </h3>
                 <AiOutlineDownCircle
-                  className="icon-down"
+                  className="icon-down-admin"
                   onClick={() => toggleOrderVisibility(order._id)}
                 />
                 {visibleOrders[order._id] && (
@@ -176,12 +195,6 @@ const PendingOrders = () => {
                     <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
                   </p>
                   <p>
-                    VAT:
-                    <span>
-                      {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
-                    </span>
-                  </p>
-                  <p>
                     Chi phí vận chuyển:
                     <span>
                       {order.shippingFee?.toLocaleString("vi-VN")} VNĐ
@@ -191,7 +204,8 @@ const PendingOrders = () => {
                   <p>
                     Tổng cộng:
                     <span style={{ marginLeft: "10px" }}>
-                      {grandTotal.toLocaleString("vi-VN")} VNĐ
+                      {order.orderTotal.toLocaleString("vi-VN")}
+                      VNĐ
                     </span>
                   </p>
                 </div>
@@ -206,4 +220,4 @@ const PendingOrders = () => {
   );
 };
 
-export default PendingOrders;
+export default PendingOrdersAdmin;

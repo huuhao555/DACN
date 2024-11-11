@@ -13,15 +13,13 @@ const SlideBanner = () => {
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();
-
-        // Chỉ lấy các sản phẩm có `bannerUrl`
         setImages(
           data.data
             .filter(
               (product) => product.bannerUrl && product.bannerUrl.length > 0
             )
             .map((product) => ({
-              urlImage: product.bannerUrl
+              Urlbanner: product.bannerUrl
             }))
         );
       } catch (error) {
@@ -45,7 +43,7 @@ const SlideBanner = () => {
     <div className="item-home">
       {images.length > 0 ? (
         <img
-          src={images[counter]?.urlImage}
+          src={images[counter]?.Urlbanner}
           alt={`slider-${counter}`}
           style={{
             marginTop: "8px",

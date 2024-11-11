@@ -49,7 +49,7 @@ const ProductList = () => {
           <div className="product-item-bottom-admin">
             <div className="item-product-bottom-admin">
               <h3>{`${product.company} ${product.name}`}</h3>
-              <p>{product.prices.toLocaleString("vi-VN")}VNĐ</p>
+              <p>{product.prices.toLocaleString("vi-VN")} VNĐ</p>
             </div>
           </div>
         </div>

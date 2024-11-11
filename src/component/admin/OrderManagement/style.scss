@@ -1,5 +1,5 @@
 @use "sass:map";
-@import "../../../../styles/pages/_theme.scss";
+@import "../../../styles/pages/_theme.scss";
 
 .order-status-page {
   min-height: 600px;
@@ -24,7 +24,6 @@
     }
 
     .status-indicator {
-      position: relative;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -36,42 +35,38 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-      }
 
-      .status-circle {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: #ddd;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        color: #333;
-        z-index: 1;
-
-        &.filled {
-          background-color: #d70018;
-          color: white;
+        .active {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          border: 1px solid #333;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: bold;
+          color: #fff;
+          background-color: transparent;
+          transition: all 0.3s ease;
+          color: black;
+          &.filled {
+            background-color: #d70018;
+            color: white;
+            border: 1px solid white;
+          }
         }
-      }
 
-      .status-line {
-        flex: 1;
-        height: 4px;
-        background-color: #ddd;
-        position: relative;
-        margin: 0 5px;
-
-        &.filled {
-          background-color: #d70018;
+        div:last-child {
+          font-size: 14px;
+          color: #333;
+          margin-top: 5px;
         }
       }
     }
   }
 }
 
-.orders-list {
+.orders-list-admin {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -87,7 +82,7 @@
     margin-bottom: 20px;
   }
 
-  .order {
+  .order-admin {
     position: relative;
 
     margin-bottom: 30px;
@@ -95,7 +90,6 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-
     .btn-confirm {
       position: absolute;
       top: 5px;
@@ -109,7 +103,7 @@
     .btn-cancel {
       position: absolute;
       top: 5px;
-      right: 10px;
+      right: 15 * 10px;
       background-color: #ec223a !important;
       border: 1px solid #ec223a;
       &:hover {
@@ -193,7 +187,7 @@
       }
     }
 
-    .icon-down {
+    .icon-down-admin {
       position: absolute;
       top: 190px;
       right: 15px;
@@ -227,5 +221,9 @@
       justify-content: flex-end;
       gap: 5px;
     }
+  }
+  .icon-down-admin.rotated {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
   }
 }

@@ -33,6 +33,7 @@ import ProductDetail from "./component/admin/ProductDetail/index.jsx";
 import VerifyOtp from "./pages/users/auth/VerifyOtp/index.jsx";
 import OrderPage from "./pages/users/paymentPage/index.jsx";
 import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
+import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
 const RouterCustom = () => {
   return (
     <Routes>
@@ -76,6 +77,10 @@ const RouterCustom = () => {
         <Route
           path={ROUTERS.ADMIN.REVENUE_STATS}
           element={<RevenueStatistics />}
+        />
+        <Route
+          path={ROUTERS.ADMIN.MANAGER_ORDER}
+          element={<OrderManagementAdmin />}
         />
         <Route
           path={ROUTERS.ADMIN.PURCHASE_HISTORY}

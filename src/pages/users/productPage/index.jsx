@@ -4,7 +4,7 @@ import { ROUTERS } from "../../../utils/router";
 import Breadcrumb from "../theme/breadcrumb";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BsDeviceSsdFill } from "react-icons/bs";
 import { PiFrameCornersBold } from "react-icons/pi";
 import { FaMemory } from "react-icons/fa";
@@ -19,6 +19,11 @@ const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [productsAll, setProductsAll] = useState(products);
   const [activeTag, setActiveTag] = useState(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
