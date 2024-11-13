@@ -31,6 +31,7 @@ const ShippingOrders = () => {
         }
 
         const data = await response.json();
+        console.log(data);
         setOrders(data?.data.filter((order) => order.status === "Shipped"));
       } catch (error) {
         console.error("Error fetching orders:", error);

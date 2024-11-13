@@ -13,7 +13,7 @@ const SideBarProfile = () => {
   const currentPath = location.pathname;
 
   const navigate = useNavigate();
-  const { user, updateUser } = useContext(UserContext);
+  const { user, updateUser, logout } = useContext(UserContext);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogout = () => {
@@ -21,9 +21,10 @@ const SideBarProfile = () => {
   };
 
   const handleLogoutConfirm = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    updateUser(null);
+    logout();
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    // updateUser(null);
     setShowLogoutDialog(false);
     navigate(ROUTERS.USER.HOME);
   };

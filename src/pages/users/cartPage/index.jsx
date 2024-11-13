@@ -45,6 +45,40 @@ const CartPage = () => {
   useEffect(() => {
     getAllCart();
   }, [getAllCart]);
+  const paymentCart = async (selectedProducts, userID) => {
+    navigator(ROUTERS.USER.ORDER, {
+      state: {
+        selectedProducts
+      }
+    });
+    // try {
+    //   // Lặp qua từng sản phẩm trong danh sách được chọn và gọi API để xóa
+    //   for (const productId of selectedProducts) {
+    //     const response = await fetch(
+    //       `http://localhost:3001/api/cart/delete-product-cart/${userID}/product/${productId}`,
+    //       {
+    //         method: "DELETE",
+    //         headers: {
+    //           "Content-Type": "application/json"
+    //         }
+    //       }
+    //     );
+    //     if (!response.ok) {
+    //       throw new Error(
+    //         `Failed to delete product ${productId}: ${response.statusText}`
+    //       );
+    //     }
+    //   }
+    //   // Lấy giỏ hàng mới sau khi xóa
+    //   await getAllCart();
+    //   // Cập nhật số lượng sản phẩm trong giỏ hàng
+    //   updateCartCount(cart.products.length - selectedProducts.length);
+
+    //   // Điều hướng đến trang "ORDER" kèm danh sách sản phẩm đã chọn
+    // } catch (error) {
+    //   console.error("Failed to delete selected products from cart:", error);
+    // }
+  };
 
   const removeFromCart = async (productId, userID) => {
     try {
@@ -161,13 +195,6 @@ const CartPage = () => {
     return <p>Loading user data...</p>;
   }
 
-  const paymentCart = () => {
-    navigator(ROUTERS.USER.ORDER, {
-      state: {
-        selectedProducts
-      }
-    });
-  };
   const handleCheckboxChange = (productId) => {
     setSelectedProducts((prev) =>
       prev.includes(productId)
@@ -315,7 +342,12 @@ const CartPage = () => {
           >
             Xoá giỏ hàng
           </button>
-          <button className="payment-cart" onClick={paymentCart}>
+          <button
+            className="payment-cart"
+            onClick={() => {
+              paymentCart(selectedProducts, user.dataUser.id);
+            }}
+          >
             Thanh toán
           </button>
         </div>
