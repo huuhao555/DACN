@@ -48,7 +48,6 @@ const CreateProduct = () => {
         }
       });
 
-      // Thêm hình ảnh
       if (imageFile) data.append("image", imageFile);
       if (bannerFile) data.append("banner", bannerFile);
 
@@ -69,7 +68,6 @@ const CreateProduct = () => {
       addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
       navigate("/admin/quan-ly-san-pham");
 
-      // Reset form
       setFormData({
         name: "",
         productsTypeName: "",

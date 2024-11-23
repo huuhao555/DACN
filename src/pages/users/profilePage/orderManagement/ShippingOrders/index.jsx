@@ -173,6 +173,12 @@ const ShippingOrders = () => {
                   <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
                 <p>
+                  VAT:
+                  <span>
+                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                  </span>
+                </p>
+                <p>
                   Chi phí vận chuyển:
                   <span>{order.shippingFee?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>

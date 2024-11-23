@@ -1,0 +1,43 @@
+.not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff5f5; // Màu nền nhạt kết hợp với tone đỏ
+  color: #d70018;
+
+  .not-found-container {
+    text-align: center;
+
+    .icon {
+      .x-icon {
+        font-size: 100px;
+        font-weight: bold;
+        color: #d70018; // Biểu tượng chữ X
+        animation: bounce 1s infinite alternate;
+      }
+    }
+
+    .title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .description {
+      font-size: 18px;
+      margin-top: 10px;
+      color: #8a000e; // Màu chữ nhạt hơn
+    }
+  }
+}
+
+// Hiệu ứng bounce cho biểu tượng X
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}

@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
+import LoadingSpinner from "../../../component/general/LoadingSpinner";
 
 const CartPage = () => {
   const [cart, setCart] = useState(null);
@@ -51,33 +52,6 @@ const CartPage = () => {
         selectedProducts
       }
     });
-    // try {
-    //   // Lặp qua từng sản phẩm trong danh sách được chọn và gọi API để xóa
-    //   for (const productId of selectedProducts) {
-    //     const response = await fetch(
-    //       `http://localhost:3001/api/cart/delete-product-cart/${userID}/product/${productId}`,
-    //       {
-    //         method: "DELETE",
-    //         headers: {
-    //           "Content-Type": "application/json"
-    //         }
-    //       }
-    //     );
-    //     if (!response.ok) {
-    //       throw new Error(
-    //         `Failed to delete product ${productId}: ${response.statusText}`
-    //       );
-    //     }
-    //   }
-    //   // Lấy giỏ hàng mới sau khi xóa
-    //   await getAllCart();
-    //   // Cập nhật số lượng sản phẩm trong giỏ hàng
-    //   updateCartCount(cart.products.length - selectedProducts.length);
-
-    //   // Điều hướng đến trang "ORDER" kèm danh sách sản phẩm đã chọn
-    // } catch (error) {
-    //   console.error("Failed to delete selected products from cart:", error);
-    // }
   };
 
   const removeFromCart = async (productId, userID) => {
@@ -192,7 +166,7 @@ const CartPage = () => {
   };
 
   if (!user) {
-    return <p>Loading user data...</p>;
+    return <LoadingSpinner />;
   }
 
   const handleCheckboxChange = (productId) => {

@@ -1,4 +1,5 @@
 export const ROUTERS = {
+  NOTFOUND: "*",
   USER: {
     HOME: "/",
     PRODUCTS: "san-pham",
@@ -17,7 +18,9 @@ export const ROUTERS = {
     ORDER: "/chi-tiet-don-hang",
     ORDER_STORAGE: "/don-hang-ca-nhan",
     ORDERLIST: "/danh-sach-don-hang",
-    PAYMENT: "/thanh-toan"
+    PAYMENT: "/thanh-toan",
+    ADD_REVIEW: "/danh-gia-san-pham",
+    GET_REVIEW: "/hien-thi-danh-gia-san-pham"
   },
   ADMIN: {
     DASHBOARD: "/admin",

@@ -1,12 +1,58 @@
 import "./style.scss";
-import { memo } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { memo, useEffect, useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../../../component/admin/Sidebar/Sidebar";
 import HeaderAdmin from "../header/header";
 import { UserProvider } from "../../../../middleware/UserContext";
 import { NotificationProvider } from "../../../../middleware/NotificationContext";
+import { ROUTERS } from "../../../../utils/router";
+import NotFoundPage from "../../../../component/user/NotFoundPage";
+import LoadingSpinner from "../../../../component/general/LoadingSpinner";
 
 const AdminLayout = (props) => {
+  const [isAuthorized, setIsAuthorized] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setIsAuthorized(false);
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch("http://localhost:3001/admin", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(response);
+        if (!response.ok) {
+          setIsAuthorized(false);
+          return;
+        }
+        setIsAuthorized(true);
+      } catch (error) {
+        console.error("Lỗi xác thực:", error.message);
+        setIsAuthorized(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthorization();
+  }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!isAuthorized) {
+    return <NotFoundPage replace />;
+  }
   return (
     <UserProvider>
       <NotificationProvider>

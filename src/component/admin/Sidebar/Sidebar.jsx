@@ -4,10 +4,10 @@ import { ROUTERS } from "../../../utils/router";
 import "./style.scss";
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState(null); // State quản lý thẻ đang được chọn
+  const [activeItem, setActiveItem] = useState(null);
 
   const handleClick = (item) => {
-    setActiveItem((prev) => (prev === item ? null : item)); // Toggle trạng thái
+    setActiveItem((prev) => (prev === item ? null : item));
   };
 
   return (

@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
-import "./style.scss"; // Đảm bảo bạn có các style cần thiết
+import "./style.scss";
 
 const NotificationComponent = ({ message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 5000); // Tăng thời gian lên 5 giây
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [onClose]);
 
   return (
     <div className="notification">
-      <div className="line-animation"></div> {/* Đường viền chạy xung quanh */}
+      <div className="line-animation"></div>
       <div className="message">{message}</div>
     </div>
   );
@@ -25,7 +25,6 @@ export const NotificationContainer = () => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, message }]);
 
-    // Tự động xóa thông báo sau 3 giây
     setTimeout(() => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, 3000);

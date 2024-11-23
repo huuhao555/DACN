@@ -64,7 +64,18 @@
         }
       }
     }
+    .order-bottom {
+      p {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
+        span {
+          text-align: right;
+          margin-right: 100px;
+        }
+      }
+    }
     .order-total {
       margin-top: 20px;
       font-size: 18px;

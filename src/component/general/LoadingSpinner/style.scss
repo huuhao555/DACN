@@ -1,0 +1,43 @@
+.loading-spinner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff5f5;
+
+  .spinner {
+    position: relative;
+    width: 100px;
+    height: 100px;
+
+    .circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 4px solid transparent;
+      border-top-color: #d70018;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

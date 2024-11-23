@@ -8,7 +8,10 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible
 } from "react-icons/ai";
+import { ROUTERS } from "../../../../../utils/router";
+import { useNavigate } from "react-router-dom";
 const CancelledOrders = () => {
+  const navigator = useNavigate();
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
   const [isTableVisible, setTableVisible] = useState(false);
@@ -39,19 +42,22 @@ const CancelledOrders = () => {
 
     fetchPendingOrders();
   }, [user]);
-  console.log(orders);
+
   return (
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
           {orders?.map((order, orderIndex) => (
             <div key={order.id} className="order">
-              <AiOutlineDownCircle
-                className="icon-down"
+              <button
+                className="btn-confirm"
                 onClick={() => {
-                  setTableVisible(!isTableVisible);
+                  navigator(ROUTERS.USER.ADD_REVIEW);
                 }}
-              />
+              >
+                Đánh giá sản phẩm
+              </button>
+
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
               <p>Địa chỉ: {order.shippingAddress.address}</p>
@@ -60,6 +66,12 @@ const CancelledOrders = () => {
               <p>Mã đơn hàng: {order._id} </p>
               <h3 className="text-order">
                 Chi tiết đơn hàng
+                <AiOutlineDownCircle
+                  className="icon-down"
+                  onClick={() => {
+                    setTableVisible(!isTableVisible);
+                  }}
+                />
                 <span
                   style={{
                     fontSize: "16px",
@@ -81,12 +93,14 @@ const CancelledOrders = () => {
                       <th>Giá</th>
                       <th>Số lượng</th>
                       <th>Tổng tiền</th>
+                      <th>Đánh giá</th>
                     </tr>
                   </thead>
                   <tbody>
                     {order?.products?.map((item, itemIndex) => {
+                      console.log(item);
                       return (
-                        <tr key={item?.productId?.id}>
+                        <tr key={item?.productId?._id}>
                           <td>{itemIndex + 1}</td>
                           <td>
                             <img
@@ -108,8 +122,22 @@ const CancelledOrders = () => {
                           <td>
                             {(
                               item?.productId?.prices * item.quantity
-                            ).toLocaleString("vi-VN")}
+                            ).toLocaleString("vi-VN")}{" "}
                             VNĐ
+                          </td>
+                          <td>
+                            {order.status === "Delivered" && (
+                              <button
+                                className="review-button"
+                                onClick={() =>
+                                  navigator(ROUTERS.USER.ADD_REVIEW, {
+                                    state: { productId: item?.productId?._id }
+                                  })
+                                }
+                              >
+                                Đánh giá
+                              </button>
+                            )}
                           </td>
                         </tr>
                       );
@@ -117,11 +145,18 @@ const CancelledOrders = () => {
                   </tbody>
                 </table>
               )}
+
               <div className="order-bottom">
                 <h3>Chi tiết thanh toán</h3>
                 <p>
                   Tổng tiền hàng:
                   <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
+                </p>
+                <p>
+                  VAT:
+                  <span>
+                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                  </span>
                 </p>
                 <p>
                   Chi phí vận chuyển:

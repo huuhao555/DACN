@@ -1,16 +1,22 @@
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, useContext } from "react";
 import "./style.scss";
 import { AiOutlineRight, AiOutlinePhone } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import ProductsSlideComponent from "../../../component/user/productSlide/index";
 import SlideBanner from "../../../component/user/slideBaner";
+import { UserContext } from "../../../middleware/UserContext";
+import LoadingSpinner from "../../../component/general/LoadingSpinner";
 
 const HomePage = () => {
   const navigator = useNavigate();
   const [products, setProducts] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const { user } = useContext(UserContext) || {};
+  const [isLoading, setIsLoading] = useState(true); // Trạng thái loading
+
+  console.log(user);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,6 +30,8 @@ const HomePage = () => {
         setProducts(data.data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+      } finally {
+        setTimeout(() => setIsLoading(false), 200);
       }
     };
 
@@ -122,6 +130,11 @@ const HomePage = () => {
       path: ROUTERS.USER.PRODUCT_TYPE
     }
   ]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div>
       <div className="header-content">

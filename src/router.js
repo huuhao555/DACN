@@ -34,27 +34,14 @@ import VerifyOtp from "./pages/users/auth/VerifyOtp/index.jsx";
 import OrderPage from "./pages/users/paymentPage/index.jsx";
 import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
 import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
+import AddReview from "./component/user/AddReview/index.jsx";
+import PrivateAdminRoute from "./middleware/PrivateAdminRoute.jsx";
+import NotFoundPage from "./component/user/NotFoundPage/index.jsx";
+
 const RouterCustom = () => {
   return (
     <Routes>
-      <Route element={<MasterLayout />}>
-        <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
-        <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
-        <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
-        <Route path={ROUTERS.USER.ORDERLOOKUP} element={<OrderLookup />} />
-        <Route path={ROUTERS.USER.ORDER_STORAGE} element={<OrderStorage />} />
-        <Route
-          path={`${ROUTERS.USER.DETAILS}/:id`}
-          element={<ProductDetailsPage />}
-        />
-        <Route path={`${ROUTERS.USER.CART}/:id`} element={<CartPage />} />
-        <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
-        <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
-        <Route path={ROUTERS.USER.ORDER} element={<OrderPage />} />
-
-        <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
-      </Route>
+      <Route path={ROUTERS.NOTFOUND} element={<NotFoundPage />} />
 
       <Route element={<AdminLayout />}>
         <Route path={ROUTERS.ADMIN.DASHBOARD} element={<Dashboard />} />
@@ -100,6 +87,27 @@ const RouterCustom = () => {
           element={<UpdateProduct />}
         />
       </Route>
+
+      <Route element={<MasterLayout />}>
+        <Route path={ROUTERS.USER.HOME} element={<HomePage />} />
+        <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
+        <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
+        <Route path={ROUTERS.USER.ORDERLOOKUP} element={<OrderLookup />} />
+
+        <Route path={ROUTERS.USER.ADD_REVIEW} element={<AddReview />} />
+        <Route path={ROUTERS.USER.ORDER_STORAGE} element={<OrderStorage />} />
+        <Route
+          path={`${ROUTERS.USER.DETAILS}/:id`}
+          element={<ProductDetailsPage />}
+        />
+        <Route path={`${ROUTERS.USER.CART}/:id`} element={<CartPage />} />
+        <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
+        <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
+        <Route path={ROUTERS.USER.ORDER} element={<OrderPage />} />
+        <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
+      </Route>
+
       <Route element={<ProfilePageLayout />}>
         <Route
           path={ROUTERS.USERPROFILE.ACCOUNT_INFO}

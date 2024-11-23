@@ -120,32 +120,23 @@ const CancelledOrdersAdmin = () => {
                 <h3>Chi tiết thanh toán</h3>
                 <p>
                   Tổng tiền hàng:
-                  <span>{order.totalPrice.toLocaleString("vi-VN")} VNĐ</span>
+                  <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
+                </p>
+                <p>
+                  VAT:
+                  <span>
+                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                  </span>
                 </p>
                 <p>
                   Chi phí vận chuyển:
-                  {order.shippingFee === 0 ? (
-                    <span className="shipping-fee">
-                      <span
-                        style={{
-                          textDecoration: "line-through"
-                        }}
-                      >
-                        {(200000).toLocaleString("vi-VN")} VNĐ
-                      </span>
-                      <span style={{ marginLeft: "10px" }}>0 VNĐ</span>
-                    </span>
-                  ) : (
-                    <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
-                  )}
+                  <span>{order.shippingFee?.toLocaleString("vi-VN")} VNĐ</span>
                 </p>
 
                 <p>
                   Tổng cộng:
                   <span style={{ marginLeft: "10px" }}>
-                    {(order.orderTotal + order.shippingFee).toLocaleString(
-                      "vi-VN"
-                    )}{" "}
+                    {order.orderTotal.toLocaleString("vi-VN")}
                     VNĐ
                   </span>
                 </p>

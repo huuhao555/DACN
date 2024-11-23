@@ -18,14 +18,14 @@ const OrderLookup = () => {
   const [value, setValue] = useState("");
 
   const handlePriceRange = async (id) => {
-    console.log(id);
     try {
       const response = await fetch(`http://localhost:3001/api/order/get/${id}`);
       if (!response.ok) {
         throw new Error(response.statusText);
       }
       const data = await response.json();
-      console.log(data.data);
+      console.log(data);
+      setSearchTerm(data.data);
 
       setOrderInfo({
         buyerName: data.data.name,
@@ -33,14 +33,14 @@ const OrderLookup = () => {
         orderNumber: data.data._id,
         products: data.data.products,
         totalAmount: data.data.totalPrice,
-        orderDate: data.data.updatedAt,
+        orderDate: data.data.createdAt,
         status: data.data.status
       });
-      setSearchTerm(data.data.products);
     } catch (error) {
       alert("Tra cứu đơn hàng thất bại");
     }
   };
+  console.log(searchTerm);
 
   return (
     <div className="order-lookup-container">
@@ -76,40 +76,72 @@ const OrderLookup = () => {
           </p>
         </div>
         {searchTerm && (
-          <div className="order-products">
-            <h3>Chi tiết sản phẩm</h3>
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th>Tên sản phẩm</th>
-                  <th>Số lượng</th>
-                  <th>Giá</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(searchTerm) && searchTerm.length > 0 ? (
-                  searchTerm.map((product, index) => (
-                    <tr key={index}>
-                      <td>{product.productId.name}</td>
-                      <td>{product.quantity}</td>
-                      <td>
-                        {product.productId.prices.toLocaleString("vi-VN")} VND
-                      </td>
-                    </tr>
-                  ))
-                ) : (
+          <div>
+            <div className="order-products">
+              <h3>Chi tiết sản phẩm</h3>
+              <table className="product-table">
+                <thead>
                   <tr>
-                    <td colSpan="3">Không có sản phẩm</td>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {searchTerm?.products.length > 0 ? (
+                    searchTerm?.products.map((product, index) => {
+                      console.log(product);
+                      console.log(searchTerm);
+                      return (
+                        <tr key={index}>
+                          <td>{product?.productId.name}</td>
+                          <td>{product?.quantity}</td>
+                          <td>
+                            {product?.productId?.prices.toLocaleString("vi-VN")}{" "}
+                            VND
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="3">Không có sản phẩm</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="order-bottom">
+              <h3>Chi tiết thanh toán</h3>
+              <p>
+                Tổng tiền hàng:
+                <span>
+                  {searchTerm?.totalPrice?.toLocaleString("vi-VN")} VNĐ
+                </span>
+              </p>
+              <p>
+                VAT:
+                <span>
+                  {parseInt(searchTerm?.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                </span>
+              </p>
+              <p>
+                Chi phí vận chuyển:
+                <span>
+                  {searchTerm?.shippingFee?.toLocaleString("vi-VN")} VNĐ
+                </span>
+              </p>
+
+              <p>
+                Tổng cộng:
+                <span style={{ marginLeft: "10px" }}>
+                  {searchTerm?.orderTotal?.toLocaleString("vi-VN")}
+                  VNĐ
+                </span>
+              </p>
+            </div>
           </div>
         )}
-        <div className="order-total">
-          <strong>Tổng cộng:</strong>{" "}
-          {orderInfo.totalAmount.toLocaleString("vi-VN")} VND
-        </div>
       </div>
     </div>
   );

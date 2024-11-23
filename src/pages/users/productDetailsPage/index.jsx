@@ -4,22 +4,43 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import ProductsSlideComponent from "../../../component/user/productSlide";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../middleware/UserContext";
 import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
+import ReviewSection from "../../../component/user/ReviewProduct";
 const ProductDetailsPage = () => {
+  const location = useLocation();
+
+  const { pathname } = useLocation();
+
+  const { product } = location.state || {};
   const { user, updateCartCount } = useContext(UserContext) || {};
   const { notifications, addNotification } = NotificationContainer();
 
-  const { pathname } = useLocation();
+  const [review, setReview] = useState();
+  const fetchDataReview = async () => {
+    const productId = product?._id;
+    console.log(productId);
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/review/get-review/${productId}`
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const data = await response.json();
+      setReview(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
+    fetchDataReview();
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const location = useLocation();
-  const { product } = location.state || {};
   const handleAddToCart = async () => {
     if (!user) {
       alert("Vui lòng đăng nhập");
@@ -51,7 +72,6 @@ const ProductDetailsPage = () => {
       const updatedCount = dataCart.data.products.length;
 
       updateCartCount(updatedCount);
-      // alert("Thêm vào giỏ hàng thành công");
     } catch (error) {
       console.error("Failed to add product to cart:", error);
     }
@@ -84,6 +104,32 @@ const ProductDetailsPage = () => {
                       <div className="info-top">
                         <div className="product-name">
                           <h1>{`${product.company} ${product.name} `} </h1>
+                          <div className="average-rating">
+                            <div className="rating-stars">
+                              {Array.from({ length: 5 }, (_, index) => {
+                                const filledPercentage = Math.min(
+                                  Math.max(
+                                    (product.averageRating - index) * 100,
+                                    0
+                                  ),
+                                  100
+                                );
+                                return (
+                                  <div
+                                    key={index}
+                                    className="star"
+                                    style={{
+                                      background: `linear-gradient(
+                                      to right,
+                                      #ffcc00 ${filledPercentage}%,
+                                      #ddd ${filledPercentage}%
+                                    )`
+                                    }}
+                                  ></div>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
                         {/* <div className="product-rating">
                           <span className="number">0.0</span>
@@ -212,12 +258,11 @@ const ProductDetailsPage = () => {
           <Notification
             key={notification.id}
             message={notification.message}
-            onClose={() => {
-              // Dọn dẹp thông báo
-            }}
+            onClose={() => {}}
           />
         ))}
       </div>
+      <ReviewSection productId={product?._id} />
     </div>
   );
 };

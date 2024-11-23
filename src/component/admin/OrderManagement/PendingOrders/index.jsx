@@ -56,7 +56,6 @@ const PendingOrdersAdmin = () => {
       const data = await response.json();
       console.log(data);
 
-      // Refresh orders by calling fetchPendingOrders
       fetchPendingOrders();
     } catch (error) {
       console.error("Error submitting order:", error);
@@ -79,7 +78,6 @@ const PendingOrdersAdmin = () => {
       const data = await response.json();
       console.log(data);
 
-      // Refresh orders by calling fetchPendingOrders
       fetchPendingOrders();
     } catch (error) {
       console.error("Error submitting order:", error);
@@ -193,6 +191,12 @@ const PendingOrdersAdmin = () => {
                   <p>
                     Tổng tiền hàng:
                     <span>{order.totalPrice?.toLocaleString("vi-VN")} VNĐ</span>
+                  </p>
+                  <p>
+                    VAT:
+                    <span>
+                      {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                    </span>
                   </p>
                   <p>
                     Chi phí vận chuyển:

@@ -127,6 +127,8 @@ const ProductPage = () => {
   // ]);
 
   const [suggestions, setSuggestions] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [noResults, setNoResults] = useState(false);
 
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
@@ -143,6 +145,7 @@ const ProductPage = () => {
     }, []);
     setProducts(filteredProducts);
     setSuggestions(filteredProducts);
+    setFilteredProducts(filteredProducts);
   };
 
   const [priceMin, setPriceMin] = useState(0);
@@ -154,9 +157,6 @@ const ProductPage = () => {
   const handleOptionMax = (e) => {
     setPriceMax(e.target.value);
   };
-
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [noResults, setNoResults] = useState(false);
 
   const handlePriceRange = () => {
     const min = parseFloat(priceMin);
@@ -229,6 +229,7 @@ const ProductPage = () => {
     setFilteredProducts([]);
     setActiveTag(null);
   };
+
   return (
     <>
       <Breadcrumb />
@@ -347,85 +348,114 @@ const ProductPage = () => {
             ) : (
               <div className="product-list">
                 {products.length > 0 ? (
-                  products.map((product) => (
-                    <div className="product-item" key={product._id}>
-                      <div className="product-item-image">
-                        <Link
-                          to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                          state={{ product }}
-                        >
-                          <img
-                            className="add-to-img"
-                            src={product.imageUrl}
-                            alt={product.name}
-                          />
-                        </Link>
-                      </div>
+                  products.map((product) => {
+                    console.log(product);
+                    return (
+                      <div className="product-item" key={product._id}>
+                        <div className="product-item-image">
+                          <Link
+                            to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                            state={{ product }}
+                          >
+                            <img
+                              className="add-to-img"
+                              src={product.imageUrl}
+                              alt={product.name}
+                            />
+                          </Link>
+                        </div>
 
-                      <div className="product-item-bottom">
-                        <Link
-                          to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                          state={{ product }}
-                        >
-                          <div className="item-product-bottom">
-                            <h3>{` ${product.company} ${product.name}`}</h3>
-                            <div className="proloop-technical">
-                              {[
-                                {
-                                  tag: "ssd",
-                                  icon: <BsDeviceSsdFill />,
-                                  value: product.memory
-                                },
-                                {
-                                  tag: "lcd",
-                                  icon: <PiFrameCornersBold />,
-                                  value: `${product.inches} inch ${product.screenResolution}`
-                                },
-                                {
-                                  tag: "ram",
-                                  icon: <FaMemory />,
-                                  value: product.ram
-                                },
-                                {
-                                  tag: "cpu",
-                                  icon: <RiCpuLine />,
-                                  value: product.cpu
-                                }
-                              ].map((item) => (
-                                <div
-                                  className="proloop-technical--line"
-                                  data-tag={item.tag}
-                                  key={item.tag}
-                                >
-                                  {item.icon}
-                                  <span>{item.value}</span>
-                                </div>
-                              ))}
+                        <div className="product-item-bottom">
+                          <Link
+                            to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                            state={{ product }}
+                          >
+                            <div className="item-product-bottom">
+                              <h3>{` ${product.company} ${product.name}`}</h3>
+                              <div className="proloop-technical">
+                                {[
+                                  {
+                                    tag: "ssd",
+                                    icon: <BsDeviceSsdFill />,
+                                    value: product.memory
+                                  },
+                                  {
+                                    tag: "lcd",
+                                    icon: <PiFrameCornersBold />,
+                                    value: `${product.inches} inch ${product.screenResolution}`
+                                  },
+                                  {
+                                    tag: "ram",
+                                    icon: <FaMemory />,
+                                    value: product.ram
+                                  },
+                                  {
+                                    tag: "cpu",
+                                    icon: <RiCpuLine />,
+                                    value: product.cpu
+                                  }
+                                ].map((item) => (
+                                  <div
+                                    className="proloop-technical--line"
+                                    data-tag={item.tag}
+                                    key={item.tag}
+                                  >
+                                    {item.icon}
+                                    <span>{item.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              <p>
+                                {product.prices.toLocaleString("vi-VN")
+                                  ? product.prices.toLocaleString("vi-VN")
+                                  : "N/A"}
+                                VNĐ
+                              </p>{" "}
                             </div>
-                            <p>
-                              {product.prices.toLocaleString("vi-VN")
-                                ? product.prices.toLocaleString("vi-VN")
-                                : "N/A"}
-                              VNĐ
-                            </p>{" "}
+                          </Link>
+                        </div>
+                        <div className="average-rating">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }, (_, index) => {
+                              const filledPercentage = Math.min(
+                                Math.max(
+                                  (product.averageRating - index) * 100,
+                                  0
+                                ),
+                                100
+                              );
+                              return (
+                                <div
+                                  key={index}
+                                  className="star"
+                                  style={{
+                                    background: `linear-gradient(
+                                      to right,
+                                      #ffcc00 ${filledPercentage}%,
+                                      #ddd ${filledPercentage}%
+                                    )`
+                                  }}
+                                ></div>
+                              );
+                            })}
                           </div>
-                        </Link>
+                        </div>
+                        <div className="product-item-cart">
+                          <button
+                            onClick={() => {
+                              handleCart(product);
+                            }}
+                            type="submit"
+                            className="button btn-buyonl"
+                            name="buy-onl"
+                            id="buy-onl"
+                          >
+                            <span>Thêm vào giỏ</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="product-item-cart">
-                        <button
-                          onClick={() => {
-                            handleCart(product);
-                          }}
-                          type="submit"
-                          className="button btn-buyonl"
-                          name="buy-onl"
-                          id="buy-onl"
-                        >
-                          <span>Thêm vào giỏ</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p>No products available</p>
                 )}

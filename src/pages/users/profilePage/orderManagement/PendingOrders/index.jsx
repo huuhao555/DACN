@@ -26,7 +26,6 @@ const PendingOrders = () => {
         }
 
         const data = await response.json();
-        console.log(data);
         setOrders(data?.data.filter((order) => order.status === "Pending"));
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -131,6 +130,7 @@ const PendingOrders = () => {
                     </thead>
                     <tbody>
                       {order?.products?.map((item, itemIndex) => {
+                        console.log(order);
                         return (
                           <tr key={item?.productId?._id}>
                             <td>{itemIndex + 1}</td>
