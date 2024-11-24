@@ -1,145 +1,110 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../../../assets/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProductsGridComponent from "../../../component/user/productGrid";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./style.scss";
+import { ROUTERS } from "../../../utils/router";
+import { BsDeviceSsdFill } from "react-icons/bs";
+import { PiFrameCornersBold } from "react-icons/pi";
+import { FaMemory } from "react-icons/fa6";
+import { RiCpuLine } from "react-icons/ri";
+import { UserContext } from "../../../middleware/UserContext";
 const ProductType = () => {
   const location = useLocation();
   const { title } = location.state || {};
+  const [products, setProducts] = useState();
+  const { user } = useContext(UserContext) || {};
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/product/getAllProduct"
+        );
+        if (!response.ok) throw new Error(response.statusText);
 
-  const [dataMain] = useState([
-    {
-      laptop_ID: 1,
-      Type_name: "Macbook ",
-      Image: IMAGES.USER.PRODUCTS.MACBOOK.MAC_M1,
-      Price: 20000000,
-      Description: "This is product 1",
-      Company: "Apple",
-      Inches: "24",
-      ScreenResolution: "2k",
-      Cpu: "Intel Core i5 2.3GHz",
-      Ram: "8GB",
-      Memory: "128GB",
-      Gpu: "Intel Iris Plus Graphics 640",
-      OpSys: "macOS",
-      Weight: "1.37kg"
-    },
-    {
-      laptop_ID: 2,
-      Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
-      Price: 25000000,
-      Description:
-        "Dell's hello  premium ultraportable laptop with high-end build quality",
-      Company: "Dell ",
-      Inches: "13.3",
-      ScreenResolution: "4k",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "512GB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.2kg"
-    },
-    {
-      laptop_ID: 3,
-      Type_name: "Spectre x360",
-      Image: IMAGES.USER.PRODUCTS.HP.SPECTRE_16,
-      Price: 27000000,
-      Description:
-        "HP's premium convertible laptop with touch screen and stylus support",
-      Company: "HP",
-      Inches: "13.3",
-      ScreenResolution: "Full HD",
-      Cpu: "Intel Core i7-10510U",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "Intel UHD Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.3kg"
-    },
-    {
-      laptop_ID: 4,
-      Type_name: "ThinkPad X1 Carbon",
-      Image: IMAGES.USER.PRODUCTS.LENOVO.THINKPAD,
-      Price: 50000000,
-      Description:
-        "Business-class laptop with superior durability and performance",
-      Company: "Lenovo",
-      Inches: "14",
-      ScreenResolution: "Quad HD",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 11",
-      Weight: "1.09kg"
-    },
-    {
-      laptop_ID: 5,
-      Type_name: "ROG Strix G15",
-      Image: IMAGES.USER.PRODUCTS.ASUS.ROR_G16,
-      Price: 5000000,
-      Description:
-        "High-performance gaming laptop with powerful GPU and RGB lighting",
-      Company: "ASUS",
-      Inches: "15.6",
-      ScreenResolution: "Full HD 144Hz",
-      Cpu: "AMD Ryzen 9 5900HX",
-      Ram: "16GB",
-      Memory: "1TB",
-      Gpu: "NVIDIA GeForce RTX 3060",
-      OpSys: "Windows 11",
-      Weight: "2.3kg"
-    },
-    {
-      laptop_ID: 6,
-      Type_name: "XPS 13",
-      Image: IMAGES.USER.PRODUCTS.DELL.DELL_XPS,
-      Price: 15000000,
-      Description:
-        "Dell's premium ultraportable laptop with high-end build quality",
-      Company: "Dell ",
-      Inches: "13.3",
-      ScreenResolution: "4k",
-      Cpu: "Intel Core i7-1165G7",
-      Ram: "16GB",
-      Memory: "512GB",
-      Gpu: "Intel Iris Xe Graphics",
-      OpSys: "Windows 10",
-      Weight: "1.2kg"
-    }
-  ]);
+        const data = await response.json();
+        setProducts(Array.isArray(data.data) ? data.data : []);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const sorts = [
     "Mới nhất",
     "Giá thấp đến cao",
     "Giá cao đến thấp",
     "Đang giảm giá"
   ];
-  const [products, setProducts] = useState(dataMain);
   const [productsStart, setProductsStart] = useState([]);
   useEffect(() => {
     let filteredProducts = [];
-
-    switch (title) {
-      case "laptopmongnhẹ":
-        filteredProducts = dataMain.filter(
-          (product) => parseFloat(product.Weight) < 1.1
-        );
-        break;
-      case "laptopsinhvien":
-        filteredProducts = dataMain.filter(
-          (product) => parseFloat(product.Price) < 25000000
-        );
-        break;
-      default:
-        filteredProducts = dataMain;
+    if (products) {
+      switch (title) {
+        case "laptopmongnhẹ":
+          filteredProducts = products.filter(
+            (product) => parseFloat(product.weight) < 1.5
+          );
+          break;
+        case "laptopsinhvien":
+          filteredProducts = products.filter(
+            (product) => parseFloat(product.prices) < 25000000
+          );
+          break;
+        case "laptopgaming":
+          filteredProducts = products.filter(
+            (product) => parseFloat(product.prices) > 40000000
+          );
+          break;
+        case "laptopai":
+          filteredProducts = products.filter((product) => {
+            const screenResolution = product.screenResolution.toLowerCase();
+            if (screenResolution.includes("k")) {
+              const valueScreen = parseFloat(screenResolution);
+              return valueScreen >= 1;
+            }
+            return false;
+          });
+          break;
+        case "laptopdohoa":
+          filteredProducts = products.filter(
+            (product) => parseFloat(product.prices) > 50000000
+          );
+          break;
+        case "laptopvanphong":
+          filteredProducts = products.filter((product) => {
+            const memory = product.memory.toLowerCase();
+            if (memory.includes("tb")) {
+              const valueInGb = parseFloat(memory) * 1024;
+              console.log(valueInGb);
+              return valueInGb >= 500;
+            } else if (memory.includes("gb")) {
+              const valueInGb = parseFloat(memory);
+              return valueInGb >= 500;
+            }
+            return false;
+          });
+          break;
+        case "laptopcu":
+          filteredProducts = products.filter(
+            (product) => parseFloat(product.prices) < 15000000
+          );
+          break;
+        default:
+          filteredProducts = products;
+      }
     }
+    console.log(filteredProducts);
 
-    setProducts(filteredProducts);
-    setProductsStart(filteredProducts);
-  }, [title, dataMain]);
+    if (filteredProducts.length !== productsStart.length) {
+      setProducts(filteredProducts);
+      setProductsStart(filteredProducts);
+    }
+  }, [title, products, productsStart]);
 
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
@@ -150,8 +115,8 @@ const ProductType = () => {
 
     const searchProducts = products.filter((product) => {
       return (
-        product.Company.toLowerCase().includes(valueInputSearch) ||
-        product.Type_name.toLowerCase().includes(valueInputSearch)
+        product?.Company.toLowerCase().includes(valueInputSearch) ||
+        product?.Type_name.toLowerCase().includes(valueInputSearch)
       );
     }, []);
 
@@ -192,6 +157,32 @@ const ProductType = () => {
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(0);
 
+  const handleCart = async (product) => {
+    if (!user) alert("Vui lòng đăng nhập");
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: product._id,
+            quantity: 1,
+            prices: product.prices.toLocaleString("vi-VN")
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      alert("thêm giỏ hàng thành công");
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
   return (
     <div className="container-product product">
       <div className="row">
@@ -274,7 +265,91 @@ const ProductType = () => {
         <div className="col-lg-9">
           <div className="row">
             <div className="col-lg-9">
-              <ProductsGridComponent products={products} />
+              <div className="product-list">
+                {products?.length > 0 ? (
+                  products.map((product) => (
+                    <div className="product-item" key={product?._id}>
+                      <div className="product-item-image">
+                        <Link
+                          to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                          state={{ productId: product?._id }}
+                        >
+                          <img
+                            className="add-to-img"
+                            src={product?.imageUrl}
+                            alt={product?.name}
+                          />
+                        </Link>
+                      </div>
+
+                      <div className="product-item-bottom">
+                        <Link
+                          to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                          state={{ productId: product?._id }}
+                        >
+                          <div className="item-product-bottom">
+                            <h3>{product?.name}</h3>
+                            <div className="proloop-technical">
+                              {[
+                                {
+                                  tag: "ssd",
+                                  icon: <BsDeviceSsdFill />,
+                                  value: product?.memory
+                                },
+                                {
+                                  tag: "lcd",
+                                  icon: <PiFrameCornersBold />,
+                                  value: `${product?.inches} inch ${product?.screenResolution}`
+                                },
+                                {
+                                  tag: "ram",
+                                  icon: <FaMemory />,
+                                  value: product?.ram
+                                },
+                                {
+                                  tag: "cpu",
+                                  icon: <RiCpuLine />,
+                                  value: product?.cpu
+                                }
+                              ].map((item) => (
+                                <div
+                                  className="proloop-technical--line"
+                                  data-tag={item.tag}
+                                  key={item.tag}
+                                >
+                                  {item.icon}
+                                  <span>{item.value}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <p>
+                              {product?.prices.toLocaleString("vi-VN")
+                                ? product?.prices.toLocaleString("vi-VN")
+                                : "N/A"}
+                              đ
+                            </p>{" "}
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="product-item-cart">
+                        <button
+                          onClick={() => {
+                            handleCart(product);
+                          }}
+                          type="submit"
+                          className="button btn-buyonl"
+                          name="buy-onl"
+                          id="buy-onl"
+                        >
+                          <span>Thêm vào giỏ</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No products available</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

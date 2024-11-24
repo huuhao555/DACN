@@ -60,20 +60,11 @@ const HomePage = () => {
       name: "Laptop Gaming",
       title: "laptopgaming",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCT_TYPE,
-      child: [
-        {
-          name: "MAC",
-          path: ROUTERS.USER.PRODUCT_TYPE
-        },
-        {
-          name: "ASUS",
-          path: ROUTERS.USER.PRODUCT_TYPE
-        }
-      ]
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop AI",
+      title: "laptopai",
       icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
@@ -81,18 +72,7 @@ const HomePage = () => {
       name: "Laptop đồ họa ",
       title: "laptopdohoa",
       icon: <AiOutlineRight />,
-      path: ROUTERS.USER.PRODUCT_TYPE,
-      child: [
-        {
-          name: "Macbook Pro",
-
-          path: ROUTERS.USER.PRODUCT_TYPE
-        },
-        {
-          name: "Macbook Air",
-          path: ROUTERS.USER.PRODUCT_TYPE
-        }
-      ]
+      path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop Văn phòng",
