@@ -15,29 +15,30 @@ const ProductDetailsPage = () => {
 
   const { pathname } = useLocation();
 
-  const { product } = location.state || {};
+  const { productId } = location.state || {};
+
   const { user, updateCartCount } = useContext(UserContext) || {};
   const { notifications, addNotification } = NotificationContainer();
 
-  const [review, setReview] = useState();
-  const fetchDataReview = async () => {
-    const productId = product?._id;
-    console.log(productId);
+  const [product, setProduct] = useState();
+
+  const fetchProducts = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/review/get-review/${productId}`
+        `http://localhost:3001/api/product/get-details/${productId}`
       );
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error("Failed to fetch product-details");
       }
       const data = await response.json();
-      setReview(data);
+
+      setProduct(data?.data);
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
-    fetchDataReview();
+    fetchProducts();
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -89,13 +90,13 @@ const ProductDetailsPage = () => {
                   <div className="col-lg-4 product-image">
                     <Zoom>
                       <img
-                        src={product.imageUrl}
+                        src={product?.imageUrl}
                         style={{
                           width: "375px",
                           height: "300px",
                           objectFit: "contain"
                         }}
-                        alt={product.Type_name}
+                        alt={product?.Type_name}
                       />
                     </Zoom>
                   </div>
@@ -103,13 +104,13 @@ const ProductDetailsPage = () => {
                     <div className="info-content">
                       <div className="info-top">
                         <div className="product-name">
-                          <h1>{`${product.company} ${product.name} `} </h1>
+                          <h1>{`${product?.company} ${product?.name} `} </h1>
                           <div className="average-rating">
                             <div className="rating-stars">
                               {Array.from({ length: 5 }, (_, index) => {
                                 const filledPercentage = Math.min(
                                   Math.max(
-                                    (product.averageRating - index) * 100,
+                                    (product?.averageRating - index) * 100,
                                     0
                                   ),
                                   100
@@ -201,34 +202,34 @@ const ProductDetailsPage = () => {
                             <tr>
                               <th>Màn hình</th>
                               <td>
-                                {product.inches +
+                                {product?.inches +
                                   " inch " +
-                                  product.screenResolution}
+                                  product?.screenResolution}
                               </td>
                             </tr>
                             <tr>
                               <th>CPU</th>
-                              <td>{product.cpu}</td>
+                              <td>{product?.cpu}</td>
                             </tr>
                             <tr>
                               <th>RAM</th>
-                              <td>{product.ram}</td>
+                              <td>{product?.ram}</td>
                             </tr>
                             <tr>
                               <th>Ổ cứng</th>
-                              <td>{product.memory}</td>
+                              <td>{product?.memory}</td>
                             </tr>
                             <tr>
                               <th>Card đồ hoạ</th>
-                              <td>{product.gpu}</td>
+                              <td>{product?.gpu}</td>
                             </tr>
                             <tr>
                               <th>Trọng lượng</th>
-                              <td>{product.weight} </td>
+                              <td>{product?.weight} </td>
                             </tr>
                             <tr>
                               <th>Hệ điều hành</th>
-                              <td>{product.opsys}</td>
+                              <td>{product?.opsys}</td>
                             </tr>
                           </tbody>
                         </table>

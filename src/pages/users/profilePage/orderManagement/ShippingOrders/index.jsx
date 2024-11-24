@@ -11,7 +11,8 @@ import {
 const ShippingOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isTableVisible, setTableVisible] = useState(false);
+
+  const [visibleOrders, setVisibleOrders] = useState({});
 
   useEffect(() => {
     const fetchPendingOrders = async () => {
@@ -31,7 +32,7 @@ const ShippingOrders = () => {
         }
 
         const data = await response.json();
-        console.log(data);
+
         setOrders(data?.data.filter((order) => order.status === "Shipped"));
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -55,9 +56,7 @@ const ShippingOrders = () => {
       }
 
       const data = await response.json();
-      console.log(data);
 
-      // Fetch the updated list of shipped orders
       const userId = user?.dataUser?.id;
       const updatedOrdersResponse = await fetch(
         `http://localhost:3001/api/order/getAll/${userId}`
@@ -75,7 +74,12 @@ const ShippingOrders = () => {
       console.error("Error delivering order:", error);
     }
   };
-
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
   return (
     <div className="orders-list">
       {orders.length > 0 ? (
@@ -111,11 +115,9 @@ const ShippingOrders = () => {
               </h3>
               <AiOutlineDownCircle
                 className="icon-down"
-                onClick={() => {
-                  setTableVisible(!isTableVisible);
-                }}
+                onClick={() => toggleOrderVisibility(order._id)}
               />
-              {isTableVisible && (
+              {visibleOrders[order._id] && (
                 <table>
                   <thead>
                     <tr>

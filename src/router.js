@@ -35,8 +35,7 @@ import OrderPage from "./pages/users/paymentPage/index.jsx";
 import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
 import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
 import AddReview from "./component/user/AddReview/index.jsx";
-import PrivateAdminRoute from "./middleware/PrivateAdminRoute.jsx";
-import NotFoundPage from "./component/user/NotFoundPage/index.jsx";
+import NotFoundPage from "./component/general/NotFoundPage/index.jsx";
 
 const RouterCustom = () => {
   return (

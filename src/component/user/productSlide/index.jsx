@@ -52,7 +52,7 @@ const ProductsSlideComponent = () => {
           <div className="productSlide-item" key={product._id}>
             <Link
               to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-              state={{ product }}
+              state={{ productId: product?._id }}
             >
               <img
                 className="add-to-img"
@@ -62,7 +62,7 @@ const ProductsSlideComponent = () => {
             </Link>
             <Link
               to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-              state={{ product }}
+              state={{ productId: product?._id }}
             >
               <div className="item-productSlide-bottom">
                 <h3>{product.name}</h3>

@@ -14,9 +14,7 @@ const HomePage = () => {
   const [valueSearch, setValueSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isLoading, setIsLoading] = useState(true); // Trạng thái loading
-
-  console.log(user);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,9 +43,7 @@ const HomePage = () => {
       const filteredProducts = products.filter(
         (product) =>
           product.name.toLowerCase().includes(valueSearch.toLowerCase()) ||
-          product.productsTypeName
-            .toLowerCase()
-            .includes(valueSearch.toLowerCase())
+          product.company.toLowerCase().includes(valueSearch.toLowerCase())
       );
       setSuggestions(filteredProducts);
     }
@@ -55,7 +51,7 @@ const HomePage = () => {
 
   const handleClickSearch = (item) => {
     navigator(`${ROUTERS.USER.DETAILS}/${item._id}`, {
-      state: { product: item }
+      state: { productId: item._id }
     });
   };
 
@@ -179,7 +175,7 @@ const HomePage = () => {
                                 key={key}
                                 className="suggestion-item"
                               >
-                                {item.name}
+                                {`${item.company} ${item.name}`}
                               </div>
                             );
                           })}

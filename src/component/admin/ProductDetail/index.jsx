@@ -5,6 +5,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { UserContext } from "../../../middleware/UserContext";
 import "./style.scss";
+import ReviewSection from "../../user/ReviewProduct";
 
 const ProductDetail = () => {
   const { user, updateCartCount } = useContext(UserContext);
@@ -59,45 +60,45 @@ const ProductDetail = () => {
           <div className="col-lg-3 product-image-section">
             <Zoom>
               <img
-                src={product.imageUrl}
+                src={product?.imageUrl}
                 className="product-image"
-                alt={product.Type_name}
+                alt={product?.Type_name}
               />
             </Zoom>
           </div>
           <div className="col-lg-9 product-info-section">
             <div className="product-info-content">
-              <h1>{`${product.company} ${product.name}`}</h1>
+              <h1>{`${product?.company} ${product?.name}`}</h1>
               <div className="product-detail-block">
                 <table className="table-info">
                   <tbody>
                     <tr>
                       <th>Màn hình</th>
-                      <td>{`${product.inches} inch ${product.screenResolution}`}</td>
+                      <td>{`${product?.inches} inch ${product?.screenResolution}`}</td>
                     </tr>
                     <tr>
                       <th>CPU</th>
-                      <td>{product.cpu}</td>
+                      <td>{product?.cpu}</td>
                     </tr>
                     <tr>
                       <th>RAM</th>
-                      <td>{product.ram}</td>
+                      <td>{product?.ram}</td>
                     </tr>
                     <tr>
                       <th>Ổ cứng</th>
-                      <td>{product.memory}</td>
+                      <td>{product?.memory}</td>
                     </tr>
                     <tr>
                       <th>Card đồ hoạ</th>
-                      <td>{product.gpu}</td>
+                      <td>{product?.gpu}</td>
                     </tr>
                     <tr>
                       <th>Trọng lượng</th>
-                      <td>{product.weight}</td>
+                      <td>{product?.weight}</td>
                     </tr>
                     <tr>
                       <th>Hệ điều hành</th>
-                      <td>{product.opsys}</td>
+                      <td>{product?.opsys}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,6 +107,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <ReviewSection productId={product?._id} />
     </div>
   );
 };

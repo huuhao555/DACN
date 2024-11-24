@@ -6,8 +6,9 @@ import HeaderAdmin from "../header/header";
 import { UserProvider } from "../../../../middleware/UserContext";
 import { NotificationProvider } from "../../../../middleware/NotificationContext";
 import { ROUTERS } from "../../../../utils/router";
-import NotFoundPage from "../../../../component/user/NotFoundPage";
+
 import LoadingSpinner from "../../../../component/general/LoadingSpinner";
+import NotFoundPage from "../../../../component/general/NotFoundPage";
 
 const AdminLayout = (props) => {
   const [isAuthorized, setIsAuthorized] = useState(null);
@@ -29,7 +30,7 @@ const AdminLayout = (props) => {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log(response);
+
         if (!response.ok) {
           setIsAuthorized(false);
           return;

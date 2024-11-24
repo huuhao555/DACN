@@ -2,7 +2,7 @@ import React from "react";
 import "./style.scss";
 import Header from "../../../pages/users/theme/header";
 import Footer from "../../../pages/users/theme/footer";
-import LoadingSpinner from "../../general/LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 
 const NotFoundPage = () => {
   return (

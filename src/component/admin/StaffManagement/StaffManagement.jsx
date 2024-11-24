@@ -20,7 +20,7 @@ const StaffManagement = () => {
         const dataAllUser = await response.json();
         setDataUser(dataAllUser.data);
       } catch (error) {
-        console.log("Fetch error: ", error);
+        throw new Error(`Network response was not ok: ${error}`);
       }
     };
 

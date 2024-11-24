@@ -60,11 +60,11 @@ const ProductsGridComponent = () => {
     <div className="product-list">
       {products.length > 0 ? (
         products.map((product) => (
-          <div className="product-item" key={product._id}>
+          <div className="product-item" key={product?._id}>
             <div className="product-item-image">
               <Link
-                to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                state={{ product }}
+                to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                state={{ productId: product?._id }}
               >
                 <img
                   className="add-to-img"
@@ -76,8 +76,8 @@ const ProductsGridComponent = () => {
 
             <div className="product-item-bottom">
               <Link
-                to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                state={{ product }}
+                to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                state={{ productId: product?._id }}
               >
                 <div className="item-product-bottom">
                   <h3>{product.name}</h3>

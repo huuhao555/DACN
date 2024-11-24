@@ -24,7 +24,7 @@ const OrderLookup = () => {
         throw new Error(response.statusText);
       }
       const data = await response.json();
-      console.log(data);
+
       setSearchTerm(data.data);
 
       setOrderInfo({
@@ -40,7 +40,6 @@ const OrderLookup = () => {
       alert("Tra cứu đơn hàng thất bại");
     }
   };
-  console.log(searchTerm);
 
   return (
     <div className="order-lookup-container">
@@ -90,8 +89,6 @@ const OrderLookup = () => {
                 <tbody>
                   {searchTerm?.products.length > 0 ? (
                     searchTerm?.products.map((product, index) => {
-                      console.log(product);
-                      console.log(searchTerm);
                       return (
                         <tr key={index}>
                           <td>{product?.productId.name}</td>

@@ -11,8 +11,14 @@ import {
 const ShippingOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isTableVisible, setTableVisible] = useState(false);
+  const [visibleOrders, setVisibleOrders] = useState({});
 
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
   useEffect(() => {
     const fetchPendingOrders = async () => {
       const userId = user?.dataUser?.id;
@@ -37,7 +43,7 @@ const ShippingOrdersAdmin = () => {
 
     fetchPendingOrders();
   }, [user]);
-  console.log(orders);
+
   return (
     <div className="orders-list-admin">
       {orders.length > 0 ? (
@@ -64,11 +70,9 @@ const ShippingOrdersAdmin = () => {
               </h3>
               <AiOutlineDownCircle
                 className="icon-down-admin"
-                onClick={() => {
-                  setTableVisible(!isTableVisible);
-                }}
+                onClick={() => toggleOrderVisibility(order._id)}
               />
-              {isTableVisible && (
+              {visibleOrders[order._id] && (
                 <table>
                   <thead>
                     <tr>

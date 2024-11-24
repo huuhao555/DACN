@@ -11,8 +11,15 @@ import {
 const CancelledOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isTableVisible, setTableVisible] = useState(false);
 
+  const [visibleOrders, setVisibleOrders] = useState({});
+
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
   useEffect(() => {
     const fetchPendingOrders = async () => {
       const userId = user?.dataUser?.id;
@@ -39,19 +46,13 @@ const CancelledOrders = () => {
 
     fetchPendingOrders();
   }, [user]);
-  console.log(orders);
+
   return (
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
           {orders?.map((order, orderIndex) => (
             <div key={order.id} className="order">
-              <AiOutlineDownCircle
-                className="icon-down"
-                onClick={() => {
-                  setTableVisible(!isTableVisible);
-                }}
-              />
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
               <p>Địa chỉ: {order.shippingAddress.address}</p>
@@ -70,8 +71,11 @@ const CancelledOrders = () => {
                   {` (${order?.products?.length} sản phẩm)`}
                 </span>
               </h3>
-
-              {isTableVisible && (
+              <AiOutlineDownCircle
+                className="icon-down"
+                onClick={() => toggleOrderVisibility(order._id)}
+              />
+              {visibleOrders[order._id] && (
                 <table>
                   <thead>
                     <tr>
@@ -85,7 +89,6 @@ const CancelledOrders = () => {
                   </thead>
                   <tbody>
                     {order?.products?.map((item, itemIndex) => {
-                      console.log(order.orderTotal);
                       return (
                         <tr key={item?.productId?.id}>
                           <td>{itemIndex + 1}</td>

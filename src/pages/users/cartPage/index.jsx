@@ -36,7 +36,7 @@ const CartPage = () => {
       );
       if (!response.ok) throw new Error(response.statusText);
       const dataCart = await response.json();
-      console.log(dataCart);
+
       setCart(dataCart);
     } catch (error) {
       console.error("Failed to fetch count for users:", error);
@@ -130,7 +130,7 @@ const CartPage = () => {
       }
 
       const dataCart = await response.json();
-      console.log(dataCart.data);
+
       const updatedCount = dataCart.data.products.length;
       updateCartCount(updatedCount);
       setCart(dataCart?.data);
@@ -156,7 +156,7 @@ const CartPage = () => {
         throw new Error(response.statusText);
       }
       const dataCart = await response.json();
-      console.log(dataCart.data);
+
       const updatedCount = dataCart.data.products.length;
       updateCartCount(updatedCount);
       setCart(dataCart?.data);

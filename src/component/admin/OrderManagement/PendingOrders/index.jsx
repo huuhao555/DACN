@@ -54,7 +54,6 @@ const PendingOrdersAdmin = () => {
       }
 
       const data = await response.json();
-      console.log(data);
 
       fetchPendingOrders();
     } catch (error) {
@@ -76,7 +75,6 @@ const PendingOrdersAdmin = () => {
       }
 
       const data = await response.json();
-      console.log(data);
 
       fetchPendingOrders();
     } catch (error) {
@@ -88,11 +86,6 @@ const PendingOrdersAdmin = () => {
       {orders.length > 0 ? (
         <div>
           {orders?.map((order) => {
-            console.log(
-              order.orderTotal,
-              order.shippingFee,
-              order.orderTotal + order.shippingFee
-            );
             return (
               <div key={order._id} className="order-admin">
                 <button

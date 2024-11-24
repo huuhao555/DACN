@@ -8,19 +8,19 @@ const ReviewSection = ({ productId }) => {
   const [replyTexts, setReplyTexts] = useState({});
   const { user } = useContext(UserContext);
   const [averageRating, setAverageRating] = useState(0);
-  console.log(reviews);
 
   const fetchDataReview = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/review/get-review/${productId}`
+        `http://localhost:3001/api/product/get-details/${productId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch reviews");
       }
       const data = await response.json();
-      setAverageRating(data.averageRating);
-      setReviews(data.reviews);
+
+      setAverageRating(data?.data?.averageRating);
+      setReviews(data?.data?.reviews);
     } catch (error) {
       console.error(error);
     }
@@ -32,7 +32,7 @@ const ReviewSection = ({ productId }) => {
 
   const handleReplySubmit = async (reviewId) => {
     const replyText = replyTexts[reviewId];
-    if (!replyText.trim()) {
+    if (!replyText?.trim()) {
       alert("Vui lòng nhập nội dung phản hồi.");
       return;
     }
@@ -78,7 +78,7 @@ const ReviewSection = ({ productId }) => {
       <div className="review-section">
         <h2 className="review-heading">Đánh giá sản phẩm</h2>
         <div className="average-rating">
-          <span className="rating-value">{averageRating.toFixed(1)}</span>
+          <span className="rating-value">{averageRating?.toFixed(1)}</span>
           <div className="rating-stars">
             {Array.from({ length: 5 }, (_, index) => {
               const filledPercentage = Math.min(
@@ -103,7 +103,7 @@ const ReviewSection = ({ productId }) => {
         </div>
 
         <div className="reviews-list">
-          {reviews.map((review) => {
+          {reviews?.map((review) => {
             return (
               <div className="review-item" key={review._id}>
                 <div className="review-header">

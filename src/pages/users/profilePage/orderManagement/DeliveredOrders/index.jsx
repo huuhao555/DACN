@@ -14,8 +14,15 @@ const CancelledOrders = () => {
   const navigator = useNavigate();
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
-  const [isTableVisible, setTableVisible] = useState(false);
 
+  const [visibleOrders, setVisibleOrders] = useState({});
+
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
+  };
   useEffect(() => {
     const fetchPendingOrders = async () => {
       const userId = user?.dataUser?.id;
@@ -68,9 +75,7 @@ const CancelledOrders = () => {
                 Chi tiết đơn hàng
                 <AiOutlineDownCircle
                   className="icon-down"
-                  onClick={() => {
-                    setTableVisible(!isTableVisible);
-                  }}
+                  onClick={() => toggleOrderVisibility(order._id)}
                 />
                 <span
                   style={{
@@ -83,7 +88,7 @@ const CancelledOrders = () => {
                 </span>
               </h3>
 
-              {isTableVisible && (
+              {visibleOrders[order._id] && (
                 <table>
                   <thead>
                     <tr>
@@ -98,7 +103,6 @@ const CancelledOrders = () => {
                   </thead>
                   <tbody>
                     {order?.products?.map((item, itemIndex) => {
-                      console.log(item);
                       return (
                         <tr key={item?.productId?._id}>
                           <td>{itemIndex + 1}</td>

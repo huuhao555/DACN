@@ -13,6 +13,7 @@ import { UserContext } from "../../../middleware/UserContext";
 import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
+import LoadingSpinner from "../../../component/general/LoadingSpinner";
 const ProductPage = () => {
   const { notifications, addNotification } = NotificationContainer();
   const { user, updateCartCount } = useContext(UserContext);
@@ -20,6 +21,7 @@ const ProductPage = () => {
   const [productsAll, setProductsAll] = useState(products);
   const [activeTag, setActiveTag] = useState(null);
   const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,6 +41,8 @@ const ProductPage = () => {
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
+      } finally {
+        setTimeout(() => setIsLoading(false), 500);
       }
     };
 
@@ -140,7 +144,7 @@ const ProductPage = () => {
     const filteredProducts = productsAll.filter((product) => {
       return (
         product.name.toLowerCase().includes(valueInputSearch) ||
-        product.productsTypeName.toLowerCase().includes(valueInputSearch)
+        product.company.toLowerCase().includes(valueInputSearch)
       );
     }, []);
     setProducts(filteredProducts);
@@ -229,7 +233,9 @@ const ProductPage = () => {
     setFilteredProducts([]);
     setActiveTag(null);
   };
-
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <>
       <Breadcrumb />
@@ -249,7 +255,7 @@ const ProductPage = () => {
                 <div className="suggestions">
                   {suggestions.map((item) => (
                     <div key={item.laptop_ID} className="suggestion-item">
-                      {item.name}
+                      {`${item.company} ${item.name}`}
                     </div>
                   ))}
                 </div>
@@ -349,13 +355,12 @@ const ProductPage = () => {
               <div className="product-list">
                 {products.length > 0 ? (
                   products.map((product) => {
-                    console.log(product);
                     return (
                       <div className="product-item" key={product._id}>
                         <div className="product-item-image">
                           <Link
                             to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                            state={{ product }}
+                            state={{ productId: product._id }}
                           >
                             <img
                               className="add-to-img"
@@ -368,7 +373,7 @@ const ProductPage = () => {
                         <div className="product-item-bottom">
                           <Link
                             to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                            state={{ product }}
+                            state={{ productId: product._id }}
                           >
                             <div className="item-product-bottom">
                               <h3>{` ${product.company} ${product.name}`}</h3>

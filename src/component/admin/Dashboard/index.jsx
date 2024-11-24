@@ -114,12 +114,12 @@ const Dashboard = () => {
       const fetchCount = async () => {
         try {
           const response = await fetch(
-            "http://localhost:3001/api/order/getAll"
+            "http://localhost:3001/api/review/reviews/count"
           );
           if (!response.ok) throw new Error(response.statusText);
 
           const data = await response.json();
-          setCount(data?.data?.length);
+          setCount(data?.totalReviews);
         } catch (error) {
           console.error("Failed to fetch count for reviews:", error);
         }
@@ -129,7 +129,7 @@ const Dashboard = () => {
     }, []);
 
     return (
-      <Link to={ROUTERS.ADMIN.PURCHASE_HISTORY}>
+      <Link to={ROUTERS.ADMIN.MANAGE_PRODUCTS}>
         <div className="card orange">
           <div className="card-content">
             <h3>Tổng đánh giá</h3>
