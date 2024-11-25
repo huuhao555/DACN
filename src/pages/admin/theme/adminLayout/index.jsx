@@ -26,7 +26,7 @@ const AdminLayout = (props) => {
           return;
         }
 
-        const response = await fetch("http://localhost:3001/admin", {
+        const response = await fetch("http://localhost:3001/api/check/admin", {
           headers: {
             Authorization: `Bearer ${token}`
           }

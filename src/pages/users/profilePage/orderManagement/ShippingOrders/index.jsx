@@ -158,8 +158,8 @@ const ShippingOrders = () => {
                           <td>{item?.quantity}</td>
                           <td>
                             {(
-                              item?.productId?.prices * item.quantity
-                            ).toLocaleString("vi-VN")}{" "}
+                              item?.productId?.prices * item?.quantity
+                            )?.toLocaleString("vi-VN")}{" "}
                             VNĐ
                           </td>
                         </tr>
@@ -177,7 +177,7 @@ const ShippingOrders = () => {
                 <p>
                   VAT:
                   <span>
-                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                    {parseInt(order.VAT)?.toLocaleString("vi-VN")} VNĐ
                   </span>
                 </p>
                 <p>
@@ -188,7 +188,7 @@ const ShippingOrders = () => {
                 <p>
                   Tổng cộng:
                   <span style={{ marginLeft: "10px" }}>
-                    {order.orderTotal.toLocaleString("vi-VN")}
+                    {parseInt(order.orderTotal)?.toLocaleString("vi-VN")}
                     VNĐ
                   </span>
                 </p>

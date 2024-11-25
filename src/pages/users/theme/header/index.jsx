@@ -88,10 +88,10 @@ const Header = () => {
   };
 
   return (
-    <>
-      <div className="header-main">
-        <div className="container-fixed">
-          <div className="row">
+    <div className="wrap">
+      <div className="container-header">
+        <div className="row">
+          <div className="header-main">
             <div className="col-xl-3">
               <div className="header-logo">
                 <Link to={ROUTERS.USER.HOME}>
@@ -124,26 +124,28 @@ const Header = () => {
                     </button>
                     <span className="count-cart">{countCart}</span>
                   </li>
-                  <li className="profile-user" onClick={handleProfileClick}>
-                    <button>
-                      <AiOutlineUser />
-                    </button>
-                    {isShowProfile && !user && (
-                      <ul className="sub-profile">
-                        <li onClick={handleLoginClick}>Đăng nhập</li>
-                        <li onClick={handleSignUpClick}>Đăng kí</li>
-                        <li onClick={handleForgetClick}>Quên mật khẩu</li>
-                      </ul>
-                    )}
-                  </li>
-                  <li
-                    className="text-user"
-                    onClick={() => {
-                      navigate(ROUTERS.USERPROFILE.ACCOUNT_INFO);
-                    }}
-                  >
-                    {user && user.dataUser ? `${user.dataUser.name}` : ""}
-                  </li>
+                  <div className="account-info">
+                    <li className="profile-user" onClick={handleProfileClick}>
+                      <button>
+                        <AiOutlineUser />
+                      </button>
+                      {isShowProfile && !user && (
+                        <ul className="sub-profile">
+                          <li onClick={handleLoginClick}>Đăng nhập</li>
+                          <li onClick={handleSignUpClick}>Đăng kí</li>
+                          <li onClick={handleForgetClick}>Quên mật khẩu</li>
+                        </ul>
+                      )}
+                    </li>
+                    <li
+                      className="text-user"
+                      onClick={() => {
+                        navigate(ROUTERS.USERPROFILE.ACCOUNT_INFO);
+                      }}
+                    >
+                      {user && user.dataUser ? `${user.dataUser.name}` : ""}
+                    </li>
+                  </div>
                 </ul>
               </div>
             </div>
@@ -162,7 +164,7 @@ const Header = () => {
         isShowVerifyForm={isShowForgetForm}
         closeVerifyForm={closeForgetForm}
       />
-    </>
+    </div>
   );
 };
 

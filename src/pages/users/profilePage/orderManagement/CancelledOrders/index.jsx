@@ -130,7 +130,7 @@ const CancelledOrders = () => {
                 <p>
                   VAT:
                   <span>
-                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                    {parseInt(order.VAT)?.toLocaleString("vi-VN")} VNĐ
                   </span>
                 </p>
                 <p>

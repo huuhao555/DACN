@@ -7,7 +7,6 @@ const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
   const [visibleOrders, setVisibleOrders] = useState({});
-
   useEffect(() => {
     const fetchPendingOrders = async () => {
       const userId = user?.dataUser?.id;
@@ -26,6 +25,7 @@ const PendingOrders = () => {
         }
 
         const data = await response.json();
+        console.log(data);
         setOrders(data?.data.filter((order) => order.status === "Pending"));
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -74,14 +74,14 @@ const PendingOrders = () => {
       console.error("Error cancelling order:", error);
     }
   };
-
   return (
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
           {orders?.map((order) => {
+            console.log(order);
             const grandTotal =
-              order.totalPrice + parseInt(order.VATorder) + order.shippingFee;
+              order.totalPrice + parseInt(order.VAT) + order.shippingFee;
             return (
               <div key={order._id} className="order">
                 <button
@@ -94,11 +94,11 @@ const PendingOrders = () => {
                 </button>
 
                 <h2>Thông tin người nhận hàng</h2>
-                <p>Tên người nhận: {order.name}</p>
-                <p>Địa chỉ: {order.shippingAddress?.address}</p>
-                <p>Số điện thoại: {order.phone}</p>
-                <p>Trạng thái: {order.status}</p>
-                <p>Mã đơn hàng: {order._id} </p>
+                <p>Tên người nhận: {order?.name}</p>
+                <p>Địa chỉ: {order?.shippingAddress?.address}</p>
+                <p>Số điện thoại: {order?.phone}</p>
+                <p>Trạng thái: {order?.status}</p>
+                <p>Mã đơn hàng: {order?._id} </p>
 
                 <h3 className="text-order">
                   Chi tiết đơn hàng
@@ -177,7 +177,7 @@ const PendingOrders = () => {
                   <p>
                     VAT:
                     <span>
-                      {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                      {parseInt(order.VAT)?.toLocaleString("vi-VN")} VNĐ
                     </span>
                   </p>
                   <p>
@@ -190,7 +190,7 @@ const PendingOrders = () => {
                   <p>
                     Tổng cộng:
                     <span style={{ marginLeft: "10px" }}>
-                      {grandTotal.toLocaleString("vi-VN")} VNĐ
+                      {parseInt(grandTotal).toLocaleString("vi-VN")} VNĐ
                     </span>
                   </p>
                 </div>

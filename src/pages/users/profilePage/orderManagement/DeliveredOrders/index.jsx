@@ -16,7 +16,24 @@ const CancelledOrders = () => {
   const { user } = useContext(UserContext) || {};
 
   const [visibleOrders, setVisibleOrders] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState("");
 
+  const allProducts = orders.map((order) =>
+    order.products.map((product) => ({
+      id: product.productId._id,
+      name: product.productId.name
+    }))
+  );
+  const handleReview = () => {
+    if (!selectedProduct) {
+      alert("Vui lòng chọn sản phẩm để đánh giá!");
+      return;
+    }
+
+    navigator(ROUTERS.USER.ADD_REVIEW, {
+      state: { productId: selectedProduct }
+    });
+  };
   const toggleOrderVisibility = (orderId) => {
     setVisibleOrders((prev) => ({
       ...prev,
@@ -56,15 +73,6 @@ const CancelledOrders = () => {
         <div>
           {orders?.map((order, orderIndex) => (
             <div key={order.id} className="order">
-              <button
-                className="btn-confirm"
-                onClick={() => {
-                  navigator(ROUTERS.USER.ADD_REVIEW);
-                }}
-              >
-                Đánh giá sản phẩm
-              </button>
-
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
               <p>Địa chỉ: {order.shippingAddress.address}</p>
@@ -89,21 +97,20 @@ const CancelledOrders = () => {
               </h3>
 
               {visibleOrders[order._id] && (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>STT</th>
-                      <th>Hình sản phẩm</th>
-                      <th>Tên sản phẩm</th>
-                      <th>Giá</th>
-                      <th>Số lượng</th>
-                      <th>Tổng tiền</th>
-                      <th>Đánh giá</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {order?.products?.map((item, itemIndex) => {
-                      return (
+                <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Hình sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order?.products?.map((item, itemIndex) => (
                         <tr key={item?.productId?._id}>
                           <td>{itemIndex + 1}</td>
                           <td>
@@ -129,25 +136,33 @@ const CancelledOrders = () => {
                             ).toLocaleString("vi-VN")}{" "}
                             VNĐ
                           </td>
-                          <td>
-                            {order.status === "Delivered" && (
-                              <button
-                                className="review-button"
-                                onClick={() =>
-                                  navigator(ROUTERS.USER.ADD_REVIEW, {
-                                    state: { productId: item?.productId?._id }
-                                  })
-                                }
-                              >
-                                Đánh giá
-                              </button>
-                            )}
-                          </td>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="product-review-buttons">
+                    {/* <label>Chọn sản phẩm đánh giá: </label> */}
+                    <select
+                      value={selectedProduct || ""}
+                      onChange={(e) => setSelectedProduct(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Chọn sản phẩm
+                      </option>
+                      {order?.products?.map((item) => {
+                        console.log(item);
+                        return (
+                          <option key={item?._id} value={item?.productId?._id}>
+                            {item?.productId?.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <button className="review-button" onClick={handleReview}>
+                      Đánh giá
+                    </button>
+                  </div>
+                </div>
               )}
 
               <div className="order-bottom">
@@ -159,7 +174,7 @@ const CancelledOrders = () => {
                 <p>
                   VAT:
                   <span>
-                    {parseInt(order.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                    {parseInt(order.VAT)?.toLocaleString("vi-VN")} VNĐ
                   </span>
                 </p>
                 <p>
@@ -170,7 +185,7 @@ const CancelledOrders = () => {
                 <p>
                   Tổng cộng:
                   <span style={{ marginLeft: "10px" }}>
-                    {order.orderTotal.toLocaleString("vi-VN")}
+                    {parseInt(order.orderTotal)?.toLocaleString("vi-VN")}
                     VNĐ
                   </span>
                 </p>

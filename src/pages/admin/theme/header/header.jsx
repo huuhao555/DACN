@@ -1,7 +1,7 @@
 import { memo, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./headerAdmin.scss";
-
+import { BiDoorOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
 
@@ -24,8 +24,10 @@ const HeaderAdmin = () => {
             </div>
             <div className="col-xl-6"></div>
             <div className="col-xl-3">
-              <div className="log-out">
-                <button onClick={handleLogout}>Quay lại </button>
+              <div onClick={handleLogout} className="log-out">
+                {/* <button onClick={handleLogout}>Thoát về Trang chủ </button> */}
+                <BiDoorOpen />
+                Thoát
               </div>
             </div>
           </div>

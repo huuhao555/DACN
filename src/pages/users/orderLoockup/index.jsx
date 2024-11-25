@@ -81,6 +81,7 @@ const OrderLookup = () => {
               <table className="product-table">
                 <thead>
                   <tr>
+                    <th>Hình sản phẩm</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Giá</th>
@@ -89,9 +90,21 @@ const OrderLookup = () => {
                 <tbody>
                   {searchTerm?.products.length > 0 ? (
                     searchTerm?.products.map((product, index) => {
+                      console.log(product);
                       return (
                         <tr key={index}>
-                          <td>{product?.productId.name}</td>
+                          <td>
+                            <img
+                              style={{
+                                width: "100px",
+                                height: "auto",
+                                objectFit: "contain"
+                              }}
+                              src={product?.productId?.imageUrl}
+                              alt={product?.productId?.name}
+                            />
+                          </td>
+                          <td>{product?.productId?.name}</td>
                           <td>{product?.quantity}</td>
                           <td>
                             {product?.productId?.prices.toLocaleString("vi-VN")}{" "}
@@ -119,7 +132,7 @@ const OrderLookup = () => {
               <p>
                 VAT:
                 <span>
-                  {parseInt(searchTerm?.VATorder)?.toLocaleString("vi-VN")} VNĐ
+                  {parseInt(searchTerm?.VAT)?.toLocaleString("vi-VN")} VNĐ
                 </span>
               </p>
               <p>
@@ -132,7 +145,7 @@ const OrderLookup = () => {
               <p>
                 Tổng cộng:
                 <span style={{ marginLeft: "10px" }}>
-                  {searchTerm?.orderTotal?.toLocaleString("vi-VN")}
+                  {parseInt(searchTerm?.orderTotal)?.toLocaleString("vi-VN")}
                   VNĐ
                 </span>
               </p>

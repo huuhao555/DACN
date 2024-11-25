@@ -11,6 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
   const [capVal, setCapVal] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const [isShowLoginForm, setShowLoginForm] = useState(false);
   const closeLoginForm = () => {
@@ -39,9 +40,15 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
   const onHandlSignUp = async () => {
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(formData.email);
-    if (!isCheckEmail) return alert("Email không hợp lệ");
-    if (formData.password !== formData.confirmPassword)
-      return alert("Mật khẩu không trùng nhau");
+    if (!isCheckEmail) {
+      return setMessage("Email không hợp lệ");
+    } else if (formData.password !== formData.confirmPassword) {
+      return setMessage("Mật khẩu không trùng nhau");
+    } else if (!capVal) {
+      return setMessage("Vui lòng chọn ReCap");
+    }
+    // if (formData.password !== formData.confirmPassword)
+    //   return setMessage("Mật khẩu không trùng nhau");
 
     try {
       const response = await fetch("http://localhost:3001/api/user/sign-up", {
@@ -135,14 +142,13 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
                 value={formData.phone}
                 onChange={handleInputChange}
               />
+              <label>{message}</label>
               <ReCAPTCHA
                 sitekey="6Lfg1HgqAAAAABvsZaTk3cTi163YFQPX-HoX_j6Z"
                 // 6Lfg1HgqAAAAAAJm9IeG9pcuyR9SzYWAmOTWgOfR
                 onChange={(token) => setCapVal(token)}
               />
-              <button disabled={!capVal} onClick={onHandlSignUp}>
-                Đăng ký
-              </button>
+              <button onClick={onHandlSignUp}>Đăng ký</button>
 
               <span className="signup">
                 Bạn đã có tài khoản?

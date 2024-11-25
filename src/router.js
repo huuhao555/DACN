@@ -103,7 +103,7 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.LOGIN} element={<LoginPage />} />
         <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
         <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
-        <Route path={ROUTERS.USER.ORDER} element={<OrderPage />} />
+        <Route path={ROUTERS.USER.ORDER_DETAIL} element={<OrderPage />} />
         <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
       </Route>
 

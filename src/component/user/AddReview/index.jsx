@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+
 import "./style.scss";
 import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +10,11 @@ const AddReview = () => {
   const navigator = useNavigate();
   const [item, setItem] = useState([]);
   const location = useLocation();
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const { productId } = location.state || {};
 
   let userId = user?.dataUser?.id;

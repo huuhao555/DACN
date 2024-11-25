@@ -22,8 +22,14 @@
     margin-top: 25px;
     display: flex;
     justify-content: center;
-    a:last-child {
-      color: #fff;
+    align-items: center;
+    color: white;
+    svg {
+      font-size: 30px;
+      fill: white;
+    }
+    &:hover {
+      cursor: pointer;
     }
   }
 }

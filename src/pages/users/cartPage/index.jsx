@@ -47,7 +47,7 @@ const CartPage = () => {
     getAllCart();
   }, [getAllCart]);
   const paymentCart = async (selectedProducts, userID) => {
-    navigator(ROUTERS.USER.ORDER, {
+    navigator(ROUTERS.USER.ORDER_DETAIL, {
       state: {
         selectedProducts
       }
