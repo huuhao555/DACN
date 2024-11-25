@@ -9,6 +9,7 @@ import { ROUTERS } from "../../../../utils/router";
 
 import LoadingSpinner from "../../../../component/general/LoadingSpinner";
 import NotFoundPage from "../../../../component/general/NotFoundPage";
+import ChatbotWrapper from "../../../../component/general/ChatBox";
 
 const AdminLayout = (props) => {
   const [isAuthorized, setIsAuthorized] = useState(null);
@@ -57,6 +58,7 @@ const AdminLayout = (props) => {
   return (
     <UserProvider>
       <NotificationProvider>
+        {/* <ChatbotWrapper /> */}
         <div {...props} className="container-layout">
           <HeaderAdmin />
           <div className="row">

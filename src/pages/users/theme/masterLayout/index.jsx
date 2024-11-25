@@ -5,10 +5,13 @@ import Footer from "../footer";
 import Header from "../header";
 import { UserProvider } from "../../../../middleware/UserContext";
 import { CartProvider } from "../../../../middleware/CartContext";
+import ChatbotWrapper from "../../../../component/general/ChatBox";
 
 const MasterLayout = (props) => {
   return (
     <UserProvider>
+      <ChatbotWrapper />
+
       <CartProvider>
         <div {...props}>
           <Header />

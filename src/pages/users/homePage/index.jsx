@@ -59,50 +59,50 @@ const HomePage = () => {
     {
       name: "Laptop Gaming",
       title: "laptopgaming",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop AI",
       title: "laptopai",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop đồ họa ",
       title: "laptopdohoa",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop Văn phòng",
       title: "laptopvanphong",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
 
     {
       name: "Laptop Sinh viên",
       title: "laptopsinhvien",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop cảm ứng",
       title: "laptopcamung",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop mỏng nhẹ",
       title: "laptopmongnhẹ",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     },
     {
       name: "Laptop cũ",
       title: "laptopcu",
-      icon: <AiOutlineRight />,
+      // icon: <AiOutlineRight />,
       path: ROUTERS.USER.PRODUCT_TYPE
     }
   ]);
