@@ -1,3 +1,6 @@
+@use "sass:map";
+@import "../../../styles/pages/_theme.scss";
+
 .product-body {
   padding-top: 100px;
   border-bottom: 1px solid #caced4;
@@ -62,11 +65,39 @@
               }
             }
           }
-          .product-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #e93131;
-            padding: 10px;
+          .grp-price {
+            .price {
+              margin-top: 20px;
+              font-size: 18px;
+              color: map.get($theme-color, "main-color");
+              font-weight: bold;
+            }
+            .price-old {
+              font-size: 16px;
+              color: map.get($theme-color, "text");
+              margin: auto;
+              text-decoration: line-through;
+            }
+            .price-new {
+              display: flex;
+              gap: 10px;
+              justify-content: start;
+              align-items: center;
+              .price-discount {
+                font-size: 18px;
+                color: map.get($theme-color, "main-color");
+                font-weight: bold;
+              }
+              .discount {
+                padding: 0 4px;
+                width: fit-content;
+                font-size: 16px;
+                color: map.get($theme-color, "main-color");
+                border: 1px solid map.get($theme-color, "main-color");
+                background-color: rgba(255, 210, 215, 0.384);
+                border-radius: 10%;
+              }
+            }
           }
           .product-rating {
             display: flex;

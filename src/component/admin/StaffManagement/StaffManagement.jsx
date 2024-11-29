@@ -64,7 +64,7 @@ const StaffManagement = () => {
   };
 
   return (
-    <table className="product-table">
+    <table className="product-table-staff">
       <thead>
         <tr>
           <th>STT</th>
@@ -88,7 +88,7 @@ const StaffManagement = () => {
           >
             <td>{index + 1}</td>
             <td>
-              <div className="product-info">
+              <div className="product-info-staff">
                 <div>
                   <h4>{userItem.name}</h4>
                 </div>
@@ -101,7 +101,7 @@ const StaffManagement = () => {
             <td>
               <Link
                 to={`${ROUTERS.ADMIN.UPDATE_USER}/${userItem._id}`}
-                className="edit-btn"
+                className="edit-btn-staff"
                 state={{ user: userItem, id: userItem._id }}
               >
                 ✏️
@@ -109,7 +109,7 @@ const StaffManagement = () => {
               {user?.dataUser?.isAdmin && (
                 <button
                   onClick={() => handleDeleteUser(userItem._id)}
-                  className="delete-btn"
+                  className="delete-btn-staff"
                 >
                   🗑️
                 </button>

@@ -95,7 +95,31 @@ const ProductManagement = () => {
                   </td>
                   <td>{product.company}</td>
                   <td>{product.quantityInStock}</td>
-                  <td>{product.prices.toLocaleString("vi-VN")}</td>
+                  <td>
+                    {" "}
+                    {product?.prices == product?.promotionPrice ? (
+                      <div className="grp-price">
+                        <p className="prices">
+                          {`${product?.prices.toLocaleString("vi-VN")} ₫`}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grp-price">
+                        <p className="price-old">
+                          {`${product?.prices.toLocaleString("vi-VN")} ₫`}
+                        </p>
+                        <div className="grp-price-new">
+                          <p className="price-new">
+                            {`${parseInt(
+                              product?.promotionPrice
+                            ).toLocaleString("vi-VN")}
+                               ₫`}
+                          </p>
+                          <p className="discount">{`-${product?.discount}%`}</p>
+                        </div>
+                      </div>
+                    )}
+                  </td>
 
                   <td>
                     <Link

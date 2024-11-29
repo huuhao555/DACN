@@ -10,11 +10,31 @@ import { PiFrameCornersBold } from "react-icons/pi";
 import { FaMemory } from "react-icons/fa6";
 import { RiCpuLine } from "react-icons/ri";
 import { UserContext } from "../../../middleware/UserContext";
+import Breadcrumb from "../theme/breadcrumb";
+import { AiOutlineClose } from "react-icons/ai";
+import Notification, {
+  NotificationContainer
+} from "../../../component/user/Notification";
+
 const ProductType = () => {
   const location = useLocation();
   const { title } = location.state || {};
   const [products, setProducts] = useState();
+  const [activeTag, setActiveTag] = useState(null);
   const { user } = useContext(UserContext) || {};
+  const [productsAll, setProductsAll] = useState(products);
+  const { notifications, addNotification } = NotificationContainer();
+  const [noResults, setNoResults] = useState(false);
+
+  const [suggestions, setSuggestions] = useState([]);
+  const clearSidebar = () => {
+    // setProducts(productsAll);
+    // setNoResults(false);
+    // setPriceMin("");
+    // setPriceMax("");
+    // setFilteredProducts([]);
+    // setActiveTag(null);
+  };
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -99,7 +119,7 @@ const ProductType = () => {
       }
     }
 
-    if (filteredProducts.length !== productsStart.length) {
+    if (filteredProducts?.length !== productsStart?.length) {
       setProducts(filteredProducts);
       setProductsStart(filteredProducts);
     }
@@ -182,178 +202,276 @@ const ProductType = () => {
       console.error("Failed to add product to cart:", error);
     }
   };
+  const handleTagClick = (key) => {
+    if (activeTag === key) {
+      setActiveTag(null);
+      setProducts(productsAll);
+    } else {
+      setActiveTag(key);
+      Sort(key);
+    }
+  };
   return (
-    <div className="container-product product">
-      <div className="row">
-        <div className="col-lg-3">
-          <div className="sidebar">
-            <div className="sidebar-item">
-              <h3>Tìm kiếm</h3>
-              <input type="text" onChange={Search} />
-            </div>
-            <div className="sidebar-item">
-              <h3> Mức Giá</h3>
-              <div className="price-range-wrap">
-                <div>
-                  <p>Từ </p>
-                  <select onChange={handleOptionMin} className="optionPrice">
-                    <option value="#">---Chọn---</option>
-                    <option value="10000000">10.000.000</option>
-                    <option value="20000000">20.000.000</option>
-                    <option value="30000000">30.000.000</option>
-                    <option value="40000000">40.000.000</option>
-                  </select>
-                  <input
-                    type="number"
-                    value={priceMin || ""}
-                    min={0}
-                    onChange={(e) => {
-                      setPriceMin(e.target.value);
-                    }}
+    <>
+      <Breadcrumb />
+      <div className="container-product product">
+        <div className="row">
+          <div className="col-lg-3">
+            <div className="sidebar">
+              <div className="sidebar-item sidebar-item-search">
+                <div className="top-sidebar-item">
+                  <h3>Tìm kiếm</h3>
+                  <AiOutlineClose
+                    className="icon-close"
+                    onClick={clearSidebar}
                   />
                 </div>
-                <div>
-                  <p>Đến</p>
-                  <select onChange={handleOptionMax} className="optionPrice">
-                    <option value="#">---Chọn---</option>
-                    <option value="50000000">50.000.000</option>
-                    <option value="60000000">60.000.000</option>
-                    <option value="70000000">70.000.000</option>
-                    <option value="80000000">80.000.000</option>
-                  </select>
-                  <input
-                    type="number"
-                    value={priceMax || ""}
-                    min={0}
-                    onChange={(e) => {
-                      setPriceMax(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <AiOutlineSearch onClick={handlePriceRange} />
+                <input type="text" onChange={Search} />
+                <div className="suggestions">
+                  {suggestions.map((item) => (
+                    <Link
+                      to={`${ROUTERS.USER.DETAILS}/${item._id}`}
+                      state={{ productId: item._id }}
+                    >
+                      <div key={item.laptop_ID} className="suggestion-item">
+                        {`${item.company} ${item.name}`}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
-            </div>
-            <div className="sidebar-item">
-              <h3>Sắp xếp</h3>
-              <div className="tags">
-                {sorts.map((item, key) => (
-                  <div
-                    className={`tag ${key}`}
-                    key={key}
-                    onClick={() => Sort(key)}
-                  >
-                    {item}
+
+              <div className="sidebar-item">
+                <h3> Mức Giá</h3>
+                <div className="price-range-wrap">
+                  <div>
+                    <p>Từ </p>
+                    <select
+                      onChange={handleOptionMin}
+                      className="optionPrice"
+                      value={priceMin}
+                    >
+                      <option value="0">---Chọn---</option>
+                      <option value="10000000">10.000.000</option>
+                      <option value="20000000">20.000.000</option>
+                      <option value="30000000">30.000.000</option>
+                      <option value="40000000">40.000.000</option>
+                      <option value="50000000">50.000.000</option>
+                      <option value="60000000">60.000.000</option>
+                      <option value="70000000">70.000.000</option>
+                      <option value="80000000">80.000.000</option>
+                    </select>
+                    <input
+                      type="number"
+                      value={priceMin || ""}
+                      min={0}
+                      onChange={(e) => {
+                        setPriceMin(e.target.value);
+                      }}
+                    />
                   </div>
-                ))}
+                  <div>
+                    <p>Đến</p>
+                    <select
+                      onChange={handleOptionMax}
+                      className="optionPrice"
+                      value={priceMax}
+                    >
+                      <option value="0">---Chọn---</option>
+                      <option value="10000000">10.000.000</option>
+                      <option value="20000000">20.000.000</option>
+                      <option value="30000000">30.000.000</option>
+                      <option value="40000000">40.000.000</option>
+                      <option value="50000000">50.000.000</option>
+                      <option value="60000000">60.000.000</option>
+                      <option value="70000000">70.000.000</option>
+                      <option value="80000000">80.000.000</option>
+                    </select>
+                    <input
+                      type="number"
+                      value={priceMax || ""}
+                      min={0}
+                      onChange={(e) => {
+                        setPriceMax(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <AiOutlineSearch onClick={handlePriceRange} />
+                  </div>
+                </div>
+              </div>
+              <div className="sidebar-item">
+                <h3>Sắp xếp</h3>
+                <div className="tags">
+                  {sorts.map((item, key) => (
+                    <div
+                      className={`tag ${activeTag === key ? "active" : ""}`}
+                      key={key}
+                      onClick={() => handleTagClick(key)}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            {/* <div className="sidebar-item">
-              <h3>Thể loại khác</h3>
-              <ul>
-                {categories.map((category, key) => (
-                  <li key={key}>
-                    <Link to={category.path}>{category.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div> */}
           </div>
-        </div>
-        <div className="col-lg-9">
-          <div className="row">
-            <div className="col-lg-9">
+
+          <div className="col-lg-9">
+            {noResults ? (
+              <h2>Không tìm thấy sản phẩm </h2>
+            ) : (
               <div className="product-list">
                 {products?.length > 0 ? (
-                  products.map((product) => (
-                    <div className="product-item" key={product?._id}>
-                      <div className="product-item-image">
-                        <Link
-                          to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
-                          state={{ productId: product?._id }}
-                        >
-                          <img
-                            className="add-to-img"
-                            src={product?.imageUrl}
-                            alt={product?.name}
-                          />
-                        </Link>
-                      </div>
+                  products.map((product) => {
+                    return (
+                      <div className="product-item" key={product._id}>
+                        <div className="product-item-image">
+                          <Link
+                            to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                            state={{ productId: product._id }}
+                          >
+                            <img
+                              className="add-to-img"
+                              src={product.imageUrl}
+                              alt={product.name}
+                            />
+                          </Link>
+                        </div>
 
-                      <div className="product-item-bottom">
-                        <Link
-                          to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
-                          state={{ productId: product?._id }}
-                        >
-                          <div className="item-product-bottom">
-                            <h3>{product?.name}</h3>
-                            <div className="proloop-technical">
-                              {[
-                                {
-                                  tag: "ssd",
-                                  icon: <BsDeviceSsdFill />,
-                                  value: product?.memory
-                                },
-                                {
-                                  tag: "lcd",
-                                  icon: <PiFrameCornersBold />,
-                                  value: `${product?.inches} inch ${product?.screenResolution}`
-                                },
-                                {
-                                  tag: "ram",
-                                  icon: <FaMemory />,
-                                  value: product?.ram
-                                },
-                                {
-                                  tag: "cpu",
-                                  icon: <RiCpuLine />,
-                                  value: product?.cpu
-                                }
-                              ].map((item) => (
-                                <div
-                                  className="proloop-technical--line"
-                                  data-tag={item.tag}
-                                  key={item.tag}
-                                >
-                                  {item.icon}
-                                  <span>{item.value}</span>
-                                </div>
-                              ))}
+                        <div className="product-item-bottom">
+                          <Link
+                            to={`${ROUTERS.USER.DETAILS}/${product._id}`}
+                            state={{ productId: product._id }}
+                          >
+                            <div className="item-product-bottom">
+                              <h3>{` ${product.company} ${product.name}`}</h3>
+                              <div className="proloop-technical">
+                                {[
+                                  {
+                                    tag: "ssd",
+                                    icon: <BsDeviceSsdFill />,
+                                    value: product.memory
+                                  },
+                                  {
+                                    tag: "lcd",
+                                    icon: <PiFrameCornersBold />,
+                                    value: `${product.inches} inch ${product.screenResolution}`
+                                  },
+                                  {
+                                    tag: "ram",
+                                    icon: <FaMemory />,
+                                    value: product.ram
+                                  },
+                                  {
+                                    tag: "cpu",
+                                    icon: <RiCpuLine />,
+                                    value: product.cpu
+                                  }
+                                ].map((item) => (
+                                  <div
+                                    className="proloop-technical--line"
+                                    data-tag={item.tag}
+                                    key={item.tag}
+                                  >
+                                    {item.icon}
+                                    <span>{item.value}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="grp-price">
+                                {product?.prices == product?.promotionPrice ? (
+                                  <p className="price">
+                                    {product?.promotionPrice?.toLocaleString(
+                                      "vi-VN"
+                                    )}
+                                    ₫
+                                  </p>
+                                ) : (
+                                  <>
+                                    <p className="price-old">
+                                      {product?.prices?.toLocaleString("vi-VN")}
+                                      ₫
+                                    </p>
+                                    <div className="price-new">
+                                      <p className="price-discount">
+                                        {product?.promotionPrice?.toLocaleString(
+                                          "vi-VN"
+                                        )}
+                                        ₫
+                                      </p>
+                                      <p className="discount">
+                                        {`-${product?.discount}%`}
+                                      </p>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
                             </div>
-                            <p>
-                              {product?.prices.toLocaleString("vi-VN")
-                                ? product?.prices.toLocaleString("vi-VN")
-                                : "N/A"}
-                              đ
-                            </p>{" "}
+                          </Link>
+                        </div>
+                        <div className="average-rating">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }, (_, index) => {
+                              const filledPercentage = Math.min(
+                                Math.max(
+                                  (product.averageRating - index) * 100,
+                                  0
+                                ),
+                                100
+                              );
+                              return (
+                                <div
+                                  key={index}
+                                  className="star"
+                                  style={{
+                                    background: `linear-gradient(
+                                      to right,
+                                      #ffcc00 ${filledPercentage}%,
+                                      #ddd ${filledPercentage}%
+                                    )`
+                                  }}
+                                ></div>
+                              );
+                            })}
                           </div>
-                        </Link>
+                        </div>
+                        <div className="product-item-cart">
+                          <button
+                            onClick={() => {
+                              handleCart(product);
+                            }}
+                            type="submit"
+                            className="button btn-buyonl"
+                            name="buy-onl"
+                            id="buy-onl"
+                          >
+                            <span>Thêm vào giỏ</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="product-item-cart">
-                        <button
-                          onClick={() => {
-                            handleCart(product);
-                          }}
-                          type="submit"
-                          className="button btn-buyonl"
-                          name="buy-onl"
-                          id="buy-onl"
-                        >
-                          <span>Thêm vào giỏ</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p>No products available</p>
                 )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="notifications-wrapper">
+        {notifications.map((notification) => (
+          <Notification
+            key={notification.id}
+            message={notification.message}
+            onClose={() => {}}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 

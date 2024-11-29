@@ -27,9 +27,11 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUser(null);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    updateUser(null);
+    window.location.href = "/";
   };
 
   return (

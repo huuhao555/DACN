@@ -1,15 +1,17 @@
-import { useLocation } from "react-router-dom";
-import "./style.scss";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
-import ProductsSlideComponent from "../../../component/user/productSlide";
 import React, { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { UserContext } from "../../../middleware/UserContext";
 import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import ProductsSlideComponent from "../../../component/user/productSlide";
+// import ViewedHistoriesProducts from "../profilePage/viewedProducts"
 import ReviewSection from "../../../component/user/ReviewProduct";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import "./style.scss";
+
 const ProductDetailsPage = () => {
   const location = useLocation();
 
@@ -22,6 +24,21 @@ const ProductDetailsPage = () => {
 
   const [product, setProduct] = useState();
 
+  const addToHistory = (product) => {
+    if (!product) return;
+
+    let history = JSON.parse(localStorage.getItem("viewedProducts")) || [];
+    history = history.filter((item) => item._id !== product._id);
+    history.unshift({
+      _id: product._id,
+      name: product.name,
+      imageUrl: product.imageUrl,
+      price: product.prices
+    });
+    history = history.slice(0, 10);
+    localStorage.setItem("viewedProducts", JSON.stringify(history));
+  };
+
   const fetchProducts = async () => {
     try {
       const response = await fetch(
@@ -33,6 +50,8 @@ const ProductDetailsPage = () => {
       const data = await response.json();
 
       setProduct(data?.data);
+
+      addToHistory(data?.data);
     } catch (error) {
       console.error(error);
     }
@@ -132,10 +151,30 @@ const ProductDetailsPage = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="product-price">
-                          <span className="price">
-                            {product?.prices?.toLocaleString("vi-VN")}₫
-                          </span>
+                        <div className="grp-price">
+                          {product?.prices == product?.promotionPrice ? (
+                            <p className="price">
+                              {product?.promotionPrice?.toLocaleString("vi-VN")}
+                              ₫
+                            </p>
+                          ) : (
+                            <>
+                              <p className="price-old">
+                                {product?.prices?.toLocaleString("vi-VN")}₫
+                              </p>
+                              <div className="price-new">
+                                <p className="price-discount">
+                                  {product?.promotionPrice?.toLocaleString(
+                                    "vi-VN"
+                                  )}
+                                  ₫
+                                </p>
+                                <p className="discount">
+                                  {`-${product?.discount}%`}
+                                </p>
+                              </div>
+                            </>
+                          )}
                         </div>
                         {/* <div className="product-rating">
                           <span className="number">0.0</span>

@@ -71,122 +71,192 @@ const CancelledOrders = () => {
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
-          {orders?.map((order, orderIndex) => (
-            <div key={order.id} className="order">
-              <h2>Thông tin người nhận hàng</h2>
-              <p>Tên người nhận: {order?.name}</p>
-              <p>Địa chỉ: {order?.shippingAddress}</p>
-              <p>Số điện thoại: {order?.phone}</p>
-              <p>Trạng thái: {order?.status}</p>
-              <p>Mã đơn hàng: {order?._id} </p>
-              <h3 className="text-order">
-                Chi tiết đơn hàng
-                <AiOutlineDownCircle
-                  className="icon-down"
-                  onClick={() => toggleOrderVisibility(order._id)}
-                />
-                <span
-                  style={{
-                    fontSize: "16px",
-                    color: "#D70018",
-                    fontStyle: "italic"
-                  }}
-                >
-                  {` (${order?.products?.length} sản phẩm)`}
-                </span>
-              </h3>
+          {orders?.map((order, orderIndex) => {
+            const grandTotal =
+              order.totalPrice + parseInt(order.VAT) + order.shippingFee;
+            return (
+              <div key={order.id} className="order">
+                <h2>Thông tin người nhận hàng</h2>
+                <p>Tên người nhận: {order?.name}</p>
+                <p>Địa chỉ: {order?.shippingAddress}</p>
+                <p>Số điện thoại: {order?.phone}</p>
+                <p>Trạng thái: {order?.status}</p>
+                <p>Mã đơn hàng: {order?._id} </p>
+                <h3 className="text-order">
+                  Chi tiết đơn hàng
+                  <AiOutlineDownCircle
+                    className="icon-down"
+                    onClick={() => toggleOrderVisibility(order._id)}
+                  />
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      color: "#D70018",
+                      fontStyle: "italic"
+                    }}
+                  >
+                    {` (${order?.products?.length} sản phẩm)`}
+                  </span>
+                </h3>
 
-              {visibleOrders[order._id] && (
-                <div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>STT</th>
-                        <th>Hình sản phẩm</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Tổng tiền</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {order?.products?.map((item, itemIndex) => (
-                        <tr key={item?.productId?._id}>
-                          <td>{itemIndex + 1}</td>
-                          <td>
-                            <img
-                              src={item?.productId?.imageUrl}
-                              alt={item?.productId?.productName}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                objectFit: "contain"
-                              }}
-                            />
-                          </td>
-                          <td>{item?.productId?.name}</td>
-                          <td>
-                            {item?.productId?.prices.toLocaleString("vi-VN")} ₫
-                          </td>
-                          <td>{item?.quantity}</td>
-                          <td>
-                            {(
-                              item?.productId?.prices * item.quantity
-                            ).toLocaleString("vi-VN")}{" "}
-                            ₫
-                          </td>
+                {visibleOrders[order._id] && (
+                  <div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Hình sản phẩm</th>
+                          <th>Tên sản phẩm</th>
+                          <th>Giá</th>
+                          <th>Số lượng</th>
+                          <th>Tổng tiền</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div className="product-review-buttons">
-                    {/* <label>Chọn sản phẩm đánh giá: </label> */}
-                    <select
-                      value={selectedProduct || ""}
-                      onChange={(e) => setSelectedProduct(e.target.value)}
+                      </thead>
+                      <tbody>
+                        {order?.products?.map((item, itemIndex) => (
+                          <tr key={item?.productId?._id}>
+                            <td>{itemIndex + 1}</td>
+                            <td>
+                              <img
+                                src={item?.productId?.imageUrl}
+                                alt={item?.productId?.productName}
+                                style={{
+                                  width: "100px",
+                                  height: "100px",
+                                  objectFit: "contain"
+                                }}
+                              />
+                            </td>
+                            <td>{item?.productId?.name}</td>
+                            <td>
+                              {" "}
+                              {item?.productId?.prices ==
+                              item?.productId?.promotionPrice ? (
+                                <div className="grp-price">
+                                  <p className="prices">
+                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="grp-price">
+                                  <p className="price-old">
+                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                  </p>
+                                  <div className="grp-price-new">
+                                    <p className="price-new">
+                                      {`${parseInt(
+                                        item?.productId?.promotionPrice
+                                      ).toLocaleString("vi-VN")}
+                               ₫`}
+                                    </p>
+                                    <p className="discount">
+                                      {`-${item?.productId?.discount}%`}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                            <td>{item?.quantity}</td>
+                            <td
+                              style={{
+                                fontWeight: "bold",
+                                color: "#d70018",
+                                fontSize: "16px"
+                              }}
+                            >
+                              {(
+                                item?.productId?.promotionPrice * item.quantity
+                              ).toLocaleString("vi-VN")}{" "}
+                              ₫
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="product-review-buttons">
+                      <select
+                        value={selectedProduct || ""}
+                        onChange={(e) => setSelectedProduct(e.target.value)}
+                      >
+                        <option value="" disabled>
+                          Chọn sản phẩm
+                        </option>
+                        {order?.products?.map((item) => {
+                          return (
+                            <option
+                              key={item?._id}
+                              value={item?.productId?._id}
+                            >
+                              {item?.productId?.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <button className="review-button" onClick={handleReview}>
+                        Đánh giá
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="order-bottom">
+                  <h3>Chi tiết thanh toán</h3>
+                  <p>
+                    Tổng tiền hàng:
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "#d70018",
+                        fontSize: "16px"
+                      }}
                     >
-                      <option value="" disabled>
-                        Chọn sản phẩm
-                      </option>
-                      {order?.products?.map((item) => {
-                        return (
-                          <option key={item?._id} value={item?.productId?._id}>
-                            {item?.productId?.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    <button className="review-button" onClick={handleReview}>
-                      Đánh giá
-                    </button>
+                      {order.totalPrice?.toLocaleString("vi-VN")} ₫
+                    </span>
+                  </p>
+                  <p>
+                    VAT:
+                    <span>
+                      {parseInt(order.VAT)?.toLocaleString("vi-VN")} ₫
+                    </span>
+                  </p>
+                  <p>
+                    Chi phí vận chuyển:
+                    <span>{order.shippingFee?.toLocaleString("vi-VN")} ₫</span>
+                  </p>
+                  <p>
+                    Tổng cộng:
+                    <span>{`${parseInt(grandTotal).toLocaleString("vi-VN")}  ₫`}</span>
+                  </p>
+                  <div style={{ borderTop: "solid 2px #ccc" }}>
+                    <p>
+                      Voucher người dùng:
+                      <span>
+                        {`-${(
+                          (1 - order?.orderTotal / grandTotal) *
+                          100
+                        )?.toLocaleString("vi-VN")}%`}
+                      </span>
+                    </p>
+
+                    <p>
+                      Thành tiền:
+                      <span
+                        style={{
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          color: "#d70018",
+                          fontSize: "18px",
+                          textAlign: "left"
+                        }}
+                      >
+                        {parseInt(order?.orderTotal).toLocaleString("vi-VN")} ₫
+                      </span>
+                    </p>
                   </div>
                 </div>
-              )}
-
-              <div className="order-bottom">
-                <h3>Chi tiết thanh toán</h3>
-                <p>
-                  Tổng tiền hàng:
-                  <span>{order.totalPrice?.toLocaleString("vi-VN")} ₫</span>
-                </p>
-                <p>
-                  VAT:
-                  <span>{parseInt(order.VAT)?.toLocaleString("vi-VN")} ₫</span>
-                </p>
-                <p>
-                  Chi phí vận chuyển:
-                  <span>{order.shippingFee?.toLocaleString("vi-VN")} ₫</span>
-                </p>
-
-                <p>
-                  Tổng cộng:
-                  <span style={{ marginLeft: "10px" }}>
-                    {parseInt(order.orderTotal)?.toLocaleString("vi-VN")}₫
-                  </span>
-                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <p>Không có đơn hàng nào đang xử lý.</p>

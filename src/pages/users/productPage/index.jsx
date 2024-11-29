@@ -101,7 +101,6 @@ const ProductPage = () => {
 
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
-    console.log(valueInputSearch);
     if (valueInputSearch === "") {
       setProducts(productsAll);
       setSuggestions([]);
@@ -372,9 +371,9 @@ const ProductPage = () => {
                                 ))}
                               </div>
                               <div className="grp-price">
-                                {product?.prices == product?.discountedPrice ? (
+                                {product?.prices == product?.promotionPrice ? (
                                   <p className="price">
-                                    {product?.discountedPrice?.toLocaleString(
+                                    {product?.promotionPrice?.toLocaleString(
                                       "vi-VN"
                                     )}
                                     ₫
@@ -387,7 +386,7 @@ const ProductPage = () => {
                                     </p>
                                     <div className="price-new">
                                       <p className="price-discount">
-                                        {product?.discountedPrice?.toLocaleString(
+                                        {product?.promotionPrice?.toLocaleString(
                                           "vi-VN"
                                         )}
                                         ₫

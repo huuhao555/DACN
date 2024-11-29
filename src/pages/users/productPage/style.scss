@@ -295,7 +295,7 @@ $gap: 20px;
               font-size: 16px;
               color: map.get($theme-color, "main-color");
               border: 1px solid map.get($theme-color, "main-color");
-              background-color: #ffced4a2;
+              background-color: rgba(255, 210, 215, 0.384);
               border-radius: 10%;
             }
           }

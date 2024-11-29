@@ -86,6 +86,8 @@ const PendingOrdersAdmin = () => {
       {orders.length > 0 ? (
         <div>
           {orders?.map((order) => {
+            const grandTotal =
+              order.totalPrice + parseInt(order.VAT) + order.shippingFee;
             return (
               <div key={order._id} className="order-admin">
                 <button
@@ -105,11 +107,11 @@ const PendingOrdersAdmin = () => {
                   Huỷ đơn
                 </button>
                 <h2>Thông tin người nhận hàng</h2>
-                <p>Tên người nhận: {order.name}</p>
-                <p>Địa chỉ: {order.shippingAddress}</p>
-                <p>Số điện thoại: {order.phone}</p>
-                <p>Trạng thái: {order.status}</p>
-                <p>Mã đơn hàng: {order._id} </p>
+                <p>Tên người nhận: {order?.name}</p>
+                <p>Địa chỉ: {order?.shippingAddress}</p>
+                <p>Số điện thoại: {order?.phone}</p>
+                <p>Trạng thái: {order?.status}</p>
+                <p>Mã đơn hàng: {order?._id} </p>
 
                 <h3 className="text-order">
                   Chi tiết đơn hàng
@@ -141,6 +143,7 @@ const PendingOrdersAdmin = () => {
                     </thead>
                     <tbody>
                       {order?.products?.map((item, itemIndex) => {
+                        console.log(item);
                         return (
                           <tr key={item?.productId?._id}>
                             <td>{itemIndex + 1}</td>
@@ -163,13 +166,43 @@ const PendingOrdersAdmin = () => {
                             </td>
                             <td>{item?.productId?.name}</td>
                             <td>
-                              {item?.productId?.prices?.toLocaleString("vi-VN")}{" "}
-                              ₫
+                              {" "}
+                              {item?.productId?.prices ==
+                              item?.productId?.promotionPrice ? (
+                                <div className="grp-price">
+                                  <p className="prices">
+                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="grp-price">
+                                  <p className="price-old">
+                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                  </p>
+                                  <div className="grp-price-new">
+                                    <p className="price-new">
+                                      {`${parseInt(
+                                        item?.productId?.promotionPrice
+                                      ).toLocaleString("vi-VN")}
+                               ₫`}
+                                    </p>
+                                    <p className="discount">
+                                      {`-${item?.productId?.discount}%`}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
                             </td>
                             <td>{item?.quantity}</td>
-                            <td>
+                            <td
+                              style={{
+                                fontWeight: "bold",
+                                color: "#d70018",
+                                fontSize: "16px"
+                              }}
+                            >
                               {(
-                                item?.productId?.prices * item.quantity
+                                item?.productId?.promotionPrice * item.quantity
                               ).toLocaleString("vi-VN")}{" "}
                               ₫
                             </td>
@@ -183,7 +216,15 @@ const PendingOrdersAdmin = () => {
                   <h3>Chi tiết thanh toán</h3>
                   <p>
                     Tổng tiền hàng:
-                    <span>{order.totalPrice?.toLocaleString("vi-VN")} ₫</span>
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "#d70018",
+                        fontSize: "16px"
+                      }}
+                    >
+                      {order.totalPrice?.toLocaleString("vi-VN")} ₫
+                    </span>
                   </p>
                   <p>
                     VAT:
@@ -195,13 +236,36 @@ const PendingOrdersAdmin = () => {
                     Chi phí vận chuyển:
                     <span>{order.shippingFee?.toLocaleString("vi-VN")} ₫</span>
                   </p>
-
                   <p>
                     Tổng cộng:
-                    <span style={{ marginLeft: "10px" }}>
-                      {order.orderTotal.toLocaleString("vi-VN")}₫
-                    </span>
+                    <span>{`${parseInt(grandTotal).toLocaleString("vi-VN")}  ₫`}</span>
                   </p>
+                  <div style={{ borderTop: "solid 2px #ccc" }}>
+                    <p>
+                      Voucher người dùng:
+                      <span>
+                        {`-${(
+                          (1 - order?.orderTotal / grandTotal) *
+                          100
+                        )?.toLocaleString("vi-VN")}%`}
+                      </span>
+                    </p>
+
+                    <p>
+                      Thành tiền:
+                      <span
+                        style={{
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          color: "#d70018",
+                          fontSize: "18px",
+                          textAlign: "left"
+                        }}
+                      >
+                        {parseInt(order?.orderTotal).toLocaleString("vi-VN")} ₫
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             );
