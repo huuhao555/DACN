@@ -52,7 +52,7 @@ const DeliveredOrdersAdmin = () => {
             <div key={order.id} className="order-admin">
               <h2>Thông tin người nhận hàng</h2>
               <p>Tên người nhận: {order.name}</p>
-              <p>Địa chỉ: {order.shippingAddress.address}</p>
+              <p>Địa chỉ: {order.shippingAddress}</p>
               <p>Số điện thoại: {order.phone}</p>
               <p>Trạng thái: {order.status}</p>
               <p>Mã đơn hàng: {order._id} </p>
