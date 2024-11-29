@@ -5,10 +5,12 @@ import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
+import SuccessAnimation from "../../../component/general/Success";
 
 const CartPage = () => {
   const [cart, setCart] = useState(null);
-
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const { user, updateCartCount } = useContext(UserContext);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -68,10 +70,15 @@ const CartPage = () => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+      setMessage("Xoá sản phẩm thành công");
+      setTrigger(true);
       await getAllCart();
       const dataProduct = await response.json();
 
       updateCartCount(dataProduct.data.products.length);
+      setTimeout(() => {
+        setTrigger(false);
+      }, 1000);
     } catch (error) {
       console.error("Failed to delete product from cart:", error);
     }
@@ -96,6 +103,8 @@ const CartPage = () => {
         throw new Error(response.statusText);
       }
       await response.json();
+      setMessage("Xoá giỏ hành thành công");
+      setTrigger(true);
       setCart("");
       updateCartCount(0);
     } catch (error) {
@@ -188,7 +197,6 @@ const CartPage = () => {
   };
   return (
     <div className="cart-page">
-      <h1>Shopping Cart</h1>
       {cart && cart.products.length > 0 ? (
         <div className="cart-container">
           <table className="cart-table">
@@ -328,6 +336,7 @@ const CartPage = () => {
       ) : (
         <p>Không có sản phẩm trong giỏ hàng.</p>
       )}
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

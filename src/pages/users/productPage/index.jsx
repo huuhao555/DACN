@@ -14,6 +14,7 @@ import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
+
 const ProductPage = () => {
   const { notifications, addNotification } = NotificationContainer();
   const { user, updateCartCount } = useContext(UserContext);
@@ -22,7 +23,6 @@ const ProductPage = () => {
   const [activeTag, setActiveTag] = useState(null);
   const { pathname } = useLocation();
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -70,10 +70,10 @@ const ProductPage = () => {
         throw new Error(response.statusText);
       }
       const dataCart = await response.json();
+
       addNotification("Thêm giỏ hàng thành công!");
       const updatedCount = dataCart.data.products.length;
       updateCartCount(updatedCount);
-      // alert("Thêm giỏ hàng thành công");
     } catch (error) {
       console.error("Failed to add product to cart:", error);
     }
@@ -86,49 +86,14 @@ const ProductPage = () => {
   ];
 
   const handleTagClick = (key) => {
-    // Nếu click vào tag đã chọn, bỏ chọn
     if (activeTag === key) {
       setActiveTag(null);
-      setProducts(productsAll); // Reset danh sách sản phẩm
+      setProducts(productsAll);
     } else {
       setActiveTag(key);
-      Sort(key); // Sắp xếp theo key
+      Sort(key);
     }
   };
-  // const [categories] = useState([
-  //   {
-  //     name: "Điện thoại, Tablet",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Laptop",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Âm thanh",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Đồ gia dụng",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Phụ kiện",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Máy tính để bàn",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Màn hình",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   },
-  //   {
-  //     name: "Tivi",
-  //     path: ROUTERS.USER.PRODUCTS
-  //   }
-  // ]);
 
   const [suggestions, setSuggestions] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -469,14 +434,13 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
+
       <div className="notifications-wrapper">
         {notifications.map((notification) => (
           <Notification
             key={notification.id}
             message={notification.message}
-            onClose={() => {
-              // Dọn dẹp thông báo
-            }}
+            onClose={() => {}}
           />
         ))}
       </div>

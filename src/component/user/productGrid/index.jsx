@@ -56,85 +56,85 @@ const ProductsGridComponent = () => {
       console.error("Failed to add product to cart:", error);
     }
   };
-  return (
-    <div className="product-list">
-      {products.length > 0 ? (
-        products.map((product) => (
-          <div className="product-item" key={product?._id}>
-            <div className="product-item-image">
-              <Link
-                to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
-                state={{ productId: product?._id }}
-              >
-                <img
-                  className="add-to-img"
-                  src={product.imageUrl}
-                  alt={product.name}
-                />
-              </Link>
-            </div>
+  // return (
+  //   <div className="product-list">
+  //     {products.length > 0 ? (
+  //       products.map((product) => (
+  //         <div className="product-item" key={product?._id}>
+  //           <div className="product-item-image">
+  //             <Link
+  //               to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+  //               state={{ productId: product?._id }}
+  //             >
+  //               <img
+  //                 className="add-to-img"
+  //                 src={product.imageUrl}
+  //                 alt={product.name}
+  //               />
+  //             </Link>
+  //           </div>
 
-            <div className="product-item-bottom">
-              <Link
-                to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
-                state={{ productId: product?._id }}
-              >
-                <div className="item-product-bottom">
-                  <h3>{product.name}</h3>
-                  <div className="proloop-technical">
-                    {[
-                      {
-                        tag: "ssd",
-                        icon: <BsDeviceSsdFill />,
-                        value: product.memory
-                      },
-                      {
-                        tag: "lcd",
-                        icon: <PiFrameCornersBold />,
-                        value: `${product.inches} inch ${product.screenResolution}`
-                      },
-                      { tag: "ram", icon: <FaMemory />, value: product.ram },
-                      { tag: "cpu", icon: <RiCpuLine />, value: product.cpu }
-                    ].map((item) => (
-                      <div
-                        className="proloop-technical--line"
-                        data-tag={item.tag}
-                        key={item.tag}
-                      >
-                        {item.icon}
-                        <span>{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p>
-                    {product.prices.toLocaleString("vi-VN")
-                      ? product.prices.toLocaleString("vi-VN")
-                      : "N/A"}
-                    đ
-                  </p>{" "}
-                </div>
-              </Link>
-            </div>
-            <div className="product-item-cart">
-              <button
-                onClick={() => {
-                  handleCart(product);
-                }}
-                type="submit"
-                className="button btn-buyonl"
-                name="buy-onl"
-                id="buy-onl"
-              >
-                <span>Thêm vào giỏ</span>
-              </button>
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No products available</p>
-      )}
-    </div>
-  );
+  //           <div className="product-item-bottom">
+  //             <Link
+  //               to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+  //               state={{ productId: product?._id }}
+  //             >
+  //               <div className="item-product-bottom">
+  //                 <h3>{product.name}</h3>
+  //                 <div className="proloop-technical">
+  //                   {[
+  //                     {
+  //                       tag: "ssd",
+  //                       icon: <BsDeviceSsdFill />,
+  //                       value: product.memory
+  //                     },
+  //                     {
+  //                       tag: "lcd",
+  //                       icon: <PiFrameCornersBold />,
+  //                       value: `${product.inches} inch ${product.screenResolution}`
+  //                     },
+  //                     { tag: "ram", icon: <FaMemory />, value: product.ram },
+  //                     { tag: "cpu", icon: <RiCpuLine />, value: product.cpu }
+  //                   ].map((item) => (
+  //                     <div
+  //                       className="proloop-technical--line"
+  //                       data-tag={item.tag}
+  //                       key={item.tag}
+  //                     >
+  //                       {item.icon}
+  //                       <span>{item.value}</span>
+  //                     </div>
+  //                   ))}
+  //                 </div>
+  //                 <p>
+  //                   {product.prices.toLocaleString("vi-VN")
+  //                     ? product.prices.toLocaleString("vi-VN")
+  //                     : "N/A"}
+  //                   đ
+  //                 </p>{" "}
+  //               </div>
+  //             </Link>
+  //           </div>
+  //           <div className="product-item-cart">
+  //             <button
+  //               onClick={() => {
+  //                 handleCart(product);
+  //               }}
+  //               type="submit"
+  //               className="button btn-buyonl"
+  //               name="buy-onl"
+  //               id="buy-onl"
+  //             >
+  //               <span>Thêm vào giỏ</span>
+  //             </button>
+  //           </div>
+  //         </div>
+  //       ))
+  //     ) : (
+  //       <p>No products available</p>
+  //     )}
+  //   </div>
+  // );
 };
 
 export default ProductsGridComponent;

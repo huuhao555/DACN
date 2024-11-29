@@ -11,6 +11,7 @@ const CreateProduct = () => {
     productsTypeName: "",
     quantityInStock: "",
     prices: "",
+    discount: "",
     inches: "",
     screenResolution: "",
     company: "",
@@ -56,7 +57,7 @@ const CreateProduct = () => {
         body: data,
         headers: {}
       });
-
+      console.log(...data);
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."
@@ -73,6 +74,7 @@ const CreateProduct = () => {
         productsTypeName: "",
         quantityInStock: "",
         prices: "",
+        discount: "",
         inches: "",
         screenResolution: "",
         company: "",
@@ -131,6 +133,23 @@ const CreateProduct = () => {
             onChange={handleChange}
             required
           />
+        </div>
+        <label style={{ fontWeight: "bold", color: "#555" }}>
+          Giảm giá (%)
+        </label>
+        <div style={{ display: "flex" }}>
+          <input
+            style={{ width: "12%", marginRight: "20px" }}
+            type="number"
+            name="discount"
+            value={formData.discount}
+            onChange={handleChange}
+          ></input>{" "}
+          <span
+            style={{ marginTop: "10px", fontSize: "18px", marginLeft: "-10px" }}
+          >
+            %
+          </span>
         </div>
         <div>
           <label>Kích thước (Inches):</label>

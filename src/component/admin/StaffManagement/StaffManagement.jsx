@@ -97,7 +97,7 @@ const StaffManagement = () => {
             <td>{userItem.phone}</td>
             <td>{userItem.email}</td>
             <td>***********</td>
-            <td>{userItem.isAdmin ? "Quản lý" : "Khách hàng"}</td>
+            <td>{userItem.isAdmin ? "Quản lý" : "Người dùng"}</td>
             <td>
               <Link
                 to={`${ROUTERS.ADMIN.UPDATE_USER}/${userItem._id}`}

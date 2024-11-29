@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./style.scss";
+import SuccessComponent from "../../../../component/general/Success";
 
-const UpdateUser = ({ closeSignUpForm }) => {
+const UpdateUser = () => {
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, id } = location.state || {};
@@ -11,7 +13,7 @@ const UpdateUser = ({ closeSignUpForm }) => {
     email: user.email,
     fullName: user.name,
     phone: user.phone,
-    isAdmin: user.isAdmin
+    isAdmin: user.isAdmin.toString()
   });
 
   const handleInputChange = (e) => {
@@ -32,21 +34,33 @@ const UpdateUser = ({ closeSignUpForm }) => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify({
+            ...formData,
+            isAdmin: formData.isAdmin === "true"
+          })
         }
       );
+
       if (!response.ok) {
-        alert(
+        setMessage(
           "Chỉnh sửa tài khoản không thành công! Vui lòng kiểm tra lại thông tin."
         );
+        setTrigger(true);
+        setTimeout(() => setTrigger(false), 3000);
         return;
       }
 
-      alert("Chỉnh sửa tài khoản thành công");
-      navigate("/admin/quan-ly-nguoi-dung");
+      setMessage("Chỉnh sửa tài khoản thành công");
+      setTrigger(true);
+      setTimeout(() => {
+        setTrigger(false);
+        navigate("/admin/quan-ly-nguoi-dung");
+      }, 1000);
     } catch (error) {
       console.error(error);
-      alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+      setMessage("Đã xảy ra lỗi. Vui lòng thử lại.");
+      setTrigger(true);
+      setTimeout(() => setTrigger(false), 3000);
     }
   };
 
@@ -54,10 +68,6 @@ const UpdateUser = ({ closeSignUpForm }) => {
     <div className="login-overlay-admin">
       <div className="login-form-admin">
         <h2>Sửa thông tin người dùng</h2>
-        <AiOutlineClose
-          className="icon-close-admin"
-          onClick={closeSignUpForm}
-        />
         <input
           type="email"
           name="email"
@@ -79,17 +89,21 @@ const UpdateUser = ({ closeSignUpForm }) => {
           value={formData.phone}
           onChange={handleInputChange}
         />
-        <input
-          type="text"
+        <select
           name="isAdmin"
-          placeholder="Vai trò"
           value={formData.isAdmin}
           onChange={handleInputChange}
-        />
+          className="role-select"
+        >
+          <option value="true">Quản lý</option>
+          <option value="false">Người dùng</option>
+        </select>
+
         <button className="btn-signup" onClick={onHandlSignUp}>
           Sửa
         </button>
       </div>
+      <SuccessComponent message={message} trigger={trigger} />
     </div>
   );
 };

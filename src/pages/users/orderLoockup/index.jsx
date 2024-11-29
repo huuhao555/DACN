@@ -5,15 +5,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 const OrderLookup = () => {
   const [orderInfo, setOrderInfo] = useState({
     buyerName: "",
-    address: {
-      address: ""
-    },
+    address: "",
     orderNumber: "",
     products: [],
     totalAmount: 0,
     orderDate: "",
     status: ""
   });
+  console.log(orderInfo);
   const [searchTerm, setSearchTerm] = useState("");
   const [value, setValue] = useState("");
 
@@ -40,7 +39,11 @@ const OrderLookup = () => {
       alert("Tra cứu đơn hàng thất bại");
     }
   };
-
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handlePriceRange(value);
+    }
+  };
   return (
     <div className="order-lookup-container">
       <h2>Tra cứu Đơn hàng</h2>
@@ -50,6 +53,7 @@ const OrderLookup = () => {
           type="text"
           placeholder="Nhập mã đơn hàng"
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div className="icon-search">
           <AiOutlineSearch onClick={() => handlePriceRange(value)} />
@@ -59,19 +63,19 @@ const OrderLookup = () => {
       <div className="order-info">
         <div className="order-header">
           <p>
-            <strong>Người mua:</strong> {orderInfo.buyerName}
+            <strong>Người mua:</strong> {orderInfo?.buyerName}
           </p>
           <p>
-            <strong>Địa chỉ nhận hàng:</strong> {orderInfo.address.address}
+            <strong>Địa chỉ nhận hàng:</strong> {orderInfo?.address}
           </p>
           <p>
-            <strong>Mã đơn hàng:</strong> {orderInfo.orderNumber}
+            <strong>Mã đơn hàng:</strong> {orderInfo?.orderNumber}
           </p>
           <p>
-            <strong>Ngày đặt:</strong> {orderInfo.orderDate}
+            <strong>Ngày đặt:</strong> {orderInfo?.orderDate}
           </p>
           <p>
-            <strong>Trạng thái:</strong> {orderInfo.status}
+            <strong>Trạng thái:</strong> {orderInfo?.status}
           </p>
         </div>
         {searchTerm && (
@@ -84,13 +88,14 @@ const OrderLookup = () => {
                     <th>Hình sản phẩm</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
-                    <th>Giá</th>
+                    <th>Đơn giá</th>
+                    <th>Tổng giá</th>
                   </tr>
                 </thead>
                 <tbody>
                   {searchTerm?.products.length > 0 ? (
                     searchTerm?.products.map((product, index) => {
-                      console.log(product);
+                      console.log(searchTerm);
                       return (
                         <tr key={index}>
                           <td>
@@ -107,8 +112,14 @@ const OrderLookup = () => {
                           <td>{product?.productId?.name}</td>
                           <td>{product?.quantity}</td>
                           <td>
-                            {product?.productId?.prices.toLocaleString("vi-VN")}{" "}
+                            {product?.productId?.prices.toLocaleString("vi-VN")}
                             VND
+                          </td>
+                          <td>
+                            {(
+                              product?.quantity * product?.productId?.prices
+                            ).toLocaleString("vi-VN")}
+                            VNĐ
                           </td>
                         </tr>
                       );

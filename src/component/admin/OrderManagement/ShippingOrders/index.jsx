@@ -49,13 +49,13 @@ const ShippingOrdersAdmin = () => {
       {orders.length > 0 ? (
         <div>
           {orders?.map((order, orderIndex) => (
-            <div key={order.id} className="order-admin">
+            <div key={order?.id} className="order-admin">
               <h2>Thông tin người nhận hàng</h2>
-              <p>Tên người nhận: {order.name}</p>
-              <p>Địa chỉ: {order.shippingAddress.address}</p>
-              <p>Số điện thoại: {order.phone}</p>
-              <p>Trạng thái: {order.status}</p>
-              <p>Mã đơn hàng: {order._id} </p>
+              <p>Tên người nhận: {order?.name}</p>
+              <p>Địa chỉ: {order?.shippingAddress}</p>
+              <p>Số điện thoại: {order?.phone}</p>
+              <p>Trạng thái: {order?.status}</p>
+              <p>Mã đơn hàng: {order?._id} </p>
               <h3 className="text-order">
                 Chi tiết đơn hàng{" "}
                 <span
@@ -129,20 +129,7 @@ const ShippingOrdersAdmin = () => {
                 </p>
                 <p>
                   Chi phí vận chuyển:
-                  {order.shippingFee === 0 ? (
-                    <span className="shipping-fee">
-                      <span
-                        style={{
-                          textDecoration: "line-through"
-                        }}
-                      >
-                        {(200000).toLocaleString("vi-VN")} VNĐ
-                      </span>
-                      <span style={{ marginLeft: "10px" }}>0 VNĐ</span>
-                    </span>
-                  ) : (
-                    <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
-                  )}
+                  <span>{order.shippingFee.toLocaleString("vi-VN")}</span>
                 </p>
 
                 <p>

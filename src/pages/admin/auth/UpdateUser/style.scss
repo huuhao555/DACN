@@ -75,5 +75,25 @@
         background-color: darken(map.get($theme-color, "main-color"), 10%);
       }
     }
+    .role-select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      background-color: #fff;
+      color: #333;
+
+      &:focus {
+        border-color: map.get($theme-color, "main-color");
+        outline: none;
+      }
+      option {
+        padding: 10px;
+        background-color: #fff;
+        color: #333;
+      }
+    }
   }
 }

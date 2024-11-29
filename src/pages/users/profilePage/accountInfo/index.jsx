@@ -5,9 +5,6 @@ import { UserContext } from "../../../../middleware/UserContext";
 const AccountInfo = () => {
   const { user } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleChangeEmail = (e) => {
-    setErrorMessage("Email không thể thay đổi!");
-  };
 
   const handleFocus = () => {
     setErrorMessage("Email không thể thay đổi!");

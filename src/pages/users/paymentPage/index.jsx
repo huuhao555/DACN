@@ -1,40 +1,39 @@
-import "./style.scss";
-import { useState, useEffect, useCallback, useContext } from "react";
-import { CartContext } from "../../../middleware/CartContext";
-import {
-  FaCcVisa,
-  FaCcMastercard,
-  FaPaypal,
-  FaApplePay,
-  FaGooglePay
-} from "react-icons/fa";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
+import "./style.scss";
 
-const OrderPage = (state) => {
+const OrderPage = () => {
   const { pathname } = useLocation();
+  const navigator = useNavigate();
+  const location = useLocation();
+  const { selectedProducts } = location.state || {};
+  const { user } = useContext(UserContext) || {};
+  const [cartId, setCartId] = useState();
+  const [dataOrder, setDataOrder] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState({
+    name: user?.dataUser?.name || "",
+    phone: user?.dataUser?.phone || "",
+    email: user?.dataUser?.email || "",
+    shippingAddress: ""
+  });
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  const navigator = useNavigate();
-  const location = useLocation();
-  const { selectedProducts } = location.state || {};
 
-  const { user } = useContext(UserContext) || {};
-
-  const [dataOrder, setDataOrder] = useState(null); // Đảm bảo `dataOrder` bắt đầu với `null`
-  const [cart, setCart] = useState(null);
   const getAllCart = useCallback(async () => {
     if (!user || !user.dataUser) return;
     const id = user.dataUser.id;
     try {
       const response = await fetch(
-        `http://localhost:3001/api/cart/get-cart/${id}`
+        ` http://localhost:3001/api/cart/get-cart/${id}`
       );
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
+      setCartId(data?._id);
       const filteredData = data.products.filter((product) =>
         selectedProducts.includes(product.productId._id)
       );
@@ -48,7 +47,62 @@ const OrderPage = (state) => {
   useEffect(() => {
     getAllCart();
   }, [getAllCart]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentDetails({ ...paymentDetails, [name]: value });
 
+    if (name === "shippingAddress") {
+      fetchSuggestions(value);
+    }
+  };
+  const fetchSuggestions = async (query) => {
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://rsapi.goong.io/Place/AutoComplete?api_key=YAAkQr05IwPk9mIFw3zTv9FE0LX4cJ1wryk77Bfb&input=${query}`
+      );
+      const data = await response.json();
+      setSuggestions(data.predictions || []);
+    } catch (error) {
+      console.error("Error fetching shippingAddress suggestions:", error);
+    }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setPaymentDetails({
+      ...paymentDetails,
+      shippingAddress: suggestion.description
+    });
+    setSuggestions([]);
+  };
+
+  const handlePayment = async () => {
+    console.log(paymentDetails);
+    if (window.confirm("Bạn có chắc chắn đặt hàng không?")) {
+      try {
+        const response = await fetch("http://localhost:3001/api/order/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ...paymentDetails,
+            userId: user.dataUser.id,
+            productIds: selectedProducts,
+            cartId: cartId
+          })
+        });
+
+        if (!response.ok) throw new Error("Order creation failed.");
+        navigator(ROUTERS.USERPROFILE.ORDER_MANAGERMENT);
+      } catch (error) {
+        alert("Đặt hàng thất bại");
+      }
+    }
+  };
   const totalPrice = dataOrder
     ? dataOrder.products.reduce(
         (acc, item) => acc + item.productId.prices * item.quantity,
@@ -58,51 +112,6 @@ const OrderPage = (state) => {
   const shippingCost = totalPrice && totalPrice > 50000000 ? 0 : 800000;
   const vat = parseInt(totalPrice ? totalPrice * 0.1 : 0);
   const grandTotal = totalPrice + vat + shippingCost;
-  const [paymentDetails, setPaymentDetails] = useState({
-    cardName: user?.dataUser?.name || "",
-    phone: user?.dataUser?.phone || "",
-    email: user?.dataUser?.email || "",
-    address: ""
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentDetails({ ...paymentDetails, [name]: value });
-  };
-
-  const handlePayment = async () => {
-    if (window.confirm("Bạn có chắc chắn đặt hàng không?")) {
-      try {
-        const response = await fetch("http://localhost:3001/api/order/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: paymentDetails.cardName,
-            phone: paymentDetails.phone,
-            email: paymentDetails.email,
-            userId: user.dataUser.id,
-            cartId: dataOrder._id,
-            shippingAddress: {
-              address: paymentDetails.address
-            },
-            productIds: selectedProducts
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(response.statusText, dataOrder._id);
-        }
-        const data = await response.json();
-
-        navigator(ROUTERS.USERPROFILE.ORDER_MANAGERMENT);
-      } catch (error) {
-        alert("Đặt hàng thất bại");
-      }
-    }
-  };
-
   return (
     <div className="container">
       <div className="row">
@@ -110,21 +119,19 @@ const OrderPage = (state) => {
           <h1>Thanh Toán</h1>
           <div className="payment-form">
             <h2>Thông tin đặt hàng</h2>
-
             <input
               type="text"
-              name="cardName"
-              placeholder="Tên người nhận "
-              value={paymentDetails.cardName}
+              name="name"
+              placeholder="Tên người nhận"
+              value={paymentDetails.name}
               onChange={handleInputChange}
             />
             <input
               type="text"
               name="phone"
-              placeholder="Số điện thoại "
+              placeholder="Số điện thoại"
               value={paymentDetails.phone}
               onChange={handleInputChange}
-              maxLength="10"
             />
             <input
               type="text"
@@ -135,22 +142,25 @@ const OrderPage = (state) => {
             />
             <input
               type="text"
-              name="address"
+              name="shippingAddress"
               placeholder="Địa chỉ nhận hàng"
-              value={paymentDetails.address}
+              value={paymentDetails.shippingAddress}
               onChange={handleInputChange}
             />
+            {suggestions.length > 0 && (
+              <ul className="address-suggestions">
+                {suggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.place_id}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                  >
+                    {suggestion.description}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {/* <div className="payment-methods">
-            <h3>Hoặc thanh toán bằng</h3>
-            <div className="payment-icons">
-              <FaCcVisa size={36} />
-              <FaCcMastercard size={36} />
-              <FaPaypal size={36} />
-              <FaApplePay size={36} />
-              <FaGooglePay size={36} />
-            </div>
-          </div> */}
+
           <div className="order-summary">
             <h2>Thông tin đơn hàng</h2>
             {dataOrder &&
