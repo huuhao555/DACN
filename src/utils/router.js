@@ -20,7 +20,8 @@ export const ROUTERS = {
     ORDERLIST: "/danh-sach-don-hang",
     PAYMENT: "/thanh-toan",
     ADD_REVIEW: "/danh-gia-san-pham",
-    GET_REVIEW: "/hien-thi-danh-gia-san-pham"
+    GET_REVIEW: "/hien-thi-danh-gia-san-pham",
+    PAYMENT_DETAIL: "/ket-qua-thanh-toan"
   },
   ADMIN: {
     DASHBOARD: "/admin",

@@ -9,9 +9,11 @@ const OrderPage = () => {
   const navigator = useNavigate();
   const location = useLocation();
   const { selectedProducts } = location.state || {};
+
   const { user } = useContext(UserContext) || {};
   const [cartId, setCartId] = useState();
   const [dataOrder, setDataOrder] = useState(null);
+  console.log(dataOrder);
   const [paymentDetails, setPaymentDetails] = useState({
     name: user?.dataUser?.name || "",
     phone: user?.dataUser?.phone || "",
@@ -19,7 +21,7 @@ const OrderPage = () => {
     shippingAddress: ""
   });
   const [suggestions, setSuggestions] = useState([]);
-
+  console.log(selectedProducts);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -78,9 +80,8 @@ const OrderPage = () => {
     });
     setSuggestions([]);
   };
-
+  const [orderId, setOrderId] = useState();
   const handlePayment = async () => {
-    console.log(paymentDetails);
     if (window.confirm("Bạn có chắc chắn đặt hàng không?")) {
       try {
         const response = await fetch("http://localhost:3001/api/order/create", {
@@ -92,20 +93,58 @@ const OrderPage = () => {
             ...paymentDetails,
             userId: user.dataUser.id,
             productIds: selectedProducts,
-            cartId: cartId
+            cartId: cartId,
+            voucherCode: "HDTECH15"
           })
         });
 
         if (!response.ok) throw new Error("Order creation failed.");
-        navigator(ROUTERS.USERPROFILE.ORDER_MANAGERMENT);
+        const data = await response.json();
+        console.log(data?.data?._id);
+        setOrderId(data?.data?._id);
       } catch (error) {
         alert("Đặt hàng thất bại");
       }
     }
   };
+  useEffect(() => {
+    if (!orderId) return;
+    const createPayment = async () => {
+      try {
+        const returnUrl = "http://localhost:3000/ket-qua-thanh-toan";
+        const response = await fetch(
+          "http://localhost:3001/api/payments/create_payment",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              orderId,
+              returnUrl
+            })
+          }
+        );
+
+        if (!response.ok) throw new Error(response.statusText);
+        const data = await response.json();
+
+        if (data?.paymentURL) {
+          window.location.href = data.paymentURL;
+        } else {
+          console.error("Không tìm thấy URL thanh toán.");
+        }
+      } catch (error) {
+        console.error("Failed to create payment:", error);
+      }
+    };
+
+    createPayment();
+  }, [orderId]);
   const totalPrice = dataOrder
     ? dataOrder.products.reduce(
-        (acc, item) => acc + item.productId.prices * item.quantity,
+        (acc, item) =>
+          acc + parseInt(item.productId.discountedPrice) * item.quantity,
         0
       )
     : 0;
@@ -181,16 +220,20 @@ const OrderPage = () => {
                     {dataOrder.products.map((item, key) => (
                       <tr key={item._id}>
                         <td>{key + 1}</td>
-                        <td>{item.productId.name}</td>
+                        <td>{item?.productId.name}</td>
                         <td>
-                          {item.productId.prices.toLocaleString("vi-VN")} VNĐ
+                          {item?.productId.discountedPrice.toLocaleString(
+                            "vi-VN"
+                          )}{" "}
+                          ₫
                         </td>
-                        <td>{item.quantity}</td>
+                        <td>{item?.quantity}</td>
                         <td>
                           {(
-                            item.productId.prices * item.quantity
+                            parseInt(item?.productId.discountedPrice) *
+                            item?.quantity
                           ).toLocaleString("vi-VN")}{" "}
-                          VNĐ
+                          ₫
                         </td>
                       </tr>
                     ))}
@@ -199,19 +242,19 @@ const OrderPage = () => {
                       <td colSpan="4" style={{ textAlign: "right" }}>
                         Tổng tiền hàng:
                       </td>
-                      <td>{totalPrice.toLocaleString("vi-VN")} VNĐ</td>
+                      <td>{totalPrice.toLocaleString("vi-VN")} ₫</td>
                     </tr>
                     <tr>
                       <td colSpan="4" style={{ textAlign: "right" }}>
                         VAT:
                       </td>
-                      <td>{vat.toLocaleString("vi-VN")} VNĐ</td>
+                      <td>{vat.toLocaleString("vi-VN")} ₫</td>
                     </tr>
                     <tr>
                       <td colSpan="4" style={{ textAlign: "right" }}>
                         Chi phí vận chuyển:
                       </td>
-                      <td>{shippingCost.toLocaleString("vi-VN")} VNĐ</td>
+                      <td>{shippingCost.toLocaleString("vi-VN")} ₫</td>
                     </tr>
 
                     <tr>
@@ -219,7 +262,7 @@ const OrderPage = () => {
                         Tổng tiền:
                       </td>
                       <td style={{ textAlign: "left", fontWeight: "bold" }}>
-                        {grandTotal.toLocaleString("vi-VN")} VNĐ
+                        {grandTotal.toLocaleString("vi-VN")} ₫
                       </td>
                     </tr>
                   </tbody>

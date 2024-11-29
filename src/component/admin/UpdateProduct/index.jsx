@@ -13,6 +13,7 @@ const UpdateProduct = () => {
     productsTypeName: product.productsTypeName || "",
     quantityInStock: product.quantityInStock || 0,
     prices: product.prices || 0,
+    discount: product.discount || 0,
     inches: product.inches || "",
     screenResolution: product.screenResolution || "",
     imageUrl: product.imageUrl || "",
@@ -134,6 +135,23 @@ const UpdateProduct = () => {
             onChange={handleChange}
             required
           />
+        </div>
+        <label style={{ fontWeight: "bold", color: "#555" }}>
+          Giảm giá (%)
+        </label>
+        <div style={{ display: "flex" }}>
+          <input
+            style={{ width: "12%", marginRight: "20px" }}
+            type="number"
+            name="discount"
+            value={formData.discount}
+            onChange={handleChange}
+          ></input>{" "}
+          <span
+            style={{ marginTop: "10px", fontSize: "18px", marginLeft: "-10px" }}
+          >
+            %
+          </span>
         </div>
         <div>
           <label>Kích thước (Inches):</label>

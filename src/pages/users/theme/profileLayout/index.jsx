@@ -30,7 +30,7 @@ const ProfilePageLayout = (props) => {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log(response);
+
         if (!response.ok) {
           setIsAuthorized(false);
           return;

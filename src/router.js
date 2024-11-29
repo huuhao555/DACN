@@ -36,6 +36,7 @@ import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
 import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
 import AddReview from "./component/user/AddReview/index.jsx";
 import NotFoundPage from "./component/general/NotFoundPage/index.jsx";
+import PaymentDetailPage from "./pages/users/PaymentDetailPage/index.jsx";
 
 const RouterCustom = () => {
   return (
@@ -92,6 +93,10 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.PRODUCTS} element={<ProductPage />} />
         <Route path={ROUTERS.USER.CONTACTS} element={<ContactPage />} />
         <Route path={ROUTERS.USER.ORDERLOOKUP} element={<OrderLookup />} />
+        <Route
+          path={ROUTERS.USER.PAYMENT_DETAIL}
+          element={<PaymentDetailPage />}
+        />
 
         <Route path={ROUTERS.USER.ADD_REVIEW} element={<AddReview />} />
         <Route path={ROUTERS.USER.ORDER_STORAGE} element={<OrderStorage />} />

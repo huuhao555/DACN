@@ -9,10 +9,11 @@ import SuccessAnimation from "../../../component/general/Success";
 
 const CartPage = () => {
   const [cart, setCart] = useState(null);
+  console.log(cart);
   const [message, setMessage] = useState("");
   const [trigger, setTrigger] = useState(false);
   const { user, updateCartCount } = useContext(UserContext);
-
+  console.log(cart);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const navigator = useNavigate();
   const { pathname } = useLocation();
@@ -31,10 +32,10 @@ const CartPage = () => {
 
   const getAllCart = useCallback(async () => {
     if (!user || !user.dataUser) return;
-    const id = user.dataUser.id;
+    const idUser = user.dataUser.id;
     try {
       const response = await fetch(
-        `http://localhost:3001/api/cart/get-cart/${id}`
+        `http://localhost:3001/api/cart/get-cart/${idUser}`
       );
       if (!response.ok) throw new Error(response.statusText);
       const dataCart = await response.json();
@@ -50,9 +51,7 @@ const CartPage = () => {
   }, [getAllCart]);
   const paymentCart = async (selectedProducts, userID) => {
     navigator(ROUTERS.USER.ORDER_DETAIL, {
-      state: {
-        selectedProducts
-      }
+      state: { selectedProducts }
     });
   };
 
@@ -191,7 +190,8 @@ const CartPage = () => {
     return cart.products
       .filter((item) => selectedProducts.includes(item?.productId._id))
       .reduce(
-        (total, item) => total + item?.productId.prices * item?.quantity,
+        (total, item) =>
+          total + item?.productId.discountedPrice * item?.quantity,
         0
       );
   };
@@ -227,10 +227,12 @@ const CartPage = () => {
                     <td>{key + 1}</td>
                     <td>{`${item?.productId.name}`}</td>
                     <td>
-                      {item?.productId.prices
-                        ? item?.productId.prices.toLocaleString("vi-VN")
+                      {item?.productId.discountedPrice
+                        ? item?.productId.discountedPrice.toLocaleString(
+                            "vi-VN"
+                          )
                         : "0"}{" "}
-                      VNĐ
+                      ₫
                     </td>
 
                     <td>
@@ -255,12 +257,12 @@ const CartPage = () => {
                       </div>
                     </td>
                     <td>
-                      {item?.productId.prices
+                      {item?.productId.discountedPrice
                         ? (
-                            item?.productId?.prices * item?.quantity
+                            item?.productId?.discountedPrice * item?.quantity
                           ).toLocaleString("vi-VN")
                         : "0"}{" "}
-                      VNĐ
+                      ₫
                     </td>
 
                     <td>
@@ -312,7 +314,7 @@ const CartPage = () => {
                     fontWeight: "bold"
                   }}
                 >
-                  {calculateTotal().toLocaleString("vi-VN")} VNĐ
+                  {calculateTotal().toLocaleString("vi-VN")} ₫
                 </td>
               </tr>
             </tbody>

@@ -101,6 +101,7 @@ const ProductPage = () => {
 
   const Search = (event) => {
     const valueInputSearch = event.target.value.toLowerCase();
+    console.log(valueInputSearch);
     if (valueInputSearch === "") {
       setProducts(productsAll);
       setSuggestions([]);
@@ -108,8 +109,8 @@ const ProductPage = () => {
     }
     const filteredProducts = productsAll.filter((product) => {
       return (
-        product.name.toLowerCase().includes(valueInputSearch) ||
-        product.company.toLowerCase().includes(valueInputSearch)
+        product?.name?.toLowerCase().includes(valueInputSearch) ||
+        product?.company?.toLowerCase().includes(valueInputSearch)
       );
     }, []);
     setProducts(filteredProducts);
@@ -219,9 +220,14 @@ const ProductPage = () => {
                 <input type="text" onChange={Search} />
                 <div className="suggestions">
                   {suggestions.map((item) => (
-                    <div key={item.laptop_ID} className="suggestion-item">
-                      {`${item.company} ${item.name}`}
-                    </div>
+                    <Link
+                      to={`${ROUTERS.USER.DETAILS}/${item._id}`}
+                      state={{ productId: item._id }}
+                    >
+                      <div key={item.laptop_ID} className="suggestion-item">
+                        {`${item.company} ${item.name}`}
+                      </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -300,16 +306,6 @@ const ProductPage = () => {
                   ))}
                 </div>
               </div>
-              {/* <div className="sidebar-item">
-                <h3>Thể loại khác</h3>
-                <ul>
-                  {categories.map((category, key) => (
-                    <li key={key}>
-                      <Link to={category.path}>{category.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
             </div>
           </div>
 
@@ -375,12 +371,34 @@ const ProductPage = () => {
                                   </div>
                                 ))}
                               </div>
-                              <p>
-                                {product.prices.toLocaleString("vi-VN")
-                                  ? product.prices.toLocaleString("vi-VN")
-                                  : "N/A"}
-                                VNĐ
-                              </p>{" "}
+                              <div className="grp-price">
+                                {product?.prices == product?.discountedPrice ? (
+                                  <p className="price">
+                                    {product?.discountedPrice?.toLocaleString(
+                                      "vi-VN"
+                                    )}
+                                    ₫
+                                  </p>
+                                ) : (
+                                  <>
+                                    <p className="price-old">
+                                      {product?.prices?.toLocaleString("vi-VN")}
+                                      ₫
+                                    </p>
+                                    <div className="price-new">
+                                      <p className="price-discount">
+                                        {product?.discountedPrice?.toLocaleString(
+                                          "vi-VN"
+                                        )}
+                                        ₫
+                                      </p>
+                                      <p className="discount">
+                                        {`-${product?.discount}%`}
+                                      </p>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </Link>
                         </div>

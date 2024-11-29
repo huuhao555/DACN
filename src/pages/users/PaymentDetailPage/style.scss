@@ -1,0 +1,67 @@
+.payment-page-detail {
+  padding-top: 100px;
+  margin-top: -100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+
+  .payment-card-detail {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+
+    .payment-status-icon-detail {
+      font-size: 50px;
+      color: #4caf50;
+      margin-bottom: 10px;
+
+      .checkmark-detail {
+        font-size: inherit;
+        color: inherit;
+      }
+    }
+
+    h2 {
+      color: #4caf50;
+      margin-bottom: 20px;
+    }
+
+    .payment-details-detail {
+      margin: 20px 0;
+      text-align: left;
+
+      .detail {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 14px;
+        color: #333333;
+        border-bottom: 1px solid #e0e0e0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    .done-button-detail {
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}

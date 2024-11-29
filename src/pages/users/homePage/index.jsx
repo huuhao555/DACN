@@ -42,8 +42,8 @@ const HomePage = () => {
     } else {
       const filteredProducts = products.filter(
         (product) =>
-          product.name.toLowerCase().includes(valueSearch.toLowerCase()) ||
-          product.company.toLowerCase().includes(valueSearch.toLowerCase())
+          product?.name?.toLowerCase().includes(valueSearch?.toLowerCase()) ||
+          product?.company?.toLowerCase().includes(valueSearch?.toLowerCase())
       );
       setSuggestions(filteredProducts);
     }

@@ -132,6 +132,11 @@ const ProductDetailsPage = () => {
                             </div>
                           </div>
                         </div>
+                        <div className="product-price">
+                          <span className="price">
+                            {product?.prices?.toLocaleString("vi-VN")}₫
+                          </span>
+                        </div>
                         {/* <div className="product-rating">
                           <span className="number">0.0</span>
                           <span className="icon">

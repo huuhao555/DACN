@@ -62,7 +62,7 @@ const ProductType = () => {
           break;
         case "laptopai":
           filteredProducts = products.filter((product) => {
-            const screenResolution = product.screenResolution.toLowerCase();
+            const screenResolution = product?.screenResolution?.toLowerCase();
             if (screenResolution.includes("k")) {
               const valueScreen = parseFloat(screenResolution);
               return valueScreen >= 1;
@@ -77,10 +77,10 @@ const ProductType = () => {
           break;
         case "laptopvanphong":
           filteredProducts = products.filter((product) => {
-            const memory = product.memory.toLowerCase();
+            const memory = product?.memory?.toLowerCase();
             if (memory.includes("tb")) {
               const valueInGb = parseFloat(memory) * 1024;
-              console.log(valueInGb);
+
               return valueInGb >= 500;
             } else if (memory.includes("gb")) {
               const valueInGb = parseFloat(memory);
@@ -98,7 +98,6 @@ const ProductType = () => {
           filteredProducts = products;
       }
     }
-    console.log(filteredProducts);
 
     if (filteredProducts.length !== productsStart.length) {
       setProducts(filteredProducts);
@@ -115,8 +114,8 @@ const ProductType = () => {
 
     const searchProducts = products.filter((product) => {
       return (
-        product?.Company.toLowerCase().includes(valueInputSearch) ||
-        product?.Type_name.toLowerCase().includes(valueInputSearch)
+        product?.Company?.toLowerCase().includes(valueInputSearch) ||
+        product?.Type_name?.toLowerCase().includes(valueInputSearch)
       );
     }, []);
 

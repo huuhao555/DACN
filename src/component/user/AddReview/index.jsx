@@ -113,7 +113,7 @@ const AddReview = () => {
                     />
                   </td>
                   <td>{item?.name}</td>
-                  <td>{item?.prices?.toLocaleString("vi-VN")} VNĐ</td>
+                  <td>{item?.prices?.toLocaleString("vi-VN")} ₫</td>
                 </tr>
               </tbody>
             </table>

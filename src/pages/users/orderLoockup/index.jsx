@@ -12,7 +12,7 @@ const OrderLookup = () => {
     orderDate: "",
     status: ""
   });
-  console.log(orderInfo);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [value, setValue] = useState("");
 
@@ -95,7 +95,6 @@ const OrderLookup = () => {
                 <tbody>
                   {searchTerm?.products.length > 0 ? (
                     searchTerm?.products.map((product, index) => {
-                      console.log(searchTerm);
                       return (
                         <tr key={index}>
                           <td>
@@ -119,7 +118,7 @@ const OrderLookup = () => {
                             {(
                               product?.quantity * product?.productId?.prices
                             ).toLocaleString("vi-VN")}
-                            VNĐ
+                            ₫
                           </td>
                         </tr>
                       );
@@ -136,28 +135,25 @@ const OrderLookup = () => {
               <h3>Chi tiết thanh toán</h3>
               <p>
                 Tổng tiền hàng:
-                <span>
-                  {searchTerm?.totalPrice?.toLocaleString("vi-VN")} VNĐ
-                </span>
+                <span>{searchTerm?.totalPrice?.toLocaleString("vi-VN")} ₫</span>
               </p>
               <p>
                 VAT:
                 <span>
-                  {parseInt(searchTerm?.VAT)?.toLocaleString("vi-VN")} VNĐ
+                  {parseInt(searchTerm?.VAT)?.toLocaleString("vi-VN")} ₫
                 </span>
               </p>
               <p>
                 Chi phí vận chuyển:
                 <span>
-                  {searchTerm?.shippingFee?.toLocaleString("vi-VN")} VNĐ
+                  {searchTerm?.shippingFee?.toLocaleString("vi-VN")} ₫
                 </span>
               </p>
 
               <p>
                 Tổng cộng:
                 <span style={{ marginLeft: "10px" }}>
-                  {parseInt(searchTerm?.orderTotal)?.toLocaleString("vi-VN")}
-                  VNĐ
+                  {parseInt(searchTerm?.orderTotal)?.toLocaleString("vi-VN")}₫
                 </span>
               </p>
             </div>

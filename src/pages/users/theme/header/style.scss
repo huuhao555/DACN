@@ -1,5 +1,6 @@
 @use "sass:map";
 @import "../../../../styles/pages/theme.scss";
+@import "../../../../styles/pages/responsive";
 .wrap {
   .container-header {
     .row {
@@ -161,3 +162,14 @@
     }
   }
 }
+// @include Responsive($MEDIUM_DEVICE) {
+//   .wrap {
+//     .container-header {
+//       .row {
+//         .header-main {
+//           background-color: red;
+//         }
+//       }
+//     }
+//   }
+// }

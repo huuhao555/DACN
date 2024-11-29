@@ -57,7 +57,7 @@ const CreateProduct = () => {
         body: data,
         headers: {}
       });
-      console.log(...data);
+
       if (!response.ok) {
         alert(
           "Thêm sản phẩm không thành công! Vui lòng kiểm tra lại thông tin."

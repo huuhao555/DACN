@@ -66,7 +66,7 @@ const ProductsSlideComponent = () => {
             >
               <div className="item-productSlide-bottom">
                 <h3>{product.name}</h3>
-                <p>{product.prices.toLocaleString("vi-VN")} VNĐ</p>
+                <p>{product.prices.toLocaleString("vi-VN")} ₫</p>
               </div>
             </Link>
           </div>
