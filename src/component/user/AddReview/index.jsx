@@ -4,6 +4,7 @@ import "./style.scss";
 import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
+import SuccessAnimation from "../../general/Success";
 
 const AddReview = () => {
   const { user } = useContext(UserContext) || {};
@@ -48,7 +49,7 @@ const AddReview = () => {
   const [rating, setRating] = useState(1);
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState("");
-
+  const [trigger, setTrigger] = useState(false);
   const suggestedComments = [
     "Sản phẩm rất tốt",
     "Giao hàng nhanh",
@@ -78,9 +79,13 @@ const AddReview = () => {
       await response.json();
       setRating("");
       setComment("");
+
       setMessage("Cảm ơn bạn đã đánh giá sản phẩm!");
-      navigator(ROUTERS.USER.HOME);
-      alert("Đánh giá sản phẩm thành công");
+      setTrigger(true);
+      setTimeout(() => {
+        navigator(ROUTERS.USER.HOME);
+        setTrigger(false);
+      }, 1000);
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -113,7 +118,31 @@ const AddReview = () => {
                     />
                   </td>
                   <td>{item?.name}</td>
-                  <td>{item?.prices?.toLocaleString("vi-VN")} ₫</td>
+                  <td>
+                    {" "}
+                    {item?.prices == item?.promotionPrice ? (
+                      <div className="grp-price">
+                        <p className="prices">
+                          {`${item?.prices?.toLocaleString("vi-VN")} ₫`}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grp-price">
+                        <p className="price-old">
+                          {`${item?.prices?.toLocaleString("vi-VN")} ₫`}
+                        </p>
+                        <div className="grp-price-new">
+                          <p className="price-new">
+                            {`${parseInt(item?.promotionPrice)?.toLocaleString(
+                              "vi-VN"
+                            )}
+                               ₫`}
+                          </p>
+                          <p className="discount">{`-${item?.discount}%`}</p>
+                        </div>
+                      </div>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -158,7 +187,7 @@ const AddReview = () => {
       </div>
 
       <button onClick={submitReview}>Submit</button>
-      {message && <p>{message}</p>}
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

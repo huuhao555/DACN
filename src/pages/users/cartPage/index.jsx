@@ -12,6 +12,7 @@ const CartPage = () => {
 
   const [message, setMessage] = useState("");
   const [trigger, setTrigger] = useState(false);
+
   const { user, updateCartCount } = useContext(UserContext);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -228,17 +229,17 @@ const CartPage = () => {
                     <td>{`${item?.productId.name}`}</td>
                     <td>
                       {" "}
-                      {item?.productId?.prices ==
+                      {parseInt(item?.productId?.prices) ==
                       item?.productId?.promotionPrice ? (
                         <div className="grp-price">
                           <p className="prices">
-                            {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                            {`${parseInt(item?.productId?.prices).toLocaleString("vi-VN")} ₫`}
                           </p>
                         </div>
                       ) : (
                         <div className="grp-price">
                           <p className="price-old">
-                            {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                            {`${parseInt(item?.productId?.prices).toLocaleString("vi-VN")} ₫`}
                           </p>
                           <div className="grp-price-new">
                             <p className="price-new">

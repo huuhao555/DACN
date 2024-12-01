@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import "./style.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
+import SuccessAnimation from "../../general/Success";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { product = {}, id = "" } = location.state || {};
-
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const [formData, setFormData] = useState({
     name: product.name || "",
     productsTypeName: product.productsTypeName || "",
@@ -86,8 +88,12 @@ const UpdateProduct = () => {
         );
         return;
       }
-      alert("Sửa sản phẩm thành công");
-      navigate(ROUTERS.ADMIN.MANAGE_PRODUCTS);
+      setMessage("Sửa sản phẩm thành công");
+      setTrigger(true);
+      setTimeout(() => {
+        navigate(ROUTERS.ADMIN.MANAGE_PRODUCTS);
+        setTrigger(false);
+      }, 1000);
     } catch (error) {
       console.error(error);
     }
@@ -121,6 +127,7 @@ const UpdateProduct = () => {
           <input
             type="number"
             name="quantityInStock"
+            min={0}
             value={formData.quantityInStock}
             onChange={handleChange}
             required
@@ -134,6 +141,7 @@ const UpdateProduct = () => {
             value={formData.prices}
             onChange={handleChange}
             required
+            min={0}
           />
         </div>
         <label style={{ fontWeight: "bold", color: "#555" }}>
@@ -143,6 +151,7 @@ const UpdateProduct = () => {
           <input
             style={{ width: "12%", marginRight: "20px" }}
             type="number"
+            min={0}
             name="discount"
             value={formData.discount}
             onChange={handleChange}
@@ -249,6 +258,7 @@ const UpdateProduct = () => {
         </div>
         <button type="submit">Sửa sản phẩm</button>
       </form>
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

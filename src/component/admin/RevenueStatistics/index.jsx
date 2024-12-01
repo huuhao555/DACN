@@ -1,12 +1,14 @@
+import React, { useState, useEffect } from "react";
+import { Bar } from "react-chartjs-2";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { vi } from "date-fns/locale";
 import "./style.scss";
-import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
-  LineElement,
-  PointElement,
   Title,
   Tooltip,
   Legend
@@ -16,150 +18,190 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  LineElement,
-  PointElement,
   Title,
   Tooltip,
   Legend
 );
 
 const RevenueStatistics = () => {
-  const labels = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ];
+  const [timePeriod, setTimePeriod] = useState("day");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [chartData, setChartData] = useState(null);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
 
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Doanh thu",
-        data: [
-          120000000, 840000000, 324000000, 532000000, 737000000, 1050030000,
-          924000000
-        ],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)"
-        ],
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)"
-        ],
-        borderWidth: 1
-      }
-    ]
-  };
-  const labels1 = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
-  const data1 = {
-    labels: labels1,
-    datasets: [
-      {
-        label: "Năm 2022",
-        data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1
-      },
-      {
-        label: "Năm 2023",
-        data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-        fill: false,
-        borderColor: "rgb(255, 99, 132)",
-        tension: 0.1
-      },
-      {
-        label: "Năm 2024",
-        data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-        fill: false,
-        borderColor: "rgb(54, 162, 235)",
-        tension: 0.1
-      }
-    ]
+  const toVietnamTime = (date) => {
+    const offset = 7 * 60 * 60 * 1000;
+    return new Date(date.getTime() + offset);
   };
 
-  const options1 = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top"
-      },
-      title: {
-        display: true,
-        text: "Monthly Data Overview"
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "triệu"
-        },
-        ticks: {
-          callback: function (value) {
-            return value / 1 + " triệu";
-          }
-        },
-        grid: {
-          drawTicks: false,
-          drawOnChartArea: false
+  const formatDate = (date, formatType) => {
+    const vietnamDate = toVietnamTime(date);
+    if (formatType === "month") return vietnamDate.toISOString().slice(0, 7);
+    return vietnamDate.toISOString().slice(0, 10);
+  };
+
+  const getWeekRange = (date) => {
+    const vietnamDate = toVietnamTime(date);
+    const dayOfWeek = vietnamDate.getDay();
+    const startDate = new Date(
+      vietnamDate.getTime() -
+        (dayOfWeek === 0 ? 6 : dayOfWeek - 1) * 24 * 60 * 60 * 1000
+    );
+    const endDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+    return { startDate, endDate };
+  };
+
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const days = new Date(year, month + 1, 0).getDate();
+    return Array.from({ length: days }, (_, i) => new Date(year, month, i + 1));
+  };
+
+  const fetchChartData = async () => {
+    try {
+      let body = { status: "Delivered", timePeriod };
+
+      if (timePeriod === "week") {
+        const { startDate } = getWeekRange(selectedDate);
+        if (!startDate) {
+          console.error("Ngày bắt đầu của tuần không hợp lệ.");
+          return;
         }
+        body.date = formatDate(startDate, "day");
+      } else if (timePeriod === "month") {
+        body.date = formatDate(selectedDate, "month");
+      } else {
+        body.date = formatDate(selectedDate, "day");
       }
+
+      const response = await fetch(
+        "http://localhost:3001/api/order/getstatus",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+
+      setTotalOrders(data.totalOrders);
+      setTotalProducts(data.totalProducts);
+
+      let chartDataset = [];
+      let labels = [];
+
+      if (timePeriod === "day") {
+        chartDataset = [data.totalAmount, data.totalProducts];
+        labels = ["Doanh thu", "Sản phẩm"];
+      } else if (timePeriod === "week") {
+        const daysInWeek = [
+          "Chủ Nhật",
+          "Thứ Hai",
+          "Thứ Ba",
+          "Thứ Tư",
+          "Thứ Năm",
+          "Thứ Sáu",
+          "Thứ Bảy"
+        ];
+        chartDataset = Array(7).fill(0);
+
+        data.orders.forEach((order) => {
+          const orderDate = new Date(order.createdAt);
+          const dayOfWeek = orderDate.getDay();
+          chartDataset[dayOfWeek] += order.orderTotal;
+        });
+
+        labels = daysInWeek;
+      } else if (timePeriod === "month") {
+        const daysInMonth = getDaysInMonth(selectedDate);
+        chartDataset = Array(daysInMonth.length).fill(0);
+
+        data.orders.forEach((order) => {
+          const orderDate = new Date(order.createdAt);
+          const dayOfMonth = orderDate.getDate() - 1;
+          chartDataset[dayOfMonth] += order.orderTotal;
+        });
+
+        labels = daysInMonth.map((d) => `Ngày ${d.getDate()}`);
+      }
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: chartDataset,
+            backgroundColor: ["#FF6384"],
+            borderWidth: 1
+          }
+        ]
+      });
+    } catch (error) {
+      console.error("Lỗi khi fetch dữ liệu:", error);
     }
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top"
-      },
-      title: {
-        display: false,
-        text: "Thống kê doanh thu"
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "triệu"
-        },
-        ticks: {
-          callback: function (value) {
-            return value / 1000000 + " triệu";
-          }
-        },
-        grid: {
-          drawTicks: false,
-          drawOnChartArea: false
-        }
-      }
-    }
-  };
+  useEffect(() => {
+    fetchChartData();
+  }, [timePeriod, selectedDate]);
 
   return (
     <div className="chart-container">
-      <h2>Thống kê Tháng</h2>
-      <Bar data={data} options={options} />
-      <Line data={data1} options={options1} />
+      <div className="chart-header">
+        <h2>Thống kê doanh thu</h2>
+        <div className="filters">
+          <select
+            value={timePeriod}
+            onChange={(e) => setTimePeriod(e.target.value)}
+            className="select-timePeriod"
+          >
+            <option value="day">Theo ngày</option>
+            <option value="week">Theo tuần</option>
+            <option value="month">Theo tháng</option>
+          </select>
+
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat={timePeriod === "month" ? "MM/yyyy" : "dd/MM/yyyy"}
+            showMonthYearPicker={timePeriod === "month"}
+            locale={vi}
+            calendarStartDay={1}
+          />
+        </div>
+      </div>
+
+      <div className="statistics-info">
+        <div className="stat-item">
+          <span>Tổng số đơn hàng</span>
+          <div className="value">{totalOrders}</div>
+        </div>
+        <div className="stat-item">
+          <span>Tổng số sản phẩm</span>
+          <div className="value">{totalProducts}</div>
+        </div>
+      </div>
+
+      <div className="chart">
+        {chartData ? (
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: { position: "top" },
+                title: { display: true, text: "Biểu đồ thống kê doanh thu" }
+              }
+            }}
+          />
+        ) : (
+          <p>Đang tải dữ liệu...</p>
+        )}
+      </div>
     </div>
   );
 };

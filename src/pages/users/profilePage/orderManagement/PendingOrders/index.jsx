@@ -2,10 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../../middleware/UserContext";
 import "../style.scss";
 import { AiOutlineDownCircle } from "react-icons/ai";
+import SuccessAnimation from "../../../../../component/general/Success";
 
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(UserContext) || {};
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const [visibleOrders, setVisibleOrders] = useState({});
   useEffect(() => {
     const fetchPendingOrders = async () => {
@@ -54,9 +57,12 @@ const PendingOrders = () => {
       if (!response.ok) {
         throw new Error("Failed to cancel order");
       }
-
-      const data = await response.json();
-
+      setMessage("Huỷ đơn hàng thành công");
+      setTrigger(true);
+      await response.json();
+      setTimeout(() => {
+        setTrigger(false);
+      }, 1000);
       const userId = user?.dataUser?.id;
       const updatedOrdersResponse = await fetch(
         `http://localhost:3001/api/order/getAll/${userId}`
@@ -153,17 +159,17 @@ const PendingOrders = () => {
                             <td>{item?.productId?.name}</td>
                             <td>
                               {" "}
-                              {item?.productId?.prices ==
+                              {parseInt(item?.productId?.prices) ==
                               item?.productId?.promotionPrice ? (
                                 <div className="grp-price">
                                   <p className="prices">
-                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                    {`${parseInt(item?.productId?.prices).toLocaleString("vi-VN")} ₫`}
                                   </p>
                                 </div>
                               ) : (
                                 <div className="grp-price">
                                   <p className="price-old">
-                                    {`${item?.productId?.prices.toLocaleString("vi-VN")} ₫`}
+                                    {`${parseInt(item?.productId?.prices).toLocaleString("vi-VN")} ₫`}
                                   </p>
                                   <div className="grp-price-new">
                                     <p className="price-new">
@@ -187,7 +193,7 @@ const PendingOrders = () => {
                                 fontSize: "16px"
                               }}
                             >
-                              {(
+                              {parseInt(
                                 item?.productId?.promotionPrice * item.quantity
                               ).toLocaleString("vi-VN")}{" "}
                               ₫
@@ -230,10 +236,12 @@ const PendingOrders = () => {
                     <p>
                       Voucher người dùng:
                       <span>
-                        {`-${(
+                        {` (-${(
                           (1 - order?.orderTotal / grandTotal) *
                           100
-                        )?.toLocaleString("vi-VN")}%`}
+                        )?.toLocaleString(
+                          "vi-VN"
+                        )}%) -${(grandTotal - order?.orderTotal)?.toLocaleString("vi-VN")}`}
                       </span>
                     </p>
 
@@ -260,6 +268,7 @@ const PendingOrders = () => {
       ) : (
         <p>Không có đơn hàng nào đang xử lý.</p>
       )}
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

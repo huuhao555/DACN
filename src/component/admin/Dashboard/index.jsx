@@ -5,149 +5,100 @@ import { ROUTERS } from "../../../utils/router";
 import RevenueStatistics from "../RevenueStatistics";
 
 const Dashboard = () => {
-  const CardUser = () => {
-    const [count, setCount] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
 
-    useEffect(() => {
-      const fetchCount = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost:3001/api/user/getAllUser"
-          );
-          if (!response.ok) throw new Error(response.statusText);
+  useEffect(() => {
+    const fetchTotalRevenue = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/order/total-revenue"
+        );
+        if (!response.ok) throw new Error("Lỗi khi fetch dữ liệu");
 
-          const dataUser = await response.json();
-          setCount(dataUser.data.length);
-        } catch (error) {
-          console.error("Failed to fetch count for users:", error);
-        }
-      };
+        const data = await response.json();
+        setTotalRevenue(data.totalRevenue);
+      } catch (error) {
+        console.error("Lỗi khi lấy tổng doanh thu:", error);
+      }
+    };
 
-      fetchCount();
-    }, []);
+    fetchTotalRevenue();
+  }, []);
 
-    return (
-      <Link to={ROUTERS.ADMIN.MANAGE_STAFF}>
-        <div className="card green">
-          <div className="card-content">
-            <h3>Tổng người dùng</h3>
-            <p className="count">{count}</p>
-          </div>
-          <div className="icon">👤</div>
+  const DashboardCard = ({ to, color, title, count, icon }) => (
+    <Link to={to}>
+      <div className={`card ${color}`}>
+        <div className="card-content">
+          <h3>{title}</h3>
+          <p className="count">{count}</p>
         </div>
-      </Link>
-    );
+        <div className="icon">{icon}</div>
+      </div>
+    </Link>
+  );
+
+  const fetchCount = async (url, setCount) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(response.statusText);
+
+      const data = await response.json();
+      setCount(data?.total || data?.data?.length || 0);
+    } catch (error) {
+      console.error(`Lỗi khi fetch từ ${url}:`, error);
+    }
   };
 
-  const CardOrders = () => {
-    const [count, setCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
 
-    useEffect(() => {
-      const fetchCount = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost:3001/api/order/getAll"
-          );
-          if (!response.ok) throw new Error(response.statusText);
-
-          const data = await response.json();
-          setCount(data?.data?.length);
-        } catch (error) {
-          console.error("Failed to fetch count for orders:", error);
-        }
-      };
-
-      fetchCount();
-    }, []);
-
-    return (
-      <Link to={ROUTERS.ADMIN.MANAGER_ORDER}>
-        <div className="card purple">
-          <div className="card-content">
-            <h3>Tổng đơn hàng</h3>
-            <p className="count">{count}</p>
-          </div>
-          <div className="icon">🛒</div>
-        </div>
-      </Link>
+  useEffect(() => {
+    fetchCount("http://localhost:3001/api/user/getAllUser", setUserCount);
+    fetchCount("http://localhost:3001/api/order/getAll", setOrderCount);
+    fetchCount(
+      "http://localhost:3001/api/product/getAllProduct",
+      setProductCount
     );
-  };
-
-  const CardProducts = () => {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-      const fetchCount = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost:3001/api/product/getAllProduct"
-          );
-          if (!response.ok) throw new Error(response.statusText);
-
-          const data = await response.json();
-          setCount(data.total);
-        } catch (error) {
-          console.error("Failed to fetch count for products:", error);
-        }
-      };
-
-      fetchCount();
-    }, []);
-
-    return (
-      <Link to={ROUTERS.ADMIN.PRODUCT_LIST}>
-        <div className="card blue">
-          <div className="card-content">
-            <h3>Tổng sản phẩm</h3>
-            <p className="count">{count}</p>
-          </div>
-          <div className="icon">💻</div>
-        </div>
-      </Link>
+    fetchCount(
+      "http://localhost:3001/api/review/reviews/count",
+      setReviewCount
     );
-  };
-
-  const CardReviews = () => {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-      const fetchCount = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost:3001/api/review/reviews/count"
-          );
-          if (!response.ok) throw new Error(response.statusText);
-
-          const data = await response.json();
-          setCount(data?.totalReviews);
-        } catch (error) {
-          console.error("Failed to fetch count for reviews:", error);
-        }
-      };
-
-      fetchCount();
-    }, []);
-
-    return (
-      <Link to={ROUTERS.ADMIN.MANAGE_PRODUCTS}>
-        <div className="card orange">
-          <div className="card-content">
-            <h3>Tổng đánh giá</h3>
-            <p className="count">{count}</p>
-          </div>
-          <div className="icon">⭐</div>
-        </div>
-      </Link>
-    );
-  };
+  }, []);
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-cards ">
-        <CardUser />
-        <CardOrders />
-        <CardProducts />
-        <CardReviews />
+      <h1 className="total-revenue">{`Tổng Doanh Thu: ${parseInt(totalRevenue)?.toLocaleString("vi-VN")} VNĐ`}</h1>
+      <div className="dashboard-cards">
+        <DashboardCard
+          to={ROUTERS.ADMIN.MANAGE_STAFF}
+          color="green"
+          title="Tổng người dùng"
+          count={userCount}
+          icon="👤"
+        />
+        <DashboardCard
+          to={ROUTERS.ADMIN.MANAGER_ORDER}
+          color="purple"
+          title="Tổng đơn hàng"
+          count={orderCount}
+          icon="🛒"
+        />
+        <DashboardCard
+          to={ROUTERS.ADMIN.PRODUCT_LIST}
+          color="blue"
+          title="Tổng sản phẩm"
+          count={productCount}
+          icon="💻"
+        />
+        <DashboardCard
+          to={ROUTERS.ADMIN.MANAGE_PRODUCTS}
+          color="orange"
+          title="Tổng đánh giá"
+          count={reviewCount}
+          icon="⭐"
+        />
       </div>
       <div className="chart">
         <RevenueStatistics />

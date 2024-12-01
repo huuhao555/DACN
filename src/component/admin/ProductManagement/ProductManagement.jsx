@@ -5,6 +5,7 @@ import { ROUTERS } from "../../../utils/router";
 import { UserContext } from "../../../middleware/UserContext";
 import { NotificationContext } from "../../../middleware/NotificationContext";
 import "./style.scss";
+import SuccessAnimation from "../../general/Success";
 
 const ProductManagement = () => {
   const { addNotification } = useContext(NotificationContext);
@@ -12,7 +13,8 @@ const ProductManagement = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -46,6 +48,8 @@ const ProductManagement = () => {
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product._id !== id)
         );
+        setMessage("Xoá sản phẩm thành công");
+        setTrigger(true);
         addNotification(
           `${deletedProduct?.name} đã được xoá khỏi danh sách sản phẩm.`
         );
@@ -97,7 +101,7 @@ const ProductManagement = () => {
                   <td>{product.quantityInStock}</td>
                   <td>
                     {" "}
-                    {product?.prices == product?.promotionPrice ? (
+                    {product?.prices == parseInt(product?.promotionPrice) ? (
                       <div className="grp-price">
                         <p className="prices">
                           {`${product?.prices.toLocaleString("vi-VN")} ₫`}
@@ -111,7 +115,7 @@ const ProductManagement = () => {
                         <div className="grp-price-new">
                           <p className="price-new">
                             {`${parseInt(
-                              product?.promotionPrice
+                              parseInt(product?.promotionPrice)
                             ).toLocaleString("vi-VN")}
                                ₫`}
                           </p>
@@ -162,6 +166,7 @@ const ProductManagement = () => {
           </button>
         ))}
       </div>
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

@@ -52,9 +52,9 @@ const AdminLayout = (props) => {
     return <LoadingSpinner />;
   }
 
-  if (!isAuthorized) {
-    return <NotFoundPage replace />;
-  }
+  // if (!isAuthorized) {
+  //   return <NotFoundPage replace />;
+  // }
   return (
     <UserProvider>
       <NotificationProvider>

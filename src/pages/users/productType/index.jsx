@@ -381,11 +381,12 @@ const ProductType = () => {
                                 ))}
                               </div>
                               <div className="grp-price">
-                                {product?.prices == product?.promotionPrice ? (
+                                {product?.prices ==
+                                parseInt(product?.promotionPrice) ? (
                                   <p className="price">
-                                    {product?.promotionPrice?.toLocaleString(
-                                      "vi-VN"
-                                    )}
+                                    {parseInt(
+                                      product?.promotionPrice
+                                    )?.toLocaleString("vi-VN")}
                                     ₫
                                   </p>
                                 ) : (
@@ -396,9 +397,9 @@ const ProductType = () => {
                                     </p>
                                     <div className="price-new">
                                       <p className="price-discount">
-                                        {product?.promotionPrice?.toLocaleString(
-                                          "vi-VN"
-                                        )}
+                                        {parseInt(
+                                          product?.promotionPrice
+                                        )?.toLocaleString("vi-VN")}
                                         ₫
                                       </p>
                                       <p className="discount">

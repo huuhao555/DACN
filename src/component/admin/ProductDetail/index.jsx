@@ -71,9 +71,12 @@ const ProductDetail = () => {
               <h1>{`${product?.company} ${product?.name}`}</h1>
               <div className="product-detail-block">
                 <div className="grp-price">
-                  {product?.prices == product?.promotionPrice ? (
+                  {product?.prices == parseInt(product?.promotionPrice) ? (
                     <p className="price">
-                      {product?.promotionPrice?.toLocaleString("vi-VN")}₫
+                      {parseInt(product?.promotionPrice)?.toLocaleString(
+                        "vi-VN"
+                      )}
+                      ₫
                     </p>
                   ) : (
                     <>
@@ -82,7 +85,10 @@ const ProductDetail = () => {
                       </p>
                       <div className="price-new">
                         <p className="price-discount">
-                          {product?.promotionPrice?.toLocaleString("vi-VN")}₫
+                          {parseInt(product?.promotionPrice)?.toLocaleString(
+                            "vi-VN"
+                          )}
+                          ₫
                         </p>
                         <p className="discount">{`-${product?.discount}%`}</p>
                       </div>

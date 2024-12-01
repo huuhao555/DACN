@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../../middleware/NotificationContext";
+import SuccessAnimation from "../../general/Success";
 
 const CreateProduct = () => {
   const { addNotification } = useContext(NotificationContext);
@@ -21,7 +22,8 @@ const CreateProduct = () => {
     gpu: "",
     weight: ""
   });
-
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [bannerFile, setBannerFile] = useState(null);
 
@@ -64,11 +66,13 @@ const CreateProduct = () => {
         );
         return;
       }
-
-      alert("Thêm sản phẩm thành công");
+      setMessage("Thêm sản phẩm thành công");
+      setTrigger(true);
       addNotification(`${formData.name} được thêm vào danh sách sản phẩm.`);
-      navigate("/admin/quan-ly-san-pham");
-
+      setTimeout(() => {
+        navigate("/admin/quan-ly-san-pham");
+        setTrigger(false);
+      }, 1000);
       setFormData({
         name: "",
         productsTypeName: "",
@@ -93,7 +97,7 @@ const CreateProduct = () => {
 
   return (
     <div className="create-product-admin">
-      <h1>Tạo Sản Phẩm</h1>
+      <h1>Thêm Sản Phẩm</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Tên sản phẩm:</label>
@@ -122,6 +126,7 @@ const CreateProduct = () => {
             value={formData.quantityInStock}
             onChange={handleChange}
             required
+            min={0}
           />
         </div>
         <div>
@@ -129,6 +134,7 @@ const CreateProduct = () => {
           <input
             type="number"
             name="prices"
+            min={0}
             value={formData.prices}
             onChange={handleChange}
             required
@@ -144,6 +150,7 @@ const CreateProduct = () => {
             name="discount"
             value={formData.discount}
             onChange={handleChange}
+            min={0}
           ></input>{" "}
           <span
             style={{ marginTop: "10px", fontSize: "18px", marginLeft: "-10px" }}
@@ -247,6 +254,7 @@ const CreateProduct = () => {
         </div>
         <button type="submit">Thêm sản phẩm</button>
       </form>
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

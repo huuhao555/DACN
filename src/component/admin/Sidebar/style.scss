@@ -1,8 +1,10 @@
 @use "sass:map";
 @import "../../../styles/pages/theme.scss";
+
 .sidebar-admin {
   padding: 20px;
   min-height: 90vh;
+  height: 100%;
   background-color: map.get($theme-color, "main-color");
   border-right: 1px solid #ddd;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
@@ -55,9 +57,9 @@
           font-weight: bold;
           opacity: 1;
           transition:
-            font-size ease 0.2s,
-            opacity ease 0.2s,
-            font-weight ease 0.1s;
+            font-size 0.2s ease,
+            opacity 0.2s ease,
+            font-weight 0.1s ease;
         }
       }
     }

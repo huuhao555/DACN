@@ -163,7 +163,7 @@ const ProductPage = () => {
   };
 
   const Sort = (key) => {
-    const dataNewSort = [
+    let dataNewSort = [
       ...(filteredProducts.length > 0 ? filteredProducts : productsAll)
     ];
 
@@ -180,7 +180,9 @@ const ProductPage = () => {
         dataNewSort.sort((a, b) => b.prices - a.prices);
         break;
       case 3:
-        dataNewSort.sort((a, b) => b.discount - a.discount);
+        dataNewSort = dataNewSort
+          .filter((item) => item.discount > 0) // Lọc các sản phẩm có discount > 0
+          .sort((a, b) => b.discount - a.discount); // Sắp xếp theo discount giảm dần
         break;
       default:
         break;
@@ -316,16 +318,16 @@ const ProductPage = () => {
                 {products.length > 0 ? (
                   products.map((product) => {
                     return (
-                      <div className="product-item" key={product._id}>
+                      <div className="product-item" key={product?._id}>
                         <div className="product-item-image">
                           <Link
-                            to={`${ROUTERS.USER.DETAILS}/${product._id}`}
-                            state={{ productId: product._id }}
+                            to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                            state={{ productId: product?._id }}
                           >
                             <img
                               className="add-to-img"
-                              src={product.imageUrl}
-                              alt={product.name}
+                              src={product?.imageUrl}
+                              alt={product?.name}
                             />
                           </Link>
                         </div>
@@ -336,28 +338,28 @@ const ProductPage = () => {
                             state={{ productId: product._id }}
                           >
                             <div className="item-product-bottom">
-                              <h3>{` ${product.company} ${product.name}`}</h3>
+                              <h3>{` ${product?.company} ${product?.name}`}</h3>
                               <div className="proloop-technical">
                                 {[
                                   {
                                     tag: "ssd",
                                     icon: <BsDeviceSsdFill />,
-                                    value: product.memory
+                                    value: product?.memory
                                   },
                                   {
                                     tag: "lcd",
                                     icon: <PiFrameCornersBold />,
-                                    value: `${product.inches} inch ${product.screenResolution}`
+                                    value: `${product?.inches} inch ${product?.screenResolution}`
                                   },
                                   {
                                     tag: "ram",
                                     icon: <FaMemory />,
-                                    value: product.ram
+                                    value: product?.ram
                                   },
                                   {
                                     tag: "cpu",
                                     icon: <RiCpuLine />,
-                                    value: product.cpu
+                                    value: product?.cpu
                                   }
                                 ].map((item) => (
                                   <div
@@ -371,24 +373,27 @@ const ProductPage = () => {
                                 ))}
                               </div>
                               <div className="grp-price">
-                                {product?.prices == product?.promotionPrice ? (
+                                {product?.prices ==
+                                parseInt(product?.promotionPrice) ? (
                                   <p className="price">
-                                    {product?.promotionPrice?.toLocaleString(
-                                      "vi-VN"
-                                    )}
+                                    {parseInt(
+                                      parseInt(product?.promotionPrice)
+                                    )?.toLocaleString("vi-VN")}
                                     ₫
                                   </p>
                                 ) : (
                                   <>
                                     <p className="price-old">
-                                      {product?.prices?.toLocaleString("vi-VN")}
+                                      {parseInt(
+                                        product?.prices
+                                      )?.toLocaleString("vi-VN")}
                                       ₫
                                     </p>
                                     <div className="price-new">
                                       <p className="price-discount">
-                                        {product?.promotionPrice?.toLocaleString(
-                                          "vi-VN"
-                                        )}
+                                        {parseInt(
+                                          parseInt(product?.promotionPrice)
+                                        )?.toLocaleString("vi-VN")}
                                         ₫
                                       </p>
                                       <p className="discount">
