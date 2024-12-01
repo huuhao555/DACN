@@ -7,10 +7,10 @@ import Notification, {
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import ProductsSlideComponent from "../../../component/user/productSlide";
-// import ViewedHistoriesProducts from "../profilePage/viewedProducts"
 import ReviewSection from "../../../component/user/ReviewProduct";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import "./style.scss";
+import HistoriesProductSlide from "../../../component/user/historiesProdcutSlide";
 
 const ProductDetailsPage = () => {
   const location = useLocation();
@@ -33,7 +33,7 @@ const ProductDetailsPage = () => {
       _id: product._id,
       name: product.name,
       imageUrl: product.imageUrl,
-      price: product.prices
+      prices: product.prices
     });
     history = history.slice(0, 10);
     localStorage.setItem("viewedProducts", JSON.stringify(history));
@@ -152,8 +152,8 @@ const ProductDetailsPage = () => {
                           </div>
                         </div>
                         <div className="grp-price">
-                          {product?.prices ==
-                          parseInt(product?.promotionPrice) ? (
+                          {product?.prices ===
+                            parseInt(product?.promotionPrice) ? (
                             <p className="price">
                               {parseInt(
                                 product?.promotionPrice
@@ -297,6 +297,16 @@ const ProductDetailsPage = () => {
                   <ProductsSlideComponent />
                 </div>
               </div>
+              <div className="product-block">
+                <div className="product-heading">
+                  <h2>Sản phẩm vừa xem</h2>
+                </div>
+                <div className="product-wrap">
+                  < HistoriesProductSlide />
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>
@@ -306,7 +316,7 @@ const ProductDetailsPage = () => {
           <Notification
             key={notification.id}
             message={notification.message}
-            onClose={() => {}}
+            onClose={() => { }}
           />
         ))}
       </div>
