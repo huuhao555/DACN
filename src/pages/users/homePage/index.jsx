@@ -7,6 +7,7 @@ import ProductsSlideComponent from "../../../component/user/productSlide/index";
 import SlideBanner from "../../../component/user/slideBaner";
 import { UserContext } from "../../../middleware/UserContext";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
+import ProductTypeComponent from "../../../component/user/productType";
 
 const HomePage = () => {
   const navigator = useNavigate();
@@ -185,7 +186,29 @@ const HomePage = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="slide-product">
-                <ProductsSlideComponent product={products} />
+                {/* <ProductsSlideComponent product={products} /> */}
+                <ProductTypeComponent
+                  title="laptopmongnhẹ"
+                  heading="Laptop mỏng nhẹ"
+                />
+                <ProductTypeComponent
+                  title="laptopsinhvien"
+                  heading="Laptop sinhh viên "
+                />
+                <ProductTypeComponent
+                  title="laptopgaming"
+                  heading="Laptop Gaming"
+                />
+                <ProductTypeComponent title="laptopai" heading="Laptop AI" />
+                <ProductTypeComponent
+                  title="laptopdohoa"
+                  heading="Laptop đồ hoạ"
+                />
+                <ProductTypeComponent
+                  title="laptopvanphong"
+                  heading="Laptop văn phòng"
+                />
+                <ProductTypeComponent title="laptopcu" heading="Laptop cũ" />
               </div>
             </div>
           </div>

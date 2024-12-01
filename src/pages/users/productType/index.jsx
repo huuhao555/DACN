@@ -1,7 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { IMAGES } from "../../../assets/image";
 import { useState, useEffect, useContext } from "react";
-import ProductsGridComponent from "../../../component/user/productGrid";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./style.scss";
 import { ROUTERS } from "../../../utils/router";

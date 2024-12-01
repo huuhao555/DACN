@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import "./style.scss";
 
 const vouchers = [
-  { label: "5%", code: "HDTECH5", percentage: 5 },
+  { label: "2%", code: "HDTECH2", percentage: 5 },
+  { label: "5%", code: "HDTECH5", percentage: 10 },
+  { label: "7%", code: "HDTECH7", percentage: 10 },
+  { label: "9%", code: "HDTECH9", percentage: 15 },
   { label: "10%", code: "HDTECH10", percentage: 10 },
+  { label: "12%", code: "HDTECH12", percentage: 10 },
+  { label: "14%", code: "HDTECH14", percentage: 10 },
   { label: "15%", code: "HDTECH15", percentage: 10 },
-  { label: "20%", code: "HDTECH20", percentage: 15 },
-  { label: "25%", code: "HDTECH25", percentage: 10 },
-  { label: "30%", code: "HDTECH30", percentage: 10 },
-  { label: "35%", code: "HDTECH35", percentage: 10 },
-  { label: "40%", code: "HDTECH40", percentage: 10 },
-  { label: "45%", code: "HDTECH45", percentage: 10 },
-  { label: "50%", code: "HDTECH50", percentage: 10 }
+  { label: "18%", code: "HDTECH18", percentage: 10 },
+  { label: "20%", code: "HDTECH20", percentage: 10 }
 ];
 
 const LuckyWheelVoucher = ({ onVoucherSelected }) => {
@@ -20,21 +20,20 @@ const LuckyWheelVoucher = ({ onVoucherSelected }) => {
   const [rotation, setRotation] = useState(0);
 
   const handleSpin = () => {
-    if (isSpinning) return; // Chặn quay thêm nếu đang quay
+    if (isSpinning) return;
     setIsSpinning(true);
 
     const randomIndex = Math.floor(Math.random() * vouchers.length);
     const selected = vouchers[randomIndex];
 
-    const segmentAngle = 360 / vouchers.length; // Góc mỗi phần
-    const targetRotation = rotation + 360 * 5 + randomIndex * segmentAngle; // Quay thêm 5 vòng
+    const segmentAngle = 360 / vouchers.length;
+    const targetRotation = rotation + 360 * 5 + randomIndex * segmentAngle;
 
     setRotation(targetRotation);
 
-    // Cập nhật kết quả sau thời gian quay
     setTimeout(() => {
       setSelectedVoucher(selected);
-      onVoucherSelected(selected); // Gọi callback với giá trị voucher được chọn
+      onVoucherSelected(selected);
       setIsSpinning(false);
     }, 3000);
   };
@@ -42,7 +41,6 @@ const LuckyWheelVoucher = ({ onVoucherSelected }) => {
   return (
     <div className="lucky-wheel">
       <div className="wheel-container">
-        {/* Vòng quay */}
         <div
           className="wheel"
           style={{
@@ -71,7 +69,6 @@ const LuckyWheelVoucher = ({ onVoucherSelected }) => {
             </div>
           ))}
         </div>
-        {/* Kim */}
         <div className="wheel-pointer"></div>
         <div
           className="wheel-center"

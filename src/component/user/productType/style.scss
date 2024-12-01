@@ -1,0 +1,110 @@
+@use "sass:map";
+@import "../../../styles/pages/_theme.scss";
+
+$gap: 10px;
+$control-btn-size: 40px;
+
+.product-slider {
+  position: relative;
+
+  background-color: #f9f9f9;
+  padding: 1rem;
+  &-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+
+    color: #333;
+    background-color: map.get($theme-color, "main-color-light");
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .productSlide-wrapper {
+    position: relative;
+    overflow: hidden;
+
+    .product-slider-container {
+      display: flex;
+      gap: 1rem;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .slider-controls {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+
+      .slider-control {
+        pointer-events: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        &.prev {
+          margin-left: 10px;
+        }
+
+        &.next {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .product-item {
+    flex: 0 0 310px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    &-image img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    &-details {
+      padding: 0.5rem;
+      text-align: center;
+
+      h3 {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+      }
+
+      .price {
+        font-size: 1rem;
+        color: #ff4500;
+      }
+    }
+  }
+}
