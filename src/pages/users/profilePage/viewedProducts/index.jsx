@@ -1,8 +1,12 @@
 import React from "react";
 import "./style.scss"; // Đường dẫn file style của bạn
+import { Link } from "react-router-dom";
+
+import { ROUTERS } from "../../../../utils/router";
 
 const ViewedHistoriesProducts = () => {
-    // Lấy danh sách sản phẩm đã xem từ Local Storage
+
+
     const getViewedProducts = () => {
         return JSON.parse(localStorage.getItem("viewedProducts")) || [];
     };
@@ -17,13 +21,18 @@ const ViewedHistoriesProducts = () => {
                     <p>Chưa có sản phẩm nào trong lịch sử.</p>
                 ) : (
                     viewedProducts.map((product) => (
-                        <div key={product._id} className="viewed-product-item">
-                            <img src={product.imageUrl} alt={product.name} />
-                            <div className="product-info">
-                                <p>{product.name}</p>
-                                <p>{product.price} VND</p>
+                        <Link
+                            key={product?._id}
+                            to={`${ROUTERS.USER.DETAILS}/${product?._id}`}
+                            state={{ productId: product?._id }}>
+                            <div className="viewed-product-item">
+                                <img src={product?.imageUrl} alt={product?.name} />
+                                <div className="product-info">
+                                    <p>{product?.name}</p>
+                                    <p>{product?.prices?.toLocaleString("vi-VN")}₫ </p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 )}
             </div>
