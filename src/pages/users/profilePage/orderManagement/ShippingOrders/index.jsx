@@ -133,7 +133,6 @@ const ShippingOrders = () => {
                     </thead>
                     <tbody>
                       {order?.products?.map((item, itemIndex) => {
-                        console.log(item);
                         return (
                           <tr key={item?.productId?._id}>
                             <td>{itemIndex + 1}</td>

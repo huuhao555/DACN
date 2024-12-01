@@ -17,7 +17,7 @@ const ProfilePageLayout = (props) => {
   useEffect(() => {
     const checkAuthorization = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access_token");
 
         if (!token) {
           setIsAuthorized(false);
@@ -51,9 +51,9 @@ const ProfilePageLayout = (props) => {
     return <LoadingSpinner />;
   }
 
-  // if (!isAuthorized) {
-  //   return <NotFoundPage replace />;
-  // }
+  if (!isAuthorized) {
+    return <NotFoundPage replace />;
+  }
   return (
     <UserProvider>
       <ChatbotWrapper />

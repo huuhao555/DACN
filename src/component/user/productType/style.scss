@@ -9,20 +9,29 @@ $control-btn-size: 40px;
 
   background-color: #f9f9f9;
   padding: 1rem;
-  &-title {
+
+  .product-slider-title {
+    cursor: pointer;
     font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
 
+    margin-bottom: 1rem;
     color: #333;
     background-color: map.get($theme-color, "main-color-light");
     color: #fff;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: map.get($theme-color, "main-color");
+
+      text-decoration: underline;
+      transition:
+        background-color 0.02 ease,
+        font-weight 0.02s ease,
+        text-decoration 0.02s ease;
+    }
   }
 
   .productSlide-wrapper {
@@ -104,6 +113,84 @@ $control-btn-size: 40px;
       .price {
         font-size: 1rem;
         color: #ff4500;
+      }
+    }
+  }
+  .product-item-cart {
+    opacity: 1;
+    height: 5rem;
+    display: flex;
+    justify-items: center;
+    padding: 1.4rem;
+    justify-content: center;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #059b32;
+      color: white;
+      border: 1px solid #057e29;
+      border-radius: 2px;
+      cursor: pointer;
+      width: 60%;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #036d23;
+        color: #fff;
+      }
+
+      span {
+        white-space: nowrap;
+        text-align: center;
+        font-weight: 500;
+        text-decoration: unset;
+        font-size: 16px;
+        line-height: 20px;
+      }
+
+      svg {
+        font-size: 20px;
+        position: absolute;
+        top: 9px;
+        left: 30px;
+      }
+    }
+  }
+  .grp-price {
+    .price {
+      margin-top: 20px;
+      font-size: 18px;
+      color: map.get($theme-color, "main-color");
+      font-weight: bold;
+    }
+    .price-old {
+      font-size: 16px;
+      color: map.get($theme-color, "text");
+      margin: auto;
+      text-decoration: line-through;
+    }
+    .price-new {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      .price-discount {
+        font-size: 18px;
+        color: map.get($theme-color, "main-color");
+        font-weight: bold;
+      }
+      .discount {
+        padding: 0 4px;
+        width: fit-content;
+        font-size: 16px;
+        color: map.get($theme-color, "main-color");
+        border: 1px solid map.get($theme-color, "main-color");
+        background-color: rgba(255, 210, 215, 0.384);
+        border-radius: 10%;
       }
     }
   }

@@ -188,6 +188,10 @@ const HomePage = () => {
               <div className="slide-product">
                 {/* <ProductsSlideComponent product={products} /> */}
                 <ProductTypeComponent
+                  title="discount"
+                  heading="Sản phẩm giảm giá"
+                />
+                <ProductTypeComponent
                   title="laptopmongnhẹ"
                   heading="Laptop mỏng nhẹ"
                 />

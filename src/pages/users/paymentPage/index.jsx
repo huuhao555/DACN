@@ -116,7 +116,6 @@ const OrderPage = () => {
     const createPayment = async () => {
       const returnUrl = "http://localhost:3000/ket-qua-thanh-toan";
 
-      console.log(orderId, returnUrl);
       try {
         const response = await fetch(
           "http://localhost:3001/api/payments/create_payment",

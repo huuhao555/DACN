@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./style.scss";
 import { ROUTERS } from "../../../utils/router";
+import { UserContext } from "../../../middleware/UserContext";
 
 const ProductTypeComponent = ({ title, heading }) => {
   const [products, setProducts] = useState([]);
+  const { user, updateCartCount } = useContext(UserContext);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigator = useNavigate();
@@ -29,6 +32,11 @@ const ProductTypeComponent = ({ title, heading }) => {
     if (products.length > 0) {
       let filtered = [];
       switch (title) {
+        case "discount":
+          filtered = products.filter(
+            (product) => parseFloat(product.discount || 0) > 0
+          );
+          break;
         case "laptopmongnhẹ":
           filtered = products.filter(
             (product) => parseFloat(product.weight) < 1.5
@@ -92,6 +100,36 @@ const ProductTypeComponent = ({ title, heading }) => {
   const handleProductType = () => {
     navigator(ROUTERS.USER.PRODUCT_TYPE, { state: { title } });
   };
+  const handleCart = async (product) => {
+    if (!user) alert("Vui lòng đăng nhập");
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/cart/add-update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: user.dataUser.id,
+            productId: product._id,
+            quantity: 1,
+            prices: product.prices.toLocaleString("vi-VN")
+          })
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const dataCart = await response.json();
+
+      //   addNotification("Thêm giỏ hàng thành công!");
+      const updatedCount = dataCart.data.products.length;
+      updateCartCount(updatedCount);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+    }
+  };
   return (
     <div className="product-slider">
       <h2 onClick={handleProductType} className="product-slider-title">
@@ -115,15 +153,48 @@ const ProductTypeComponent = ({ title, heading }) => {
               </div>
               <div className="product-item-details">
                 <h3>{product.name}</h3>
-                <p className="price">
-                  {product.prices.toLocaleString("vi-VN")} ₫
-                </p>
+                <div className="grp-price">
+                  {product?.prices == parseInt(product?.promotionPrice) ? (
+                    <p className="price">
+                      {parseInt(
+                        parseInt(product?.promotionPrice)
+                      )?.toLocaleString("vi-VN")}
+                      ₫
+                    </p>
+                  ) : (
+                    <>
+                      <p className="price-old">
+                        {parseInt(product?.prices)?.toLocaleString("vi-VN")}₫
+                      </p>
+                      <div className="price-new">
+                        <p className="price-discount">
+                          {parseInt(
+                            parseInt(product?.promotionPrice)
+                          )?.toLocaleString("vi-VN")}
+                          ₫
+                        </p>
+                        <p className="discount">{`-${product?.discount}%`}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="product-item-cart">
+                <button
+                  onClick={() => {
+                    handleCart(product);
+                  }}
+                  type="submit"
+                  className="button btn-buyonl"
+                  name="buy-onl"
+                  id="buy-onl"
+                >
+                  <span>Thêm vào giỏ</span>
+                </button>
               </div>
             </div>
           ))}
         </div>
-
-        {/* Nút điều khiển */}
         <div className="slider-controls">
           <button className="slider-control prev" onClick={handlePrev}>
             {"<"}

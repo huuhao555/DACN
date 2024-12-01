@@ -61,7 +61,6 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
 
       const dataUser = await response.json();
 
-      // Lưu cả access_token và refresh_token vào localStorage
       localStorage.setItem("access_token", dataUser.access_token);
       localStorage.setItem("refresh_token", dataUser.refresh_token);
       localStorage.setItem("user", JSON.stringify(dataUser));
