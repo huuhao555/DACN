@@ -32,7 +32,7 @@ const StaffManagement = () => {
       return;
     }
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
       alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
       return;

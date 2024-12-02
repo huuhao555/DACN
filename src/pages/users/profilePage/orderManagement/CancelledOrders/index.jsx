@@ -151,7 +151,7 @@ const CancelledOrders = () => {
                               }}
                             >
                               {parseInt(
-                                item?.productId?.promotionPrice * item.quantity
+                                item?.productId?.promotionPrice * item?.quantity
                               ).toLocaleString("vi-VN")}{" "}
                               ₫
                             </td>

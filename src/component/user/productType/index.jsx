@@ -132,9 +132,10 @@ const ProductTypeComponent = ({ title, heading }) => {
   };
   return (
     <div className="product-slider">
-      <h2 onClick={handleProductType} className="product-slider-title">
-        {heading}
-      </h2>
+      <div className="product-slider-top">
+        <h2 className="product-slider-title">{heading}</h2>
+        <p onClick={handleProductType}>(xem tất cả)</p>
+      </div>
 
       <div className="productSlide-wrapper">
         <div

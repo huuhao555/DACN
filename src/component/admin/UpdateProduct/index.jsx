@@ -65,7 +65,7 @@ const UpdateProduct = () => {
       if (imageFile) formToSubmit.append("image", imageFile);
       if (bannerFile) formToSubmit.append("banner", bannerFile);
 
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       if (!token) {
         alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
         return;

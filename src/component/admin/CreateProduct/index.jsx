@@ -140,23 +140,29 @@ const CreateProduct = () => {
             required
           />
         </div>
-        <label style={{ fontWeight: "bold", color: "#555" }}>
-          Giảm giá (%)
-        </label>
-        <div style={{ display: "flex" }}>
-          <input
-            style={{ width: "12%", marginRight: "20px" }}
-            type="number"
-            name="discount"
-            value={formData.discount}
-            onChange={handleChange}
-            min={0}
-          ></input>{" "}
-          <span
-            style={{ marginTop: "10px", fontSize: "18px", marginLeft: "-10px" }}
-          >
-            %
-          </span>
+        <div>
+          <label style={{ fontWeight: "bold", color: "#555" }}>
+            Giảm giá (%)
+          </label>
+          <div style={{ display: "flex" }}>
+            <input
+              style={{ width: "12%", marginRight: "20px" }}
+              type="number"
+              name="discount"
+              value={formData.discount}
+              onChange={handleChange}
+              min={0}
+            ></input>{" "}
+            <span
+              style={{
+                marginTop: "10px",
+                fontSize: "18px",
+                marginLeft: "-10px"
+              }}
+            >
+              %
+            </span>
+          </div>
         </div>
         <div>
           <label>Kích thước (Inches):</label>

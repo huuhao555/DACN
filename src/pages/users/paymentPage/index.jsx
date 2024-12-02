@@ -333,6 +333,37 @@ const OrderPage = () => {
                     </tr>
                     <tr>
                       <td colSpan="4" style={{ textAlign: "right" }}>
+                        Giảm từ Voucher
+                      </td>
+                      <td
+                        colSpan="4"
+                        style={{
+                          fontWeight: "bold",
+                          color: "#d70018",
+                          fontSize: "18px",
+                          textAlign: "left"
+                        }}
+                      >
+                        {voucher ? (
+                          <>
+                            {`-${((grandTotal * parseInt(voucher?.label)) / 100).toLocaleString("vi-VN")} ₫`}{" "}
+                            <span
+                              style={{
+                                color: "#d70018",
+                                fontSize: "14px",
+                                marginLeft: "8px"
+                              }}
+                            >
+                              (-{parseInt(voucher?.label)}%)
+                            </span>
+                          </>
+                        ) : (
+                          "0 ₫"
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: "right" }}>
                         Thành tiền:
                       </td>
                       <td

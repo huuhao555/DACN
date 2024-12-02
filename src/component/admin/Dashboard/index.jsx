@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1 className="total-revenue">{`Tổng Doanh Thu: ${parseInt(totalRevenue)?.toLocaleString("vi-VN")} VNĐ`}</h1>
+      <h1 className="total-revenue">{`Tổng Doanh Thu: ${parseInt(totalRevenue)?.toLocaleString("vi-VN")}  ₫`}</h1>
       <div className="dashboard-cards">
         <DashboardCard
           to={ROUTERS.ADMIN.MANAGE_STAFF}

@@ -9,28 +9,30 @@ $control-btn-size: 40px;
 
   background-color: #f9f9f9;
   padding: 1rem;
-
-  .product-slider-title {
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: bold;
-
-    margin-bottom: 1rem;
-    color: #333;
-    background-color: map.get($theme-color, "main-color-light");
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+  .product-slider-top {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    justify-content: start;
+    align-items: center;
+    background-color: map.get($theme-color, "main-color-light");
+    display: flex;
+    color: #fff;
 
-    &:hover {
-      background-color: map.get($theme-color, "main-color");
-
-      text-decoration: underline;
-      transition:
-        background-color 0.02 ease,
-        font-weight 0.02s ease,
-        text-decoration 0.02s ease;
+    p {
+      font-size: 1rem;
+      color: #fff;
+      padding: 0 0.5rem 0.3rem 0;
+      border-radius: 8px;
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+    .product-slider-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
   }
 

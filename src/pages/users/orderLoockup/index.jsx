@@ -15,7 +15,8 @@ const OrderLookup = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [value, setValue] = useState("");
-
+  const grandTotal =
+    searchTerm.totalPrice + parseInt(searchTerm.VAT) + searchTerm.shippingFee;
   const handlePriceRange = async (id) => {
     try {
       const response = await fetch(`http://localhost:3001/api/order/get/${id}`);
@@ -111,12 +112,47 @@ const OrderLookup = () => {
                           <td>{product?.productId?.name}</td>
                           <td>{product?.quantity}</td>
                           <td>
-                            {product?.productId?.prices.toLocaleString("vi-VN")}
-                            VND
+                            {" "}
+                            {parseInt(product?.productId?.prices) ==
+                            product?.productId?.promotionPrice ? (
+                              <div className="grp-price">
+                                <p className="prices">
+                                  {`${parseInt(
+                                    product?.productId?.prices
+                                  ).toLocaleString("vi-VN")} ₫`}
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="grp-price">
+                                <p className="price-old">
+                                  {`${parseInt(
+                                    product?.productId?.prices
+                                  ).toLocaleString("vi-VN")} ₫`}
+                                </p>
+                                <div className="grp-price-new">
+                                  <p className="price-new">
+                                    {`${parseInt(
+                                      product?.productId?.promotionPrice
+                                    ).toLocaleString("vi-VN")}
+                               ₫`}
+                                  </p>
+                                  <p className="discount">
+                                    {`-${product?.productId?.discount}%`}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
                           </td>
-                          <td>
+                          <td
+                            style={{
+                              fontWeight: "bold",
+                              color: "#d70018",
+                              fontSize: "18px"
+                            }}
+                          >
                             {(
-                              product?.quantity * product?.productId?.prices
+                              product?.quantity *
+                              product?.productId?.promotionPrice
                             ).toLocaleString("vi-VN")}
                             ₫
                           </td>
@@ -135,27 +171,65 @@ const OrderLookup = () => {
               <h3>Chi tiết thanh toán</h3>
               <p>
                 Tổng tiền hàng:
-                <span>{searchTerm?.totalPrice?.toLocaleString("vi-VN")} ₫</span>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color: "#d70018",
+                    fontSize: "16px"
+                  }}
+                >
+                  {searchTerm.totalPrice?.toLocaleString("vi-VN")} ₫
+                </span>
               </p>
               <p>
                 VAT:
                 <span>
-                  {parseInt(searchTerm?.VAT)?.toLocaleString("vi-VN")} ₫
+                  {parseInt(searchTerm.VAT)?.toLocaleString("vi-VN")} ₫
                 </span>
               </p>
               <p>
                 Chi phí vận chuyển:
-                <span>
-                  {searchTerm?.shippingFee?.toLocaleString("vi-VN")} ₫
-                </span>
+                <span>{searchTerm.shippingFee?.toLocaleString("vi-VN")} ₫</span>
               </p>
-
               <p>
                 Tổng cộng:
-                <span style={{ marginLeft: "10px" }}>
-                  {parseInt(searchTerm?.orderTotal)?.toLocaleString("vi-VN")}₫
-                </span>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color: "#d70018",
+                    fontSize: "16px",
+                    paddingBottom: " 10px"
+                  }}
+                >{`${parseInt(grandTotal).toLocaleString("vi-VN")}  ₫`}</span>
               </p>
+              <div style={{ borderTop: "solid 2px #ccc", padding: " 10px 0" }}>
+                <p>
+                  Voucher người dùng:
+                  <span>
+                    {` (-${(
+                      (1 - searchTerm?.orderTotal / grandTotal) *
+                      100
+                    )?.toLocaleString(
+                      "vi-VN"
+                    )}%) -${(grandTotal - searchTerm?.orderTotal)?.toLocaleString("vi-VN")}`}
+                  </span>
+                </p>
+
+                <p>
+                  Thành tiền:
+                  <span
+                    style={{
+                      marginLeft: "10px",
+                      fontWeight: "bold",
+                      color: "#d70018",
+                      fontSize: "18px",
+                      textAlign: "left"
+                    }}
+                  >
+                    {parseInt(searchTerm?.orderTotal).toLocaleString("vi-VN")} ₫
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         )}
