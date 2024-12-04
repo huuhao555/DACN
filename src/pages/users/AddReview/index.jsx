@@ -4,7 +4,8 @@ import "./style.scss";
 import { UserContext } from "../../../middleware/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
-import SuccessAnimation from "../../general/Success";
+import SuccessAnimation from "../../../component/general/Success";
+import { apiLink } from "../../../config/api";
 
 const AddReview = () => {
   const { user } = useContext(UserContext) || {};
@@ -28,7 +29,7 @@ const AddReview = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/api/product/get-details/${productId}`
+          apiLink + `/api/product/get-details/${productId}`
         );
 
         if (!response.ok) {
@@ -62,7 +63,7 @@ const AddReview = () => {
     const username = user?.dataUser?.name;
     try {
       const response = await fetch(
-        `http://localhost:3001/api/review/${productId}/add-review/${userId}`,
+        apiLink + `/api/review/${productId}/add-review/${userId}`,
         {
           method: "POST",
           headers: {

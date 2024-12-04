@@ -10,9 +10,12 @@ import { UserContext } from "../../../../middleware/UserContext";
 import SignUp from "../signup/Signup";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { apiLink } from "../../../../config/api";
 
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
   const { updateUser } = useContext(UserContext);
+  const [message, setMessage] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isShowSignUpForm, setShowSignUpForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -35,18 +38,21 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
   };
 
   const onHandlLogIn = async () => {
-    if (!formData.email || !formData.password) {
-      alert("Vui lòng nhập email và mật khẩu!");
-      return;
-    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const messages = [];
+
+    if (!formData.email || !formData.password) {
+      messages.push("Vui lòng nhập email hoặc mật khẩu!");
+    }
     if (!emailRegex.test(formData.email)) {
-      alert("Email không hợp lệ!");
-      return;
+      messages.push("Email không hợp lệ!");
+    }
+    if (messages.length > 0) {
+      return setMessage(messages);
     }
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3001/api/user/sign-in", {
+      const response = await fetch(apiLink + "/api/user/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -82,8 +88,9 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
     }
   };
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:3001/auth/google";
+    window.location.href = apiLink + "/auth/google";
   };
+
   if (!isShowLoginForm) return null;
 
   return (
@@ -118,38 +125,49 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
         <span className="forget-pass">
           <span onClick={() => {}}>Quên mật khẩu</span>
         </span>
+        <span
+          style={{
+            color: "red",
+            fontSize: "14px",
+            listStyle: "none",
+            textAlign: "center"
+          }}
+        >
+          {message && (
+            <ul
+              style={{
+                color: "red",
+                fontSize: "14px",
+                listStyle: "none"
+              }}
+            >
+              {message.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          )}
+        </span>
         <button onClick={onHandlLogIn} disabled={isLoading}>
           {isLoading ? "Đang xử lý..." : "Đăng nhập"}
         </button>
-        <span className="signup">
-          Bạn chưa có tài khoản?
-          <span
-            onClick={() => {
-              setShowSignUpForm(true);
-            }}
-          >
-            Đăng ký ngay
-          </span>
-        </span>
 
         <div className="other-login">
           <div className="facebook-login">
             <FaFacebook /> <span>Facebook</span>
           </div>
           <div className="google-login">
+            <FcGoogle /> <span>Google</span>
+          </div>
+          {/* <div className="google-login">
             <button
               onClick={handleGoogleLogin}
               style={{ display: "flex", alignItems: "center" }}
             >
               <FcGoogle /> <span>Google</span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
-      <SignUp
-        isShowSignUpForm={isShowSignUpForm}
-        closeSignUpForm={closeSignUpForm}
-      />
     </div>
   );
 };

@@ -6,9 +6,10 @@ import { UserProvider, UserContext } from "../../../../middleware/UserContext";
 import SideBarProfile from "../../../../pages/users/profilePage/sidebarProfile";
 import Footer from "../footer";
 import Header from "../header";
-import ChatbotWrapper from "../../../../component/general/ChatBox";
+import ChatbotWrapper from "../../../../component/general/ChatBot";
 import NotFoundPage from "../../../../component/general/NotFoundPage";
 import LoadingSpinner from "../../../../component/general/LoadingSpinner";
+import { apiLink } from "../../../../config/api";
 
 const ProfilePageLayout = (props) => {
   const [isAuthorized, setIsAuthorized] = useState(null);
@@ -25,7 +26,7 @@ const ProfilePageLayout = (props) => {
           return;
         }
 
-        const response = await fetch("http://localhost:3001/api/check/user", {
+        const response = await fetch(apiLink + "/api/check/user", {
           headers: {
             Authorization: `Bearer ${token}`
           }

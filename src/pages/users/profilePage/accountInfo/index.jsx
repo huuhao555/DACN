@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./style.scss";
 import { UserContext } from "../../../../middleware/UserContext";
+import { apiLink } from "../../../../config/api";
 
 const AccountInfo = () => {
   const { user } = useContext(UserContext);
@@ -33,16 +34,13 @@ const AccountInfo = () => {
     e.preventDefault();
     const id = user.dataUser.id;
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/user/update-user/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        }
-      );
+      const response = await fetch(apiLink + `/api/user/update-user/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
 
       if (!response.ok) {
         alert(

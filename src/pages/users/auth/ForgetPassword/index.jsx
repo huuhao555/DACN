@@ -3,6 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import { ROUTERS } from "../../../../utils/router";
+import { apiLink } from "../../../../config/api";
 
 const ForgetPassword = ({ isShowVerifyForm, closeVerifyForm }) => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const ForgetPassword = ({ isShowVerifyForm, closeVerifyForm }) => {
   const handleForget = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/api/user/request-password-reset",
+        apiLink + "/api/user/request-password-reset",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

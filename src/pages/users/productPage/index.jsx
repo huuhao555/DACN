@@ -14,6 +14,7 @@ import Notification, {
   NotificationContainer
 } from "../../../component/user/Notification";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
+import { apiLink } from "../../../config/api";
 
 const ProductPage = () => {
   const { notifications, addNotification } = NotificationContainer();
@@ -29,9 +30,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/product/getAllProduct"
-        );
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();
@@ -51,21 +50,18 @@ const ProductPage = () => {
   const handleCart = async (product) => {
     if (!user) alert("Vui lòng đăng nhập");
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/cart/add-update",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userId: user.dataUser.id,
-            productId: product._id,
-            quantity: 1,
-            prices: product.prices.toLocaleString("vi-VN")
-          })
-        }
-      );
+      const response = await fetch(apiLink + "/api/cart/add-update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: user.dataUser.id,
+          productId: product._id,
+          quantity: 1,
+          prices: product.prices.toLocaleString("vi-VN")
+        })
+      });
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -88,7 +84,11 @@ const ProductPage = () => {
   const handleTagClick = (key) => {
     if (activeTag === key) {
       setActiveTag(null);
-      setProducts(productsAll);
+      if (filteredProducts.length > 0) {
+        setProducts(filteredProducts);
+      } else {
+        setProducts(productsAll);
+      }
     } else {
       setActiveTag(key);
       Sort(key);
@@ -97,6 +97,7 @@ const ProductPage = () => {
 
   const [suggestions, setSuggestions] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [textSearch, setTextSearch] = useState([]);
   const [noResults, setNoResults] = useState(false);
 
   const Search = (event) => {
@@ -137,7 +138,7 @@ const ProductPage = () => {
       setNoResults(false);
     } else {
       const dataNewSearchPrice = productsAll.filter((item) => {
-        const price = parseFloat(item.prices);
+        const price = parseFloat(item.promotionPrice);
         if (min > 0 && max > 0) {
           return price >= min && price <= max;
         } else if (min > 0) {
@@ -174,15 +175,15 @@ const ProductPage = () => {
         );
         break;
       case 1:
-        dataNewSort.sort((a, b) => a.prices - b.prices);
+        dataNewSort.sort((a, b) => a.promotionPrice - b.promotionPrice);
         break;
       case 2:
-        dataNewSort.sort((a, b) => b.prices - a.prices);
+        dataNewSort.sort((a, b) => b.promotionPrice - a.promotionPrice);
         break;
       case 3:
         dataNewSort = dataNewSort
-          .filter((item) => item.discount > 0) // Lọc các sản phẩm có discount > 0
-          .sort((a, b) => b.discount - a.discount); // Sắp xếp theo discount giảm dần
+          .filter((item) => item.discount > 0)
+          .sort((a, b) => b.discount - a.discount);
         break;
       default:
         break;
@@ -195,9 +196,10 @@ const ProductPage = () => {
   const clearSidebar = () => {
     setProducts(productsAll);
     setNoResults(false);
-    setPriceMin("");
-    setPriceMax("");
     setFilteredProducts([]);
+    setPriceMin("");
+    setTextSearch("");
+    setPriceMax("");
     setActiveTag(null);
   };
   if (isLoading) {
@@ -338,6 +340,7 @@ const ProductPage = () => {
                             state={{ productId: product._id }}
                           >
                             <div className="item-product-bottom">
+                              {" "}
                               <h3>{` ${product?.company} ${product?.name}`}</h3>
                               <div className="proloop-technical">
                                 {[

@@ -9,7 +9,8 @@ import { ROUTERS } from "../../../../utils/router";
 
 import LoadingSpinner from "../../../../component/general/LoadingSpinner";
 import NotFoundPage from "../../../../component/general/NotFoundPage";
-import ChatbotWrapper from "../../../../component/general/ChatBox";
+import ChatbotWrapper from "../../../../component/general/ChatBot";
+import { apiLink } from "../../../../config/api";
 
 const AdminLayout = (props) => {
   const [isAuthorized, setIsAuthorized] = useState(null);
@@ -18,7 +19,7 @@ const AdminLayout = (props) => {
     const storedRefreshToken = localStorage.getItem("refresh_token");
 
     try {
-      const response = await fetch("http://localhost:3001/api/refresh-token", {
+      const response = await fetch(apiLink + "/api/refresh-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -50,7 +51,7 @@ const AdminLayout = (props) => {
           return;
         }
 
-        const response = await fetch("http://localhost:3001/api/check/admin", {
+        const response = await fetch(apiLink + "/api/check/admin", {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -63,14 +64,11 @@ const AdminLayout = (props) => {
             return;
           }
 
-          const retryResponse = await fetch(
-            "http://localhost:3001/api/check/admin",
-            {
-              headers: {
-                Authorization: `Bearer ${newToken}`
-              }
+          const retryResponse = await fetch(apiLink + "/api/check/admin", {
+            headers: {
+              Authorization: `Bearer ${newToken}`
             }
-          );
+          });
 
           if (!retryResponse.ok) {
             setIsAuthorized(false);

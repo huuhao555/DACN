@@ -3,6 +3,7 @@ import { UserContext } from "../../../../../middleware/UserContext";
 import "../style.scss";
 import { AiOutlineDownCircle } from "react-icons/ai";
 import SuccessAnimation from "../../../../../component/general/Success";
+import { apiLink } from "../../../../../config/api";
 
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -19,9 +20,7 @@ const PendingOrders = () => {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/order/getAll/${userId}`
-        );
+        const response = await fetch(apiLink + `/api/order/getAll/${userId}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -46,7 +45,7 @@ const PendingOrders = () => {
   };
   const handleSubmidOrder = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/order/cancel`, {
+      const response = await fetch(apiLink + `/api/order/cancel`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -65,7 +64,7 @@ const PendingOrders = () => {
       }, 1000);
       const userId = user?.dataUser?.id;
       const updatedOrdersResponse = await fetch(
-        `http://localhost:3001/api/order/getAll/${userId}`
+        apiLink + `/api/order/getAll/${userId}`
       );
 
       if (!updatedOrdersResponse.ok) {
@@ -103,6 +102,10 @@ const PendingOrders = () => {
                 <p>Địa chỉ: {order?.shippingAddress}</p>
                 <p>Số điện thoại: {order?.phone}</p>
                 <p>Trạng thái: {order?.status}</p>
+                <p>
+                  Tình trạng:{" "}
+                  {order?.isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
+                </p>
                 <p>Mã đơn hàng: {order?._id} </p>
 
                 <h3 className="text-order">
@@ -235,12 +238,12 @@ const PendingOrders = () => {
                     <p>
                       Voucher người dùng:
                       <span>
-                        {` (-${(
+                        {` (${(
                           (1 - order?.orderTotal / grandTotal) *
                           100
                         )?.toLocaleString(
                           "vi-VN"
-                        )}%) -${(grandTotal - order?.orderTotal)?.toLocaleString("vi-VN")}`}
+                        )}%) ${parseInt(grandTotal - order?.orderTotal)?.toLocaleString("vi-VN")}`}
                       </span>
                     </p>
 

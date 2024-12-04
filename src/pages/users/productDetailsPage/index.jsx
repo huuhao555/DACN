@@ -11,6 +11,7 @@ import ReviewSection from "../../../component/user/ReviewProduct";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import "./style.scss";
 import HistoriesProductSlide from "../../../component/user/historiesProdcutSlide";
+import { apiLink } from "../../../config/api";
 
 const ProductDetailsPage = () => {
   const location = useLocation();
@@ -42,7 +43,7 @@ const ProductDetailsPage = () => {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/product/get-details/${productId}`
+        apiLink + `/api/product/get-details/${productId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch product-details");
@@ -68,21 +69,18 @@ const ProductDetailsPage = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/cart/add-update",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userId: user.dataUser.id,
-            productId: product._id,
-            quantity: 1,
-            prices: product.prices.toLocaleString("vi-VN")
-          })
-        }
-      );
+      const response = await fetch(apiLink + "/api/cart/add-update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: user.dataUser.id,
+          productId: product._id,
+          quantity: 1,
+          prices: product.prices.toLocaleString("vi-VN")
+        })
+      });
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -153,7 +151,7 @@ const ProductDetailsPage = () => {
                         </div>
                         <div className="grp-price">
                           {product?.prices ===
-                            parseInt(product?.promotionPrice) ? (
+                          parseInt(product?.promotionPrice) ? (
                             <p className="price">
                               {parseInt(
                                 product?.promotionPrice
@@ -302,11 +300,9 @@ const ProductDetailsPage = () => {
                   <h2>Sản phẩm vừa xem</h2>
                 </div>
                 <div className="product-wrap">
-                  < HistoriesProductSlide />
+                  <HistoriesProductSlide />
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
@@ -316,7 +312,7 @@ const ProductDetailsPage = () => {
           <Notification
             key={notification.id}
             message={notification.message}
-            onClose={() => { }}
+            onClose={() => {}}
           />
         ))}
       </div>

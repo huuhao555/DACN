@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import "./style.scss";
 import { UserContext } from "../../../middleware/UserContext";
+import { apiLink } from "../../../config/api";
 
 const ReviewSection = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -12,7 +13,7 @@ const ReviewSection = ({ productId }) => {
   const fetchDataReview = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/product/get-details/${productId}`
+        apiLink + `/api/product/get-details/${productId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch reviews");
@@ -42,7 +43,7 @@ const ReviewSection = ({ productId }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/review/${productId}/review/${reviewId}/add-reply`,
+        apiLink + `/api/review/${productId}/review/${reviewId}/add-reply`,
         {
           method: "POST",
           headers: {

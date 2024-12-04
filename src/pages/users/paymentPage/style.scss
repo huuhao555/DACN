@@ -87,6 +87,52 @@ $input-border-color: #dcdcdc;
         }
       }
     }
+    .select-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+
+      select {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #333;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        appearance: none;
+        cursor: pointer;
+
+        &:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+      }
+
+      &::after {
+        content: "▼";
+        font-size: 12px;
+        color: #555;
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      select > option {
+        font-size: 14px;
+        padding: 5px;
+        background-color: #ffffff;
+        color: #333;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
   }
 
   .payment-methods {

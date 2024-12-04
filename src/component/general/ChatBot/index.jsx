@@ -27,11 +27,14 @@ const ChatbotWrapper = () => {
     ]);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/get_response", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
-      });
+      const response = await fetch(
+        " https://chatbothk7-production.up.railway.app/api/get_response",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        }
+      );
       const data = await response.json();
 
       setMessages((prevMessages) => [

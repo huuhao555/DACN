@@ -8,10 +8,11 @@ import "./style.scss";
 import VerifyOtp from "../VerifyOtp";
 import Login from "../login/Login";
 import ReCAPTCHA from "react-google-recaptcha";
+import { messages } from "../../../../../../../TMDT/T-Shirt/t-shirt/node_modules/workbox-strategies/utils/messages";
+import { apiLink } from "../../../../config/api";
 
 const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
-  const [capVal, setCapVal] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState([]);
 
   const [isShowLoginForm, setShowLoginForm] = useState(false);
   const closeLoginForm = () => {
@@ -26,8 +27,8 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
     phone: ""
   });
 
-  const [showPassword, setShowPassword] = useState(false); // For password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // For confirm password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,19 +40,38 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
 
   const onHandlSignUp = async () => {
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    const isCheckEmail = reg.test(formData.email);
-    if (!isCheckEmail) {
-      return setMessage("Email không hợp lệ");
-    } else if (formData.password !== formData.confirmPassword) {
-      return setMessage("Mật khẩu không trùng nhau");
-    } else if (!capVal) {
-      return setMessage("Vui lòng chọn ReCap");
+    const messages = [];
+
+    if (!formData.email) {
+      messages.push("Email không được để trống.");
+    } else if (!reg.test(formData.email)) {
+      messages.push("Email không hợp lệ.");
     }
-    // if (formData.password !== formData.confirmPassword)
-    //   return setMessage("Mật khẩu không trùng nhau");
+
+    if (!formData.fullName) {
+      messages.push("Họ tên không được để trống.");
+    }
+
+    if (!formData.password) {
+      messages.push("Mật khẩu không được để trống.");
+    }
+
+    if (!formData.confirmPassword) {
+      messages.push("Bạn cần nhập lại mật khẩu.");
+    } else if (formData.password !== formData.confirmPassword) {
+      messages.push("Mật khẩu không trùng nhau.");
+    }
+
+    if (!formData.phone) {
+      messages.push("Số điện thoại không được để trống.");
+    }
+
+    if (messages.length > 0) {
+      return setMessage(messages);
+    }
 
     try {
-      const response = await fetch("http://localhost:3001/api/user/sign-up", {
+      const response = await fetch(apiLink + "/api/user/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -142,25 +162,30 @@ const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {
                 value={formData.phone}
                 onChange={handleInputChange}
               />
-              <label>{message}</label>
-              <ReCAPTCHA
-                sitekey="6Lfg1HgqAAAAABvsZaTk3cTi163YFQPX-HoX_j6Z"
-                // 6Lfg1HgqAAAAAAJm9IeG9pcuyR9SzYWAmOTWgOfR
-                onChange={(token) => setCapVal(token)}
-              />
-              <button onClick={onHandlSignUp}>Đăng ký</button>
-
-              <span className="signup">
-                Bạn đã có tài khoản?
-                <span
-                  onClick={() => {
-                    setShowLoginForm(true);
-                  }}
-                >
-                  {" "}
-                  Đăng nhập ngay
-                </span>
+              <span
+                style={{
+                  color: "red",
+                  fontSize: "14px",
+                  listStyle: "none",
+                  textAlign: "center"
+                }}
+              >
+                {message && (
+                  <ul
+                    style={{
+                      color: "red",
+                      fontSize: "14px",
+                      listStyle: "none"
+                    }}
+                  >
+                    {message.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                )}
               </span>
+
+              <button onClick={onHandlSignUp}>Đăng ký</button>
             </>
           </div>
         </div>

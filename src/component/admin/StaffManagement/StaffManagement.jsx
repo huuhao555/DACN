@@ -3,15 +3,14 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import { UserContext } from "../../../middleware/UserContext";
+import { apiLink } from "../../../config/api";
 const StaffManagement = () => {
   const [dataUser, setDataUser] = useState([]);
   const { user } = useContext(UserContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/user/getAllUser"
-        );
+        const response = await fetch(apiLink + "/api/user/getAllUser");
 
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -39,16 +38,13 @@ const StaffManagement = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/user/delete-user/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            token: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+      const response = await fetch(apiLink + `/api/user/delete-user/${id}`, {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
-      );
+      });
 
       if (!response.ok) {
         const errorMessage = await response.text();

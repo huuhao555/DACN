@@ -3,6 +3,7 @@ import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../../middleware/NotificationContext";
 import SuccessAnimation from "../../general/Success";
+import { apiLink } from "../../../config/api";
 
 const CreateProduct = () => {
   const { addNotification } = useContext(NotificationContext);
@@ -54,7 +55,7 @@ const CreateProduct = () => {
       if (imageFile) data.append("image", imageFile);
       if (bannerFile) data.append("banner", bannerFile);
 
-      const response = await fetch("http://localhost:3001/api/product/create", {
+      const response = await fetch(apiLink + "/api/product/create", {
         method: "POST",
         body: data,
         headers: {}

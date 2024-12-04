@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./style.scss";
 import SuccessComponent from "../../../../component/general/Success";
+import { apiLink } from "../../../../config/api";
 
 const UpdateUser = () => {
   const [message, setMessage] = useState("");
@@ -27,19 +28,16 @@ const UpdateUser = () => {
   const onHandlSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/user/update-user/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            ...formData,
-            isAdmin: formData.isAdmin === "true"
-          })
-        }
-      );
+      const response = await fetch(apiLink + `/api/user/update-user/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ...formData,
+          isAdmin: formData.isAdmin === "true"
+        })
+      });
 
       if (!response.ok) {
         setMessage(

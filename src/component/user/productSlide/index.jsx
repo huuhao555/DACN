@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import { IMAGES } from "../../../assets/image";
+import { apiLink } from "../../../config/api";
 
 const ProductsSlideComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,9 +12,7 @@ const ProductsSlideComponent = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/product/getAllProduct"
-        );
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();

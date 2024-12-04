@@ -13,6 +13,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
+import { apiLink } from "../../../config/api";
 
 ChartJS.register(
   CategoryScale,
@@ -29,7 +30,7 @@ const RevenueStatistics = () => {
   const [chartData, setChartData] = useState(null);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
-
+  const [orders, setOrders] = useState([]);
   const toVietnamTime = (date) => {
     const offset = 7 * 60 * 60 * 1000;
     return new Date(date.getTime() + offset);
@@ -58,7 +59,23 @@ const RevenueStatistics = () => {
     const days = new Date(year, month + 1, 0).getDate();
     return Array.from({ length: days }, (_, i) => new Date(year, month, i + 1));
   };
+  const [totalRevenue, setTotalRevenue] = useState(0);
 
+  useEffect(() => {
+    const fetchTotalRevenue = async () => {
+      try {
+        const response = await fetch(apiLink + "/api/order/total-revenue");
+        if (!response.ok) throw new Error("Lỗi khi fetch dữ liệu");
+
+        const data = await response.json();
+        setTotalRevenue(data.totalRevenue);
+      } catch (error) {
+        console.error("Lỗi khi lấy tổng doanh thu:", error);
+      }
+    };
+
+    fetchTotalRevenue();
+  }, []);
   const fetchChartData = async () => {
     try {
       let body = { status: "Delivered", timePeriod };
@@ -76,17 +93,14 @@ const RevenueStatistics = () => {
         body.date = formatDate(selectedDate, "day");
       }
 
-      const response = await fetch(
-        "http://localhost:3001/api/order/getstatus",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        }
-      );
+      const response = await fetch(apiLink + "/api/order/getstatus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
 
       const data = await response.json();
-
+      setOrders(data.orders);
       setTotalOrders(data.totalOrders);
       setTotalProducts(data.totalProducts);
 
@@ -149,58 +163,112 @@ const RevenueStatistics = () => {
   }, [timePeriod, selectedDate]);
 
   return (
-    <div className="chart-container">
-      <div className="chart-header">
-        <h2>Thống kê doanh thu</h2>
-        <div className="filters">
-          <select
-            value={timePeriod}
-            onChange={(e) => setTimePeriod(e.target.value)}
-            className="select-timePeriod"
-          >
-            <option value="day">Theo ngày</option>
-            <option value="week">Theo tuần</option>
-            <option value="month">Theo tháng</option>
-          </select>
+    <div>
+      <div className="chart-container">
+        <h1 className="total-revenue">{`Tổng Doanh Thu: ${parseInt(totalRevenue)?.toLocaleString("vi-VN")} VNĐ`}</h1>
 
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            dateFormat={timePeriod === "month" ? "MM/yyyy" : "dd/MM/yyyy"}
-            showMonthYearPicker={timePeriod === "month"}
-            locale={vi}
-            calendarStartDay={1}
-          />
+        <div className="chart-header">
+          <h2>Thống kê doanh thu</h2>
+          <div className="filters">
+            <select
+              value={timePeriod}
+              onChange={(e) => setTimePeriod(e.target.value)}
+              className="select-timePeriod"
+            >
+              <option value="day">Theo ngày</option>
+              <option value="week">Theo tuần</option>
+              <option value="month">Theo tháng</option>
+            </select>
+
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              dateFormat={timePeriod === "month" ? "MM/yyyy" : "dd/MM/yyyy"}
+              showMonthYearPicker={timePeriod === "month"}
+              locale={vi}
+              calendarStartDay={1}
+            />
+          </div>
+        </div>
+
+        <div className="statistics-info">
+          <div className="stat-item">
+            <span>Tổng số đơn hàng</span>
+            <div className="value">{totalOrders}</div>
+          </div>
+          <div className="stat-item">
+            <span>Tổng số sản phẩm</span>
+            <div className="value">{totalProducts}</div>
+          </div>
+        </div>
+
+        <div className="chart">
+          {chartData ? (
+            <Bar
+              data={chartData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { position: "top" },
+                  title: { display: true, text: "Biểu đồ thống kê doanh thu" }
+                }
+              }}
+            />
+          ) : (
+            <p>Đang tải dữ liệu...</p>
+          )}
         </div>
       </div>
+      {/* <div className="purchase-table-container">
+        <h2>Danh sách đơn hàng đã mua</h2>
+        <table className="purchase-table">
+          <thead>
+            <tr>
+              <th>Tên khách hàng</th>
+              <th>Sản phẩm</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Tổng cộng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => {
 
-      <div className="statistics-info">
-        <div className="stat-item">
-          <span>Tổng số đơn hàng</span>
-          <div className="value">{totalOrders}</div>
-        </div>
-        <div className="stat-item">
-          <span>Tổng số sản phẩm</span>
-          <div className="value">{totalProducts}</div>
-        </div>
-      </div>
-
-      <div className="chart">
-        {chartData ? (
-          <Bar
-            data={chartData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { position: "top" },
-                title: { display: true, text: "Biểu đồ thống kê doanh thu" }
-              }
-            }}
-          />
-        ) : (
-          <p>Đang tải dữ liệu...</p>
-        )}
-      </div>
+              return (
+                <tr key={index}>
+                  <td>{order?.name}</td>
+                  <td>
+                    {order?.products.map((product, productIndex) => (
+                      <div key={productIndex} className="product-info">
+                        <span className="product-name">{product?.name}</span>
+                      </div>
+                    ))}
+                  </td>
+                  <td>
+                    {order?.products?.map((product, productIndex) => {
+                      return (
+                        <div key={productIndex} className="product-info">
+                          <span>
+                            {product?.promotionPrice?.toLocaleString()}₫
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    {order.products.map((product, productIndex) => (
+                      <div key={productIndex} className="product-info">
+                        <span>{product.quantity}</span>
+                      </div>
+                    ))}
+                  </td>
+                  <td>{order?.orderTotal?.toLocaleString()}₫</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div> */}
     </div>
   );
 };

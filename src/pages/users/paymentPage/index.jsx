@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import "./style.scss";
 import LuckyWheelVoucher from "../../../component/general/LuckyWheelVoucher";
+import { apiLink } from "../../../config/api";
 
 const OrderPage = () => {
   const { pathname } = useLocation();
@@ -13,9 +14,11 @@ const OrderPage = () => {
   const [voucher, setVoucher] = useState(null);
 
   const { user } = useContext(UserContext) || {};
+  const userId = user?.dataUser?.id;
+
   const [cartId, setCartId] = useState();
   const [dataOrder, setDataOrder] = useState(null);
-
+  const [addressOptions, setAddressOptions] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState({
     name: user?.dataUser?.name || "",
     phone: user?.dataUser?.phone || "",
@@ -35,7 +38,7 @@ const OrderPage = () => {
     const id = user.dataUser.id;
     try {
       const response = await fetch(
-        ` http://localhost:3001/api/cart/get-cart/${id}`
+        ` https://doanpro-production.up.railway.app/api/cart/get-cart/${id}`
       );
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
@@ -49,10 +52,23 @@ const OrderPage = () => {
       console.error("Failed to fetch cart data:", error);
     }
   }, [user]);
-
+  console.log(user);
   useEffect(() => {
     getAllCart();
   }, [getAllCart]);
+  const fetchAddressOptions = async () => {
+    try {
+      const response = await fetch(`${apiLink}/api/address/list/${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch addresses");
+      const data = await response.json();
+      setAddressOptions(data.data);
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  };
+  useEffect(() => {
+    fetchAddressOptions();
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPaymentDetails({ ...paymentDetails, [name]: value });
@@ -84,11 +100,26 @@ const OrderPage = () => {
     });
     setSuggestions([]);
   };
+  const handleAddressSelect = (selectedAddress) => {
+    console.log(selectedAddress);
+    if (selectedAddress) {
+      setPaymentDetails((prevDetails) => ({
+        ...prevDetails,
+        name: selectedAddress.name || prevDetails.name,
+        phone: selectedAddress.phone || prevDetails.phone,
+        email: selectedAddress.email || prevDetails.email,
+        shippingAddress: selectedAddress.address || prevDetails.shippingAddress
+      }));
+    }
+  };
+
   const [orderId, setOrderId] = useState();
   const handlePayment = async () => {
     if (window.confirm("Bạn có chắc chắn đặt hàng không?")) {
       try {
-        const response = await fetch("http://localhost:3001/api/order/create", {
+        await handleSubmit();
+
+        const response = await fetch(apiLink + "/api/order/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -111,25 +142,47 @@ const OrderPage = () => {
       }
     }
   };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(apiLink + "/api/address/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: paymentDetails.name,
+          phone: paymentDetails.phone,
+          email: paymentDetails.email,
+          address: paymentDetails.shippingAddress,
+          userId: user?.dataUser?.id
+        })
+      });
+      if (!response.ok) throw new Error("Failed to create address");
+      const data = await response.json();
+      console.log("Address created:", data);
+    } catch (error) {
+      console.error("Error creating address:", error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     if (!orderId) return;
     const createPayment = async () => {
       const returnUrl = "http://localhost:3000/ket-qua-thanh-toan";
 
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/payments/create_payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              orderId,
-              returnUrl
-            })
-          }
-        );
+        const response = await fetch(apiLink + "/api/payments/create_payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            orderId,
+            returnUrl
+          })
+        });
 
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
@@ -203,6 +256,26 @@ const OrderPage = () => {
                 ))}
               </ul>
             )}
+            <div class="select-container">
+              <select
+                onChange={(e) => {
+                  const selectedAddress = addressOptions.find(
+                    (addr) => addr._id === e.target.value
+                  );
+                  handleAddressSelect(selectedAddress);
+                }}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Chọn địa chỉ đã lưu
+                </option>
+                {addressOptions.map((address) => (
+                  <option key={address._id} value={address._id}>
+                    {` ${address.name} | ${address.phone} | ${address.address} `}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="order-summary">

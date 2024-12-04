@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { ROUTERS } from "../../../../utils/router";
 import { UserContext } from "../../../../middleware/UserContext";
 import ForgetPassword from "../../auth/ForgetPassword";
+import { apiLink } from "../../../../config/api";
 
 const Header = () => {
   const { user, countCart, updateCartCount } = useContext(UserContext);
@@ -23,9 +24,7 @@ const Header = () => {
 
       const id = user.dataUser.id;
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/cart/get-cart/${id}`
-        );
+        const response = await fetch(apiLink + `/api/cart/get-cart/${id}`);
         if (!response.ok) throw new Error(response.statusText);
         const dataCart = await response.json();
         updateCartCount(dataCart?.products?.length || 0);
@@ -132,7 +131,7 @@ const Header = () => {
                       {isShowProfile && !user && (
                         <ul className="sub-profile">
                           <li onClick={handleLoginClick}>Đăng nhập</li>
-                          <li onClick={handleSignUpClick}>Đăng kí</li>
+                          <li onClick={handleSignUpClick}>Đăng ký</li>
                           <li onClick={handleForgetClick}>Quên mật khẩu</li>
                         </ul>
                       )}

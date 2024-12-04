@@ -5,7 +5,7 @@ import Footer from "../footer";
 import Header from "../header";
 import { UserProvider } from "../../../../middleware/UserContext";
 import { CartProvider } from "../../../../middleware/CartContext";
-import ChatbotWrapper from "../../../../component/general/ChatBox";
+import ChatbotWrapper from "../../../../component/general/ChatBot";
 
 const MasterLayout = (props) => {
   return (

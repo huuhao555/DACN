@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
+import { apiLink } from "../../../config/api";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -9,9 +10,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/product/getAllProduct"
-        );
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
 

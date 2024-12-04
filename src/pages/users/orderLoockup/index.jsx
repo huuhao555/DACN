@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./style.scss";
 import { AiOutlineSearch } from "react-icons/ai";
+import { apiLink } from "../../../config/api";
 
 const OrderLookup = () => {
   const [orderInfo, setOrderInfo] = useState({
@@ -19,7 +20,7 @@ const OrderLookup = () => {
     searchTerm.totalPrice + parseInt(searchTerm.VAT) + searchTerm.shippingFee;
   const handlePriceRange = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/order/get/${id}`);
+      const response = await fetch(apiLink + `/api/order/get/${id}`);
       if (!response.ok) {
         throw new Error(response.statusText);
       }

@@ -3,6 +3,7 @@ import "./style.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import SuccessAnimation from "../../general/Success";
+import { apiLink } from "../../../config/api";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -71,16 +72,13 @@ const UpdateProduct = () => {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:3001/api/product/update/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            token: `Bearer ${token}`
-          },
-          body: formToSubmit
-        }
-      );
+      const response = await fetch(apiLink + `/api/product/update/${id}`, {
+        method: "PUT",
+        headers: {
+          token: `Bearer ${token}`
+        },
+        body: formToSubmit
+      });
 
       if (!response.ok) {
         alert(

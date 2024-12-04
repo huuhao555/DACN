@@ -8,6 +8,7 @@ import SlideBanner from "../../../component/user/slideBaner";
 import { UserContext } from "../../../middleware/UserContext";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
 import ProductTypeComponent from "../../../component/user/productType";
+import { apiLink } from "../../../config/api";
 
 const HomePage = () => {
   const navigator = useNavigate();
@@ -20,9 +21,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/api/product/getAllProduct"
-        );
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();

@@ -10,6 +10,7 @@ import {
 } from "react-icons/ai";
 import { ROUTERS } from "../../../../../utils/router";
 import { useNavigate } from "react-router-dom";
+import { apiLink } from "../../../../../config/api";
 const CancelledOrders = () => {
   const navigator = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -49,9 +50,7 @@ const CancelledOrders = () => {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/order/getAll/${userId}`
-        );
+        const response = await fetch(apiLink + `/api/order/getAll/${userId}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -81,6 +80,10 @@ const CancelledOrders = () => {
                 <p>Địa chỉ: {order?.shippingAddress}</p>
                 <p>Số điện thoại: {order?.phone}</p>
                 <p>Trạng thái: {order?.status}</p>
+                <p>
+                  Tình trạng:{" "}
+                  {order?.isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
+                </p>
                 <p>Mã đơn hàng: {order?._id} </p>
                 <h3 className="text-order">
                   Chi tiết đơn hàng
@@ -236,7 +239,7 @@ const CancelledOrders = () => {
                           100
                         )?.toLocaleString(
                           "vi-VN"
-                        )}%) -${(grandTotal - order?.orderTotal)?.toLocaleString("vi-VN")}`}
+                        )}%) -${parseInt(grandTotal - order?.orderTotal)?.toLocaleString("vi-VN")}`}
                       </span>
                     </p>
 

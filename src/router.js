@@ -34,9 +34,10 @@ import VerifyOtp from "./pages/users/auth/VerifyOtp/index.jsx";
 import OrderPage from "./pages/users/paymentPage/index.jsx";
 import OrderStorage from "./pages/users/orderdetailpage/index.jsx";
 import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
-import AddReview from "./component/user/AddReview/index.jsx";
+
 import NotFoundPage from "./component/general/NotFoundPage/index.jsx";
 import PaymentDetailPage from "./pages/users/PaymentDetailPage/index.jsx";
+import AddReview from "./pages/users/AddReview/index.jsx";
 
 const RouterCustom = () => {
   return (
