@@ -29,6 +29,7 @@ export const ROUTERS = {
     PRODUCT_LIST: "/admin/san-pham",
     MANAGE_STAFF: "/admin/quan-ly-nguoi-dung",
     MANAGE_PRODUCTS: "/admin/quan-ly-san-pham",
+    MANAGE_VOURCHER: "/admin/quan-ly-ma-giam-gia",
     REVENUE_STATS: "/admin/bao-cao-doanh-thu",
     PURCHASE_HISTORY: "/admin/lich-su-giao-dich",
     UPDATE_PRODUCT: "/admin/chinh-sua-san-pham",

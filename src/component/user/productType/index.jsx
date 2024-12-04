@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import "./style.scss";
 import { ROUTERS } from "../../../utils/router";
 import { UserContext } from "../../../middleware/UserContext";
-
+import { BsStarFill } from "react-icons/bs";
 const ProductTypeComponent = ({ title, heading }) => {
   const [products, setProducts] = useState([]);
   const { user, updateCartCount } = useContext(UserContext);
@@ -98,7 +98,7 @@ const ProductTypeComponent = ({ title, heading }) => {
     }
   };
   const handleProductType = () => {
-    navigator(ROUTERS.USER.PRODUCT_TYPE, { state: { title } });
+    navigator(`${ROUTERS.USER.PRODUCT_TYPE}/${title}`, { state: { title } });
   };
   const handleCart = async (product) => {
     if (!user) alert("Vui lòng đăng nhập");
@@ -134,7 +134,7 @@ const ProductTypeComponent = ({ title, heading }) => {
     <div className="product-slider">
       <div className="product-slider-top">
         <h2 className="product-slider-title">{heading}</h2>
-        <p onClick={handleProductType}>(xem tất cả)</p>
+        <p onClick={handleProductType}>{`(xem tất cả)`}</p>
       </div>
 
       <div className="productSlide-wrapper">
@@ -180,18 +180,24 @@ const ProductTypeComponent = ({ title, heading }) => {
                   )}
                 </div>
               </div>
-              <div className="product-item-cart">
-                <button
-                  onClick={() => {
-                    handleCart(product);
-                  }}
-                  type="submit"
-                  className="button btn-buyonl"
-                  name="buy-onl"
-                  id="buy-onl"
-                >
-                  <span>Thêm vào giỏ</span>
-                </button>
+              <div className="product-item-bottom">
+                <div className="product-item-cart">
+                  <button
+                    onClick={() => {
+                      handleCart(product);
+                    }}
+                    type="submit"
+                    className="button btn-buyonl"
+                    name="buy-onl"
+                    id="buy-onl"
+                  >
+                    <span>Thêm vào giỏ</span>
+                  </button>
+                </div>
+                <div className="icon-star">
+                  <span>{(product?.averageRating).toFixed(1)}</span>
+                  <BsStarFill />
+                </div>
               </div>
             </div>
           ))}

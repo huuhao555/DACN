@@ -1,11 +1,11 @@
-import { memo, useState, useEffect, useContext } from "react";
+import { memo, useState, useEffect } from "react";
 import "./style.scss";
-import { AiOutlineRight, AiOutlinePhone } from "react-icons/ai";
+import { AiOutlinePhone } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
-import ProductsSlideComponent from "../../../component/user/productSlide/index";
+
 import SlideBanner from "../../../component/user/slideBaner";
-import { UserContext } from "../../../middleware/UserContext";
+
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
 import ProductTypeComponent from "../../../component/user/productType";
 import { apiLink } from "../../../config/api";
@@ -15,7 +15,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const { user } = useContext(UserContext) || {};
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const HomePage = () => {
                   {menuCategories.map((itemCategory, keyCategory) => (
                     <li key={keyCategory}>
                       <Link
-                        to={itemCategory.path}
+                        to={`${itemCategory.path}/${itemCategory.title}`}
                         state={{ title: itemCategory.title }}
                       >
                         {itemCategory.name} {itemCategory.icon}

@@ -1,13 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import PendingOrders from "./PendingOrders";
 import ShippingOrders from "./ShippingOrders";
 import DeliveredOrders from "./DeliveredOrders";
 import CancelledOrders from "./CancelledOrders";
 import "./style.scss";
-import UserContext from "../../../../middleware/UserContext";
+
 const OrderStorage = () => {
   const [activeTab, setActiveTab] = useState("pending");
-  const { user } = useContext(UserContext) || {};
 
   const renderTabContent = () => {
     switch (activeTab) {

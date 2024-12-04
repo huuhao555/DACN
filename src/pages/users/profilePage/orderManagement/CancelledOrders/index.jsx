@@ -1,13 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../../middleware/UserContext";
 import "../style.scss";
-import {
-  AiOutlineDown,
-  AiOutlineDownCircle,
-  AiOutlineDownSquare,
-  AiOutlineEye,
-  AiOutlineEyeInvisible
-} from "react-icons/ai";
+import { AiOutlineDownCircle } from "react-icons/ai";
 import { apiLink } from "../../../../../config/api";
 const CancelledOrders = () => {
   const [orders, setOrders] = useState([]);

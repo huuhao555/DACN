@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTERS } from "../../../utils/router";
 import LoadingSpinner from "../../../component/general/LoadingSpinner";
 import SuccessAnimation from "../../../component/general/Success";
+import look from "../../../../src/assets/empty_cart.png";
+
 import { apiLink } from "../../../config/api";
 
 const CartPage = () => {
@@ -358,7 +360,13 @@ const CartPage = () => {
           </button>
         </div>
       ) : (
-        <p>Không có sản phẩm trong giỏ hàng.</p>
+        <div className="no-emty">
+          <img src={look} alt="not-found-product-cart" />
+          <p>Không có sản phẩm trong giỏ hàng.</p>
+          <button onClick={() => navigator(ROUTERS.USER.HOME)}>
+            Mua Sắm Ngay
+          </button>
+        </div>
       )}
       <SuccessAnimation message={message} trigger={trigger} />
     </div>

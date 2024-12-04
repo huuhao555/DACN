@@ -118,47 +118,64 @@ $control-btn-size: 40px;
       }
     }
   }
-  .product-item-cart {
-    opacity: 1;
-    height: 5rem;
-    display: flex;
-    justify-items: center;
-    padding: 1.4rem;
-    justify-content: center;
-
-    button {
+  .product-item-bottom {
+    position: relative;
+    .icon-star {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #059b32;
-      color: white;
-      border: 1px solid #057e29;
-      border-radius: 2px;
-      cursor: pointer;
-      width: 60%;
-      font-size: 16px;
-      text-align: center;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #036d23;
-        color: #fff;
-      }
-
-      span {
-        white-space: nowrap;
-        text-align: center;
-        font-weight: 500;
-        text-decoration: unset;
-        font-size: 16px;
-        line-height: 20px;
-      }
-
+      position: absolute;
+      top: 30px;
+      right: 10px;
       svg {
-        font-size: 20px;
-        position: absolute;
-        top: 9px;
-        left: 30px;
+        font-size: 18px;
+        fill: rgb(255, 204, 0);
+      }
+      span {
+        font-size: 18px;
+        padding-right: 2px;
+      }
+    }
+    .product-item-cart {
+      opacity: 1;
+      height: 5rem;
+      display: flex;
+      justify-items: center;
+      padding: 1.4rem;
+      justify-content: center;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #059b32;
+        color: white;
+        border: 1px solid #057e29;
+        border-radius: 2px;
+        cursor: pointer;
+        width: 60%;
+        font-size: 16px;
+        text-align: center;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #036d23;
+          color: #fff;
+        }
+
+        span {
+          white-space: nowrap;
+          text-align: center;
+          font-weight: 500;
+          text-decoration: unset;
+          font-size: 16px;
+          line-height: 20px;
+        }
+
+        svg {
+          font-size: 20px;
+          position: absolute;
+          top: 9px;
+          left: 30px;
+        }
       }
     }
   }

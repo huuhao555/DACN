@@ -1,6 +1,7 @@
 import { memo } from "react";
 import "./style.scss";
 import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="footer">
@@ -8,7 +9,10 @@ const Footer = () => {
         <div className="row">
           <div className="col-lg-3 .col-sm-6 col-xs-12">
             <div className="footer-about">
-              <img src={require("../../../../assets/users/footer/icon7.png")} />
+              <img
+                src={require("../../../../assets/users/footer/icon7.png")}
+                alt="Footer Icon"
+              />
               <ul>
                 <li>Địa chỉ: 18A/1 Cộng Hòa, Phường 4</li>
                 <li>
@@ -83,6 +87,7 @@ const Footer = () => {
                   <img
                     style={{ width: "90px" }}
                     src={require("../../../../assets/users/footer/qrtest.png")}
+                    alt="QR code for app download"
                   />
                 </div>
                 <div className="operating-system">
@@ -93,10 +98,12 @@ const Footer = () => {
                       cursor: "pointer"
                     }}
                     src={require("../../../../assets/users/footer/android.webp")}
+                    alt="Download Android App"
                   />
                   <img
                     style={{ width: "100px", cursor: "pointer" }}
                     src={require("../../../../assets/users/footer/ios.webp")}
+                    alt="Download iOS App"
                   />
                 </div>
               </div>
@@ -112,6 +119,7 @@ const Footer = () => {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title="Google Map location"
               ></iframe>
             </div>
           </div>

@@ -7,8 +7,7 @@ import {
 import "./style.scss";
 import VerifyOtp from "../VerifyOtp";
 import Login from "../login/Login";
-import ReCAPTCHA from "react-google-recaptcha";
-import { messages } from "../../../../../../../TMDT/T-Shirt/t-shirt/node_modules/workbox-strategies/utils/messages";
+
 import { apiLink } from "../../../../config/api";
 
 const SignUp = ({ isShowSignUpForm, closeSignUpForm }) => {

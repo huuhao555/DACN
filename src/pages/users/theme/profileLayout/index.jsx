@@ -1,8 +1,8 @@
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import "./style.scss";
 
 import { Outlet } from "react-router-dom";
-import { UserProvider, UserContext } from "../../../../middleware/UserContext";
+import { UserProvider } from "../../../../middleware/UserContext";
 import SideBarProfile from "../../../../pages/users/profilePage/sidebarProfile";
 import Footer from "../footer";
 import Header from "../header";

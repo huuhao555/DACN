@@ -31,19 +31,19 @@ const RevenueStatistics = () => {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [orders, setOrders] = useState([]);
-  const toVietnamTime = (date) => {
-    const offset = 7 * 60 * 60 * 1000;
-    return new Date(date.getTime() + offset);
-  };
+  // const toVietnamTime = (date) => {
+  //   const offset = 7 * 60 * 60 * 1000;
+  //   return new Date(date.getTime() + offset);
+  // };
 
   const formatDate = (date, formatType) => {
-    const vietnamDate = toVietnamTime(date);
+    const vietnamDate = date;
     if (formatType === "month") return vietnamDate.toISOString().slice(0, 7);
     return vietnamDate.toISOString().slice(0, 10);
   };
 
   const getWeekRange = (date) => {
-    const vietnamDate = toVietnamTime(date);
+    const vietnamDate = date;
     const dayOfWeek = vietnamDate.getDay();
     const startDate = new Date(
       vietnamDate.getTime() -
@@ -109,7 +109,7 @@ const RevenueStatistics = () => {
 
       if (timePeriod === "day") {
         chartDataset = [data.totalAmount, data.totalProducts];
-        labels = ["Doanh thu", "Sản phẩm"];
+        labels = ["Doanh thu"];
       } else if (timePeriod === "week") {
         const daysInWeek = [
           "Chủ Nhật",
@@ -219,7 +219,7 @@ const RevenueStatistics = () => {
           )}
         </div>
       </div>
-      {/* <div className="purchase-table-container">
+      <div className="purchase-table-container">
         <h2>Danh sách đơn hàng đã mua</h2>
         <table className="purchase-table">
           <thead>
@@ -233,23 +233,29 @@ const RevenueStatistics = () => {
           </thead>
           <tbody>
             {orders.map((order, index) => {
-
+              console.log(order);
               return (
                 <tr key={index}>
                   <td>{order?.name}</td>
                   <td>
-                    {order?.products.map((product, productIndex) => (
-                      <div key={productIndex} className="product-info">
-                        <span className="product-name">{product?.name}</span>
-                      </div>
-                    ))}
+                    {order?.products?.map((product, productIndex) => {
+                      console.log(product);
+                      return (
+                        <div key={productIndex} className="product-info">
+                          <span className="product-name">
+                            {product?.productId?.name}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </td>
                   <td>
                     {order?.products?.map((product, productIndex) => {
                       return (
                         <div key={productIndex} className="product-info">
                           <span>
-                            {product?.promotionPrice?.toLocaleString()}₫
+                            {product?.productId?.promotionPrice?.toLocaleString()}
+                            ₫
                           </span>
                         </div>
                       );
@@ -268,7 +274,7 @@ const RevenueStatistics = () => {
             })}
           </tbody>
         </table>
-      </div> */}
+      </div>
     </div>
   );
 };

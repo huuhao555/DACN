@@ -120,4 +120,7 @@ $hover-color: lighten($primary-color, 10%);
     font-size: 1rem;
     color: $text-color;
   }
+  .delete-icon {
+    cursor: pointer;
+  }
 }

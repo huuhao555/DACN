@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { IMAGES } from "../../../assets/image";
+
 import { useState, useEffect, useContext } from "react";
-import ProductsGridComponent from "../../../component/user/productGrid";
+
 import { AiOutlineSearch } from "react-icons/ai";
 import "./style.scss";
 import { AiOutlineClose } from "react-icons/ai";
@@ -16,7 +16,6 @@ import { apiLink } from "../../../config/api";
 const ProductType = () => {
   const location = useLocation();
   const { title } = location.state || {};
-  console.log(title);
   const [products, setProducts] = useState();
   const { user } = useContext(UserContext) || {};
   const [noResults, setNoResults] = useState(false);
@@ -25,10 +24,11 @@ const ProductType = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(apiLink + "/product/getAllProduct");
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
 
         const data = await response.json();
+        console.log(data);
         setProducts(Array.isArray(data.data) ? data.data : []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -147,8 +147,6 @@ const ProductType = () => {
     setPriceMax(e.target.value);
   };
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  const [sortProducts, setSortProducts] = useState([]);
 
   const handlePriceRange = () => {
     const min = parseFloat(priceMin);
@@ -432,6 +430,32 @@ const ProductType = () => {
                               </div>
                             </div>
                           </Link>
+                        </div>
+                        <div className="average-rating">
+                          <div className="rating-stars">
+                            {Array.from({ length: 5 }, (_, index) => {
+                              const filledPercentage = Math.min(
+                                Math.max(
+                                  (product.averageRating - index) * 100,
+                                  0
+                                ),
+                                100
+                              );
+                              return (
+                                <div
+                                  key={index}
+                                  className="star"
+                                  style={{
+                                    background: `linear-gradient(
+                                      to right,
+                                      #ffcc00 ${filledPercentage}%,
+                                      #ddd ${filledPercentage}%
+                                    )`
+                                  }}
+                                ></div>
+                              );
+                            })}
+                          </div>
                         </div>
                         <div className="product-item-cart">
                           <button

@@ -13,7 +13,7 @@ const SideBarProfile = () => {
   const currentPath = location.pathname;
 
   const navigate = useNavigate();
-  const { user, updateUser, logout } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogout = () => {

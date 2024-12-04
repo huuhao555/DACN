@@ -9,7 +9,6 @@ import SignUpPage from "./pages/users/auth/signup/Signup";
 import ProductDetailsPage from "./pages/users/productDetailsPage";
 import CartPage from "./pages/users/cartPage";
 import ProductType from "./pages/users/productType";
-
 import ProductListAdmin from "./component/admin/ProductList/ProductList.jsx";
 import ManageStaffAdmin from "./component/admin/StaffManagement/StaffManagement.jsx";
 import ManageProductsAdmin from "./component/admin/ProductManagement/ProductManagement.jsx";
@@ -38,6 +37,7 @@ import OrderManagementAdmin from "./component/admin/OrderManagement/index.jsx";
 import NotFoundPage from "./component/general/NotFoundPage/index.jsx";
 import PaymentDetailPage from "./pages/users/PaymentDetailPage/index.jsx";
 import AddReview from "./pages/users/AddReview/index.jsx";
+import CreateVoucher from "./component/admin/CreateVoucher/index.jsx";
 
 const RouterCustom = () => {
   return (
@@ -53,6 +53,10 @@ const RouterCustom = () => {
         <Route
           path={ROUTERS.ADMIN.MANAGE_STAFF}
           element={<ManageStaffAdmin />}
+        />
+        <Route
+          path={ROUTERS.ADMIN.MANAGE_VOURCHER}
+          element={<CreateVoucher />}
         />
         <Route
           path={ROUTERS.ADMIN.MANAGE_PRODUCTS}
@@ -110,7 +114,10 @@ const RouterCustom = () => {
         <Route path={ROUTERS.USER.VERITYOTP} element={<VerifyOtp />} />
         <Route path={ROUTERS.USER.SIGNUP} element={<SignUpPage />} />
         <Route path={ROUTERS.USER.ORDER_DETAIL} element={<OrderPage />} />
-        <Route path={ROUTERS.USER.PRODUCT_TYPE} element={<ProductType />} />
+        <Route
+          path={`${ROUTERS.USER.PRODUCT_TYPE}/:id`}
+          element={<ProductType />}
+        />
       </Route>
 
       <Route element={<ProfilePageLayout />}>

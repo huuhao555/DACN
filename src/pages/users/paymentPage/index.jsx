@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import { UserContext } from "../../../middleware/UserContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTERS } from "../../../utils/router";
+import { useLocation } from "react-router-dom";
+
 import "./style.scss";
 import LuckyWheelVoucher from "../../../component/general/LuckyWheelVoucher";
 import { apiLink } from "../../../config/api";
 
 const OrderPage = () => {
   const { pathname } = useLocation();
-  const navigator = useNavigate();
+
   const location = useLocation();
   const { selectedProducts } = location.state || {};
   const [voucher, setVoucher] = useState(null);
@@ -31,6 +31,7 @@ const OrderPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
   const handleVoucherSelection = (selectedVoucher) => {
+    console.log(selectedVoucher);
     setVoucher(selectedVoucher);
   };
   const getAllCart = useCallback(async () => {
@@ -419,7 +420,7 @@ const OrderPage = () => {
                       >
                         {voucher ? (
                           <>
-                            {`-${((grandTotal * parseInt(voucher?.label)) / 100).toLocaleString("vi-VN")} ₫`}{" "}
+                            {`-${((grandTotal * parseInt(voucher?.discount)) / 100).toLocaleString("vi-VN")} ₫`}{" "}
                             <span
                               style={{
                                 color: "#d70018",
@@ -427,7 +428,7 @@ const OrderPage = () => {
                                 marginLeft: "8px"
                               }}
                             >
-                              (-{parseInt(voucher?.label)}%)
+                              (-{parseInt(voucher?.discount)}%)
                             </span>
                           </>
                         ) : (
@@ -451,7 +452,7 @@ const OrderPage = () => {
                         {voucher
                           ? `${parseInt(
                               grandTotal -
-                                grandTotal * (parseInt(voucher?.label) / 100)
+                                grandTotal * (parseInt(voucher?.discount) / 100)
                             ).toLocaleString("vi-VN")} ₫`
                           : `${grandTotal.toLocaleString("vi-VN")} ₫`}
                       </td>

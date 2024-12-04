@@ -79,6 +79,10 @@ const OrderLookup = () => {
           <p>
             <strong>Trạng thái:</strong> {orderInfo?.status}
           </p>
+          <p>
+            <strong>Tình trạng:</strong>{" "}
+            {orderInfo?.isPaid ? "Đã thanh toán" : " Chưa thanh toán"}
+          </p>
         </div>
         {searchTerm && (
           <div>

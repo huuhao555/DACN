@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
-
-const vouchers = [
-  { label: "2%", code: "HDTECH2", percentage: 5 },
-  { label: "5%", code: "HDTECH5", percentage: 10 },
-  { label: "7%", code: "HDTECH7", percentage: 10 },
-  { label: "9%", code: "HDTECH9", percentage: 15 },
-  { label: "10%", code: "HDTECH10", percentage: 10 },
-  { label: "12%", code: "HDTECH12", percentage: 10 },
-  { label: "14%", code: "HDTECH14", percentage: 10 },
-  { label: "15%", code: "HDTECH15", percentage: 10 },
-  { label: "18%", code: "HDTECH18", percentage: 10 },
-  { label: "20%", code: "HDTECH20", percentage: 10 }
-];
+import { apiLink } from "../../../config/api";
 
 const LuckyWheelVoucher = ({ onVoucherSelected }) => {
+  const [vouchers, setVouchers] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [hasSpun, setHasSpun] = useState(false);
+
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      try {
+        const response = await fetch(`${apiLink}/api/voucher/list`);
+        const result = await response.json();
+        if (response.ok) {
+          setVouchers(result.data);
+        } else {
+          console.error("Error fetching vouchers:", result.message);
+        }
+      } catch (error) {
+        console.error("Error fetching vouchers:", error);
+      }
+    };
+
+    fetchVouchers();
+  }, []);
 
   const handleSpin = () => {
-    if (isSpinning) return;
+    if (isSpinning || vouchers.length === 0 || hasSpun) return;
     setIsSpinning(true);
 
     const randomIndex = Math.floor(Math.random() * vouchers.length);
@@ -33,13 +41,14 @@ const LuckyWheelVoucher = ({ onVoucherSelected }) => {
 
     setTimeout(() => {
       setSelectedVoucher(selected);
-      onVoucherSelected(selected);
+      if (onVoucherSelected) onVoucherSelected(selected);
       setIsSpinning(false);
+      setHasSpun(true);
     }, 3000);
   };
 
   return (
-    <div className="lucky-wheel">
+    <div className="modern-wheel">
       <div className="wheel-container">
         <div
           className="wheel"
@@ -49,45 +58,33 @@ const LuckyWheelVoucher = ({ onVoucherSelected }) => {
         >
           {vouchers.map((voucher, index) => (
             <div
-              key={index}
-              className={`wheel-segment ${
-                selectedVoucher && voucher.label === selectedVoucher.label
-                  ? "highlight"
-                  : ""
-              }`}
+              key={voucher._id}
+              className="wheel-segment"
               style={{
                 transform: `rotate(${index * (360 / vouchers.length)}deg)`
               }}
             >
-              <span
-                style={{
-                  transform: `rotate(-${index * (360 / vouchers.length)}deg)`
-                }}
-              >
-                {voucher.label}
-              </span>
+              <div className="segment-content">{`${voucher?.discount}%`}</div>
             </div>
           ))}
         </div>
-        <div className="wheel-pointer"></div>
+
         <div
-          className="wheel-center"
+          className={`wheel-center ${isSpinning || hasSpun ? "disabled" : ""}`}
           onClick={handleSpin}
-          disabled={isSpinning}
         >
-          Quay
+          {isSpinning ? "" : hasSpun ? "Đã quay" : "Quay"}
         </div>
       </div>
-      <button onClick={handleSpin} disabled={isSpinning}>
-        {isSpinning ? "Đang quay..." : "Quay"}
-      </button>
-      {/* <input
-        type="text"
-        className="voucher-code"
-        value={selectedVoucher ? selectedVoucher.code : ""}
-        placeholder="Mã voucher của bạn"
-        readOnly
-      /> */}
+      {selectedVoucher && (
+        <div className="voucher-result">
+          <p>Chúc mừng bạn nhận được voucher:</p>
+          <p>
+            <strong>{selectedVoucher.code}</strong> - Giảm{" "}
+            <strong>{selectedVoucher.discount}%</strong>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

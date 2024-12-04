@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { apiLink } from "../../../../config/api";
 import { UserContext } from "../../../../middleware/UserContext";
 import "./style.scss";
+import SuccessAnimation from "../../../../component/general/Success";
 
 const AddressBook = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,8 @@ const AddressBook = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [addresses, setAddresses] = useState([]);
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
   const user = useContext(UserContext) || {};
   const userId = user?.user?.dataUser?.id;
 
@@ -40,16 +43,45 @@ const AddressBook = () => {
         })
       });
       if (!response.ok) throw new Error("Failed to create address");
-      const data = await response.json();
+      await response.json();
+      setMessage("Thêm địa chỉ thành công!");
+      setTrigger(true);
       setName("");
       setPhone("");
       setEmail("");
       setAddress("");
-      fetchAddresses();
+      await fetchAddresses();
     } catch (error) {
       console.error("Error creating address:", error);
     }
   };
+
+  const handleDelete = async (addressId) => {
+    try {
+      const response = await fetch(
+        apiLink + `/api/address/delete/${userId}/${addressId}`,
+        {
+          method: "DELETE"
+        }
+      );
+      if (!response.ok) throw new Error("Failed to delete address");
+      await response.json();
+      await fetchAddresses();
+      setMessage("Xoá địa chỉ thành công!");
+      setTrigger(true);
+    } catch (error) {
+      console.error("Error deleting address:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (trigger) {
+      const timeout = setTimeout(() => {
+        setTrigger(false);
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [trigger]);
 
   useEffect(() => {
     fetchAddresses();
@@ -117,6 +149,7 @@ const AddressBook = () => {
               <th>Số điện thoại</th>
               <th>Email</th>
               <th>Địa chỉ</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -126,11 +159,21 @@ const AddressBook = () => {
                 <td>{addr.phone}</td>
                 <td>{addr.email}</td>
                 <td>{addr.address}</td>
+                <td
+                  style={{ alignItems: "center" }}
+                  onClick={() => {
+                    handleDelete(addr?._id);
+                  }}
+                  className="delete-icon"
+                >
+                  🗑️
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <SuccessAnimation message={message} trigger={trigger} />
     </div>
   );
 };

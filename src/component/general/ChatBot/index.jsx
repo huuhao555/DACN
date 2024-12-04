@@ -18,6 +18,13 @@ const ChatbotWrapper = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "bot", text: "Tôi có thể giúp gì cho bạn?" }
+    ]);
+  }, []);
+
   const sendMessage = async (message) => {
     if (!message) return;
 

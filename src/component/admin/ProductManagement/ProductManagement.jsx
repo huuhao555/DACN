@@ -12,25 +12,32 @@ const ProductManagement = () => {
   const { addNotification } = useContext(NotificationContext);
   const { user } = useContext(UserContext);
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]); // Danh sách sản phẩm sau khi lọc
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const [message, setMessage] = useState("");
   const [trigger, setTrigger] = useState(false);
+  const [valueSearch, setValueSearch] = useState("");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
-        setProducts(Array.isArray(data.data) ? data.data : []);
+        const productsData = Array.isArray(data.data) ? data.data : [];
+        setProducts(productsData);
+        setFilteredProducts(productsData); // Gán sản phẩm ban đầu
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
+        setFilteredProducts([]);
       }
     };
     fetchProducts();
   }, []);
 
+  // Xử lý xoá sản phẩm
   const handleDeleteProduct = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?")) {
       try {
@@ -47,6 +54,9 @@ const ProductManagement = () => {
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product._id !== id)
         );
+        setFilteredProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== id)
+        );
         setMessage("Xoá sản phẩm thành công");
         setTrigger(true);
         addNotification(
@@ -58,15 +68,41 @@ const ProductManagement = () => {
     }
   };
 
-  const currentProducts = products.slice(
+  // Xử lý tìm kiếm
+  const handleSearch = (value) => {
+    setValueSearch(value);
+    if (value.trim() === "") {
+      setFilteredProducts(products); // Nếu input rỗng, hiển thị toàn bộ sản phẩm
+    } else {
+      const searchValue = value.toLowerCase();
+      const filtered = products.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(searchValue) ||
+          product.company.toLowerCase().includes(searchValue)
+        );
+      });
+      setFilteredProducts(filtered); // Lọc sản phẩm theo giá trị tìm kiếm
+    }
+  };
+
+  // Lấy sản phẩm hiện tại theo trang
+  const currentProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   return (
     <div>
       <div className="product-table-container">
+        <div className="input-search">
+          <input
+            onChange={(e) => handleSearch(e.target.value)}
+            value={valueSearch}
+            type="text"
+            placeholder="Bạn cần tìm kiếm gì?"
+          />
+        </div>
         <table className="product-table">
           <thead>
             <tr>
@@ -83,7 +119,6 @@ const ProductManagement = () => {
               return (
                 <tr key={product._id}>
                   <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-
                   <td>
                     <div className="product-info">
                       <img
@@ -99,8 +134,7 @@ const ProductManagement = () => {
                   <td>{product.company}</td>
                   <td>{product.quantityInStock}</td>
                   <td>
-                    {" "}
-                    {product?.prices == parseInt(product?.promotionPrice) ? (
+                    {product?.prices === parseInt(product?.promotionPrice) ? (
                       <div className="grp-price">
                         <p className="prices">
                           {`${product?.prices.toLocaleString("vi-VN")} ₫`}
@@ -123,7 +157,6 @@ const ProductManagement = () => {
                       </div>
                     )}
                   </td>
-
                   <td>
                     <Link
                       to={`${ROUTERS.ADMIN.PRODUCTS_DETAIL}/${product._id}`}

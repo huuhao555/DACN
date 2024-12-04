@@ -1,13 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../../middleware/UserContext";
 import "../style.scss";
-import {
-  AiOutlineDown,
-  AiOutlineDownCircle,
-  AiOutlineDownSquare,
-  AiOutlineEye,
-  AiOutlineEyeInvisible
-} from "react-icons/ai";
+import { AiOutlineDownCircle } from "react-icons/ai";
 import { ROUTERS } from "../../../../../utils/router";
 import { useNavigate } from "react-router-dom";
 import { apiLink } from "../../../../../config/api";
@@ -19,12 +13,6 @@ const CancelledOrders = () => {
   const [visibleOrders, setVisibleOrders] = useState({});
   const [selectedProduct, setSelectedProduct] = useState("");
 
-  const allProducts = orders.map((order) =>
-    order.products.map((product) => ({
-      id: product.productId._id,
-      name: product.productId.name
-    }))
-  );
   const handleReview = () => {
     if (!selectedProduct) {
       alert("Vui lòng chọn sản phẩm để đánh giá!");
@@ -70,7 +58,7 @@ const CancelledOrders = () => {
     <div className="orders-list">
       {orders.length > 0 ? (
         <div>
-          {orders?.map((order, orderIndex) => {
+          {orders?.map((order) => {
             const grandTotal =
               order.totalPrice + parseInt(order.VAT) + order.shippingFee;
             return (

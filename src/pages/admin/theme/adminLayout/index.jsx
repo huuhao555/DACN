@@ -1,15 +1,14 @@
 import "./style.scss";
 import { memo, useEffect, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../../../../component/admin/Sidebar/Sidebar";
 import HeaderAdmin from "../header/header";
 import { UserProvider } from "../../../../middleware/UserContext";
 import { NotificationProvider } from "../../../../middleware/NotificationContext";
-import { ROUTERS } from "../../../../utils/router";
 
 import LoadingSpinner from "../../../../component/general/LoadingSpinner";
 import NotFoundPage from "../../../../component/general/NotFoundPage";
-import ChatbotWrapper from "../../../../component/general/ChatBot";
+
 import { apiLink } from "../../../../config/api";
 
 const AdminLayout = (props) => {

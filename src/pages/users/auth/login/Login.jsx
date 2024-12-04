@@ -7,9 +7,9 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { UserContext } from "../../../../middleware/UserContext";
-import SignUp from "../signup/Signup";
+
 import "./style.scss";
-import { Link } from "react-router-dom";
+
 import { apiLink } from "../../../../config/api";
 
 const Login = ({ isShowLoginForm, closeLoginForm }) => {
@@ -17,17 +17,13 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
   const [message, setMessage] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isShowSignUpForm, setShowSignUpForm] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const closeSignUpForm = () => {
-    setShowSignUpForm(false);
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -158,14 +154,6 @@ const Login = ({ isShowLoginForm, closeLoginForm }) => {
           <div className="google-login">
             <FcGoogle /> <span>Google</span>
           </div>
-          {/* <div className="google-login">
-            <button
-              onClick={handleGoogleLogin}
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <FcGoogle /> <span>Google</span>
-            </button>
-          </div> */}
         </div>
       </div>
     </div>

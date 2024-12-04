@@ -50,6 +50,12 @@ function Sidebar() {
           <Link to={ROUTERS.ADMIN.MANAGER_ORDER}>Quản lý đơn hàng</Link>
         </li>
         <li
+          className={activeItem === "manager_voucher" ? "active" : ""}
+          onClick={() => handleClick("manager_voucher")}
+        >
+          <Link to={ROUTERS.ADMIN.MANAGE_VOURCHER}>Quản lý mã giảm giá</Link>
+        </li>
+        <li
           className={activeItem === "revenue_stats" ? "active" : ""}
           onClick={() => handleClick("revenue_stats")}
         >
