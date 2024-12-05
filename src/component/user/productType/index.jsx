@@ -4,6 +4,7 @@ import "./style.scss";
 import { ROUTERS } from "../../../utils/router";
 import { UserContext } from "../../../middleware/UserContext";
 import { BsStarFill } from "react-icons/bs";
+import { apiLink } from "../../../config/api";
 const ProductTypeComponent = ({ title, heading }) => {
   const [products, setProducts] = useState([]);
   const { user, updateCartCount } = useContext(UserContext);
@@ -14,9 +15,7 @@ const ProductTypeComponent = ({ title, heading }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "https://doanpro-production.up.railway.app/api/product/getAllProduct"
-        );
+        const response = await fetch(apiLink + "/api/product/getAllProduct");
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
         setProducts(Array.isArray(data.data) ? data.data : []);

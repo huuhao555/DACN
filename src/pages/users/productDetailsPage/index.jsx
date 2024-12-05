@@ -177,12 +177,6 @@ const ProductDetailsPage = () => {
                             </>
                           )}
                         </div>
-                        {/* <div className="product-rating">
-                          <span className="number">0.0</span>
-                          <span className="icon">
-                            <AiFillStar />
-                          </span>
-                        </div> */}
                       </div>
                       <div className="product-description">
                         <span> Bảo hành chính hãng 24 tháng.</span>

@@ -12,7 +12,7 @@ const ProductManagement = () => {
   const { addNotification } = useContext(NotificationContext);
   const { user } = useContext(UserContext);
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]); // Danh sách sản phẩm sau khi lọc
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const [message, setMessage] = useState("");
@@ -27,7 +27,7 @@ const ProductManagement = () => {
         const data = await response.json();
         const productsData = Array.isArray(data.data) ? data.data : [];
         setProducts(productsData);
-        setFilteredProducts(productsData); // Gán sản phẩm ban đầu
+        setFilteredProducts(productsData);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setProducts([]);
@@ -37,7 +37,6 @@ const ProductManagement = () => {
     fetchProducts();
   }, []);
 
-  // Xử lý xoá sản phẩm
   const handleDeleteProduct = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xoá sản phẩm này?")) {
       try {
@@ -68,11 +67,10 @@ const ProductManagement = () => {
     }
   };
 
-  // Xử lý tìm kiếm
   const handleSearch = (value) => {
     setValueSearch(value);
     if (value.trim() === "") {
-      setFilteredProducts(products); // Nếu input rỗng, hiển thị toàn bộ sản phẩm
+      setFilteredProducts(products);
     } else {
       const searchValue = value.toLowerCase();
       const filtered = products.filter((product) => {
@@ -81,11 +79,10 @@ const ProductManagement = () => {
           product.company.toLowerCase().includes(searchValue)
         );
       });
-      setFilteredProducts(filtered); // Lọc sản phẩm theo giá trị tìm kiếm
+      setFilteredProducts(filtered);
     }
   };
 
-  // Lấy sản phẩm hiện tại theo trang
   const currentProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
